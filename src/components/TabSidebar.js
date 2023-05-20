@@ -8,7 +8,7 @@ import { FaMap } from "react-icons/fa";
 const TabSidebar = () => {
     const currentPath = useLocation().pathname;
     return (
-        <div className="tabSidebar">
+        <div className="tabSidebar" style={(currentPath === "/") ? {display: "none"} : {display: "block"}}>
             <ul>
             <li>
                     <Link to="/"><button className={(currentPath === "/") ? "selected" : ""}><HiHome/></button></Link>
