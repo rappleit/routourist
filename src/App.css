@@ -1,3 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;600;700;800;900&family=Inter:wght@400;500&display=swap');
+
+:root {
+  --eggshell: #F7F4E3;
+  --gray: #40413F;
+  --lightgray: #878887;
+  --green: #76B989;
+  --lightgreen: #99dead;
+}
+
 .App {
   text-align: center;
 }

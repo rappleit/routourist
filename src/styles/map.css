@@ -1,0 +1,222 @@
+#map {
+    height: 100vh;
+    width: 100vw;
+    z-index: -1;
+    position: fixed !important;
+}
+
+.openLeftSidebarButton {
+    background: var(--gray);
+    height: 100px;
+    padding: 0 14px;
+    z-index: 99;
+    position: fixed;
+    place-self: start;
+    border: none;
+    color: var(--eggshell);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 60px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.openLeftSidebarButton:hover {
+    background-color: var(--lightgray);
+}
+
+.leftSidebar {
+    height: 100vh;
+    width: 20vw;
+    min-width: 240px;
+    background: var(--gray);
+    z-index: 99;
+    position: fixed;
+    place-self: start;
+    padding: 20px 16px;
+    color: var(--eggshell);
+    margin-left: 60px;
+}
+
+.leftSidebar h1 {
+    font-family: Epilogue;
+    font-size: 24px;
+    text-align: left;
+    margin: 0;
+}
+
+.leftSidebarHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.leftSidebarHeader button {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: var(--eggshell);
+    cursor: pointer;
+}
+
+.routeBuilder {
+    margin: 12px 0;
+    font-family: Inter;
+}
+
+.waypointsList {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 10px;
+    margin: 8px 0;
+    padding-bottom: 8px;
+    max-height: 25vh;
+    overflow-y: auto;
+    border-bottom: solid 1px var(--eggshell)
+}
+
+.startWaypoint {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.startWaypoint input {
+    padding: 8px;
+    width: 100%;
+    border-radius: 4px;
+    border: none;
+    font-size: 12px;
+}
+
+.toWaypoint {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.toWaypoint input {
+    padding: 8px;
+    width: 100%;
+    border-radius: 4px;
+    border: none;
+    font-size: 12px;
+}
+
+.waypointOptions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 4px 0 12px 0;
+    
+}
+
+.waypointOptions button {
+    background: none;
+    border: none;
+    color: var(--eggshell);
+    text-decoration: underline;
+    cursor: pointer;
+    font-family: Inter;
+}
+.transportModeList h3 { 
+    margin: 4px 0;
+}
+
+
+.transportModeList h3 {
+    text-align: left;
+    font-size: 14px;
+}
+
+.transportModeList select {
+    padding: 8px;
+    font-size: 12px;
+    width: 100%;
+    background: none;
+    color: var(--eggshell);
+    border: 2px solid var(--eggshell);
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.transportModeList option {
+    color: #000000;
+}
+
+.optimiseRouteContainer {
+    text-align: left;
+    align-items: center;
+    margin: 12px 0;
+}
+
+.optimiseRouteFlex {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.optimiseRouteContainer input {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.optimiseRouteContainer label {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.optimiseRouteContainer p {
+    text-align: left;
+    font-size: 10px;
+    font-style: italic;
+    width: 100%;
+}
+
+.createRouteButton {
+    width: 100%;
+    border: none;
+    border-radius: 8px;
+    padding: 8px;
+    font-weight: 600;
+    background: var(--green);
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.createRouteButton:hover {
+    background: var(--lightgreen);
+}
+
+.directionsOverview {
+    border-top: solid 1px var(--eggshell);
+    text-align: left;
+}
+
+.directionsOverview h3 {
+    font-size: 14px;
+}
+
+.directionsOverview p {
+    font-size: 12px;
+    margin: 2px 0;
+}
+
+.directionsOverview button {
+    background: none;
+    text-decoration: underline;
+    color: var(--green);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font-family: Inter;
+    font-size: 12px;
+}
+
+.routeOverviewTitle {
+    font-weight: bold;
+}
+
