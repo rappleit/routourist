@@ -1,6 +1,8 @@
+import { useState } from "react";
 import DirectionsOverview from "./DirectionsOverview";
 import RouteBuilder from "./RouteBuilder";
 import { IoClose } from "react-icons/io5";
+import DirectionsPanel from "./DirectionsPanel";
 
 
 const LeftSidebar = ({
@@ -18,6 +20,8 @@ const LeftSidebar = ({
     setShowLeftSideBar,
     resetWaypoints
 }) => {
+    const [view, setView] = useState("routeBuilder");
+
     return (
         <div className="leftSidebar">
             <div className="leftSidebarHeader">
@@ -26,8 +30,17 @@ const LeftSidebar = ({
 
             </div>
 
-            <RouteBuilder {...{ fromRef, toRef, waypointsNum, setWaypointsNum, waypointValues, setWaypointValues, addWaypoint, calcRoute, resetWaypoints }} />
-            <DirectionsOverview {...{ currentRouteOverview, currentRoute }} />
+            <div style={(view === "routeBuilder") ? {display: "block"} : {display: "none"}}>
+                <RouteBuilder {...{ fromRef, toRef, waypointsNum, setWaypointsNum, waypointValues, setWaypointValues, addWaypoint, calcRoute, resetWaypoints }} />
+                <DirectionsOverview {...{ currentRouteOverview, currentRoute, setView }} />
+            </div>
+
+            <div style={(view === "directionsPanel") ? {display: "block"} : {display: "none"}}>
+                <DirectionsPanel {...{currentRouteOverview, currentRoute, setView}}/>
+
+            </div>
+
+
         </div>
     );
 }

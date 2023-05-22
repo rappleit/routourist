@@ -229,3 +229,98 @@
     font-weight: bold;
 }
 
+.directionsPanelContainer {
+    height: 85vh;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    text-align: left;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    background-color: #000000;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--lightgray);
+  }
+
+.directionsPanelContainer h3 {
+    font-size: 16px;
+}
+
+.directionsPanelHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.directionsPanelHeader button {
+    background: none;
+    color: var(--eggshell);
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+}
+.directionsPanelContainer .directionsSummary {
+    background-color: var(--darkgray);
+    padding: 4px 6px;
+    border-radius: 6px;
+    margin-bottom: 24px;
+}
+
+.directionsPanelContainer .routeOverview {
+    font-size: 12px;
+    margin: 2px 0;
+
+}
+
+.directionsPanelContainer .directionsTravelMode {
+    font-weight: bold;
+    font-size: 12px;
+    margin: 2px 0;
+
+}
+
+#directionsPanel {
+    text-align: left;
+}
+
+#directionsPanel span{
+    color: var(--eggshell);
+
+}
+#directionsPanel td {
+    color: var(--eggshell);
+    font-size: 12px;
+}
+
+#directionsPanel .adp-text {
+    color: var(--gray);
+    font-weight: bold;
+}
+
+#directionsPanel .adp-summary {
+    font-style: italic;
+    font-size: 12px;
+}
+
+#directionsPanel .adp-stepicon {
+    background-color: var(--eggshell);
+    border-radius: 4px;
+}
+
+#directionsPanel .adp-legal {
+    color: var(--eggshell);
+    font-size: 10px;
+}
+
+#directionsPanel .adp-agencies {
+    color: var(--eggshell);
+    font-size: 12px;
+}
+
+.warnbox-content {
+    font-size: 12px;
+}
+

@@ -10,7 +10,7 @@ const RouteBuilder = ({
     setWaypointValues,
     addWaypoint,
     calcRoute,
-    resetWaypoints
+    resetWaypoints,
 }) => {
     const handleInputChange = (index, value) => {
         setWaypointValues(prevInputs =>

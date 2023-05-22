@@ -14,7 +14,7 @@ const TabSidebar = () => {
                     <Link to="/"><button className={(currentPath === "/") ? "selected" : ""}><HiHome/></button></Link>
                 </li>
                 <li>
-                    <Link to="/map"><button className={(currentPath === "/map") ? "selected" : ""}><FaMap/></button></Link>
+                    <Link to="/map"><button className={(currentPath === "/map") ? "selected" : ""} ><FaMap/></button></Link>
                 </li>
             </ul>
         </div>);

@@ -531,13 +531,13 @@ const calculateStats = (request, carbonFootprintCount, duration) => {
                 }
             );
         }
-        statsPanel.innerHTML = "Generating...";
+        /*statsPanel.innerHTML = "Generating...";
         setTimeout(() => {
             statsPanel.innerHTML = `<p>${outputStringArray.join("")}</p>`;
             if (!optimizeRoute) {
                 statsPanel.innerHTML += `<p><br>Optimize your route now for greater efficiency!`;
             }
-        }, 2000);
+        }, 2000);*/
     }
 };
 
@@ -613,7 +613,6 @@ const drawTransitRoute = (
      * @param {string} routeString - A string representing the route directions
      */
     const routeStringSplit = routeString
-        .split(": <br>")[1]
         .trim()
         .split(" -> ");
     let routeDirections = "";
@@ -798,7 +797,7 @@ const retrieveRoute = (route) => {
     );
 
     if (transportMode === "TRANSIT") {
-        let routeString = `Route for ${transportMode}: <br>`;
+        let routeString = "";
 
         if (waypoints.length > 1) {
             if (optimizeRoute) {
@@ -882,7 +881,6 @@ const retrieveRoute = (route) => {
                 setTimeout(() => {
                     setCurrentRouteOverview(routeString);
                     localStorage.setItem("routeOverview", routeString);
-                    directionsPanel.innerHTML = `<h1>${routeString}</h1>`;
                     drawTransitRoute(
                         encodedRoutePolylineArray,
                         routeLegsArray,
@@ -931,7 +929,6 @@ const retrieveRoute = (route) => {
                         toString.substring(0, toString.length - 4);
                     setCurrentRouteOverview(routeString);
                     localStorage.setItem("routeOverview", routeString);
-                    directionsPanel.innerHTML = `<h1>${routeString}</h1>`;
 
                     setLat_LngArray(getLat_LngArray(result));
                     const partialData = calculatePartialStats(
@@ -971,7 +968,6 @@ const retrieveRoute = (route) => {
                 let routeString = createRouteString(result, waypoints);
                 setCurrentRouteOverview(routeString);
                 localStorage.setItem("routeOverview", routeString);
-                directionsPanel.innerHTML = `<h1>${routeString}</h1>`;
 
                 setLat_LngArray(getLat_LngArray(result));
                 const partialData = calculatePartialStats(

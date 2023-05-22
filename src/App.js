@@ -11,7 +11,6 @@ function App() {
     <div className="App">
       <BrowserRouter>
       <TabSidebar />
-
       <Routes>
         <Route
           path="/"

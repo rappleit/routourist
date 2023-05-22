@@ -1,7 +1,7 @@
 const DirectionsOverview = ({
     currentRouteOverview,
     currentRoute,
-    
+    setView
 }) => {
     return ( 
         <div className="directionsOverview">
@@ -10,7 +10,7 @@ const DirectionsOverview = ({
                 <div>
                     <p className="routeOverviewTitle">{currentRoute["travelMode"]}:</p>
                     <p>{currentRouteOverview}</p>
-                    <button>See full directions</button>
+                    <button onClick={() => setView("directionsPanel")}>See full directions</button>
                 </div>
                 
             ) : (
