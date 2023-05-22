@@ -21,8 +21,8 @@ const Landing = () => {
                     </div>
                     
                     <div className='headerbutton'>
-                        <button className='faq_button'>FAQ</button>
-                        <button>Try Now</button>
+                        <a className='faq_button'>FAQ</a>
+                        <a href='/map'>Try Now</a>
                     </div>
                 </div>
 

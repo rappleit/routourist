@@ -58,7 +58,7 @@
     width: 17%;
 }
 
-.headerbutton button{
+.headerbutton a{
     height:min-content;
     padding: 10px 23px 10px 23px;
     background: var(--contrast-clr);
