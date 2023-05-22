@@ -15,7 +15,8 @@ const LeftSidebar = ({
     currentRouteOverview,
     currentRoute,
     showLeftSidebar,
-    setShowLeftSideBar
+    setShowLeftSideBar,
+    resetWaypoints
 }) => {
     return (
         <div className="leftSidebar">
@@ -25,7 +26,7 @@ const LeftSidebar = ({
 
             </div>
 
-            <RouteBuilder {...{ fromRef, toRef, waypointsNum, setWaypointsNum, waypointValues, setWaypointValues, addWaypoint, calcRoute }} />
+            <RouteBuilder {...{ fromRef, toRef, waypointsNum, setWaypointsNum, waypointValues, setWaypointValues, addWaypoint, calcRoute, resetWaypoints }} />
             <DirectionsOverview {...{ currentRouteOverview, currentRoute }} />
         </div>
     );

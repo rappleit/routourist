@@ -9,9 +9,25 @@ const RouteBuilder = ({
     waypointValues,
     setWaypointValues,
     addWaypoint,
-    calcRoute
+    calcRoute,
+    resetWaypoints
 }) => {
-
+    const handleInputChange = (index, value) => {
+        setWaypointValues(prevInputs =>
+          prevInputs.map((input, i) => (i === index ? value : input))
+        );
+      };
+    const removeWaypoint = (index) => {
+        
+        if (index === 0 && waypointsNum === 1) {
+            const firstWaypoint = document.getElementById("firstToRef");
+            firstWaypoint.value = null;
+            setWaypointValues([""]);
+        } else {
+            setWaypointsNum(waypointsNum - 1);
+            setWaypointValues(prevWaypoints => prevWaypoints.filter((_, i) => i !== index));
+        }
+    }
 
     return (
         <div className="routeBuilder">
@@ -24,58 +40,35 @@ const RouteBuilder = ({
                         placeholder="From where?"
                         type="text"
                     ></input>
-                    <FaRegTimesCircle style={{ fontSize: "22px", visibility: "hidden" }} />
+                    <button className="removeWaypointButton"  style={{ fontSize: "22px", visibility: "hidden", pointerEvents: "none" }}><FaRegTimesCircle/></button>
                 </div>
-                <div className="toWaypoint">
-                    <FaRegDotCircle />
-                    <input
-                        ref={toRef}
-                        id="firstToRef"
-                        placeholder="To where?"
-                        type="text"
-                        className="toRef"
-                    ></input>
-                    <FaRegTimesCircle style={{ fontSize: "22px" }} />
-                </div>
-                {waypointsNum - 2 > 0 ? (
-                    [...Array(waypointsNum - 2)].map(
+                {
+                    waypointValues.map(
                         (wp, i) => (
                             <div className="toWaypoint" key={i}>
                                 <FaRegDotCircle />
-                                <input
-                                onChange={(e) =>
-                                    setWaypointValues(
-                                        waypointValues.map(
-                                            (item, j) => {
-                                                if ( j === i + 1) {
-                                                    item = e.target.value; //update waypoint value of that particular field
-                                                } else {
-                                                    item = item; //keep the value of all other waypoint values
-                                                }
-                                            }
-                                        )
-                                    )
-                                }
+                                <input 
                                     ref={toRef}
+                                    id={(i === 0) ? "firstToRef": ""}
                                     placeholder="To where?"
                                     type="text"
                                     className="toRef"
-                                    value={
-                                        waypointValues[i + 1]
-                                    }
+                                    value={wp}
+                                    onChange={e => handleInputChange(i, e.target.value)}
                                 ></input>
-                                <FaRegTimesCircle style={{ fontSize: "22px" }} />
+                                <button className="removeWaypointButton" onClick={() => {
+                                    removeWaypoint(i);
+
+                                }}><FaRegTimesCircle style={{ fontSize: "22px" }} /></button>
                             </div>
                         )
                     )
-                ) : (
-                    <></>
-                )}
+                }
 
             </div>
             <div className="waypointOptions">
                 <button onClick={(e) => addWaypoint(e)}>Add Waypoint</button>
-                <button>Reset</button>
+                <button onClick={(e) => resetWaypoints(e)}>Reset</button>
             </div>
             <div className="transportModeList">
                 <h3>Transport Mode</h3>
