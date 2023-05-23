@@ -12,20 +12,20 @@ import {BsCheckCircleFill} from 'react-icons/bs';
 import { useState,useEffect } from 'react';
 
 const Landing = () => {
-    const businessContent = document.getElementsByClassName("business_section")[0];
-    const consumerContent = document.getElementsByClassName("consumer_section")[0];
+    const businessContent = document.getElementsByClassName('business_section');
+    const consumerContent = document.getElementsByClassName('consumer_section');
 
     const businessButton = document.getElementsByClassName("business");
     const consumerButton = document.getElementsByClassName("consumer");
     const setBusiness = () => {
         console.log(businessContent)
-        businessContent.style.display = 'block'
-        consumerContent.style.display = 'none'
+        businessContent[0].style.display = 'block'
+        consumerContent[0].style.display = 'none'
     }
 
     const setConsumer = () => {
-        businessContent.style.display = 'none'
-        consumerContent.style.display = 'block'
+        businessContent[0].style.display = 'none'
+        consumerContent[0].style.display = 'block'
     }
     return ( 
         
