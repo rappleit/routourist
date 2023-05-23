@@ -25,7 +25,7 @@ const Landing = () => {
 
     const setConsumer = () => {
         businessContent[0].style.display = 'none'
-        consumerContent[0].style.display = 'block'
+        consumerContent[0] .style.display = 'block'
     }
     return ( 
         
@@ -129,6 +129,14 @@ const Landing = () => {
 
                 </div>
             </div>
+
+
+
+
+
+
+
+
 
             <div className='business_section'>
                 <div className="sus_section">

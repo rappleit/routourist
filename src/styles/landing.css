@@ -20,8 +20,13 @@
     --contrast-clr: #5BAE73;
     
 }
+
+
 .firstsection{
-    height: 100vh;
+    min-height: 100vh;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 .landingPage{
     background-color: var(--primary-clr);
@@ -55,25 +60,29 @@
 }
 .headerbutton{
     display: flex;
-    width: 17%;
+    width: 40%;
+    align-items: start;
+    justify-content: end;
 }
 
 .headerbutton a{
-    height:min-content;
     padding: 10px 23px 10px 23px;
     background: var(--contrast-clr);
     color: var(--primary-clr);
     border:none;
     font-family: var(--ff-secondary);
-    margin: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: 10px;
     border-radius: 20px;
     cursor: pointer;
     box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+    text-decoration: none;
 }
 
 .title_section{
-    margin-top: 50px;
-    margin-bottom: 50px;
+    margin-top: auto;
+    margin-bottom: auto;
     display: flex;
     align-items: start;
     justify-content: center;
@@ -83,10 +92,9 @@
 }
 
 .right_section{
-    flex:1;
-
+    display: flex;
+    justify-content: end;
 }
-
 .right_section img{
     width: 60%;
     min-width: 350px;
@@ -94,7 +102,6 @@
 }
 
 .left_section{
-    flex:1;
     display: flex;
     flex-direction: column;
 
@@ -105,7 +112,6 @@
     font-size: var(--fs-title);
     font-weight: var(--fw-black);
     margin-bottom: 10px;
-    margin-left: 40px;
     text-align: left;
 }
 
@@ -117,7 +123,6 @@
     font-family: var(--ff-secondary);
     font-size: var(--fs-sub);
     font-weight: var(--fw-light);
-    margin-left: 40px;
 }
 
 .sub_title2{
@@ -136,21 +141,20 @@
     font-family: var(--ff-secondary);
     font-weight: var(--fw-light);
     text-align: start;
-    margin-left: 40px;
 }
 
 .business_collab button{
     font-family: var(--ff-secondary);
     font-weight: var(--fw-normal);
     background: var(--primary-darker-clr);
-    height:min-content;
     padding: 15px 30px 15px 30px;
     border:none;
-    margin: auto;
+    margin-left: none;
+    margin-right: auto;
+    text-align: start;
     border-radius: 20px;
     cursor: pointer;
     box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
-    margin-left: 40px;
 }
 
 .powered_section img{
@@ -262,4 +266,13 @@
 
 .business_section{
     display: none;
+}
+
+
+
+@media screen and (max-width: 1000px) {
+    .right_section{
+        display: none;
+    }
+
 }
