@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import '../styles/map.css';
 import { Helmet } from "react-helmet";
 import LeftSidebar from "../components/LeftSidebar";
-import { FaChevronRight } from "react-icons/fa";
+import { FaChevronRight, FaChevronLeft } from "react-icons/fa";
+import RightSidebar from "../components/RightSidebar";
 
 
 
@@ -12,8 +13,9 @@ const Map = () => {
         componentRestrictions: { country: "sg" },
     };
 
-    const [openDirectionsModal, setOpenDirectionsModal] = useState(false);
+    //sidebars
     const [showLeftSidebar, setShowLeftSideBar] = useState(true);
+    const [showRightSidebar, setShowRightSideBar] = useState(false);
 
     const fromRef = useRef();
     const toRef = useRef();
@@ -195,6 +197,7 @@ const calcRoute = (e) => {
 
     console.log(reqRoute);
     retrieveRoute(reqRoute);
+    setShowRightSideBar(true);
 };
 
 
@@ -552,9 +555,9 @@ const secondsToHms = (d) => {
     var m = Math.floor((d % 3600) / 60);
     var s = Math.floor((d % 3600) % 60);
     // Initial: 5 hours, 16 minutes, 41 seconds
-    var hDisplay = h > 0 ? h + (h == 1 ? " hr " : " hrs ") : "";
-    var mDisplay = m > 0 ? m + (m == 1 ? " min " : " mins ") : "";
-    var sDisplay = s > 0 ? s + (s == 1 ? " s" : " s") : "";
+    var hDisplay = h > 0 ? h + (h === 1 ? " hr " : " hrs ") : "";
+    var mDisplay = m > 0 ? m + (m === 1 ? " min " : " mins ") : "";
+    var sDisplay = s > 0 ? s + (s === 1 ? " s" : " s") : "";
     return hDisplay + mDisplay;
 };
 
@@ -1009,6 +1012,13 @@ return (
                         <FaChevronRight />
                     </button>
             }
+            {
+                (showRightSidebar) ? <RightSidebar {...{showRightSidebar, setShowRightSideBar, currentRoute}}/> :
+                <button className="openRightSidebarButton" onClick={() => setShowRightSideBar(!showRightSidebar)}>
+                        <FaChevronLeft />
+                    </button>
+            }
+            
         </div>
     </>
 

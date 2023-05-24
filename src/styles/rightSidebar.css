@@ -1,0 +1,93 @@
+.rightSidebar {
+    height: 100vh;
+    width: 20vw;
+    min-width: 240px;
+    padding: 0 14px;
+    z-index: 99;
+    position: fixed;
+    padding: 14px 16px;
+    color: var(--eggshell);
+    right: 0;
+    background: var(--gray);
+    text-align: left;
+}
+
+.rightSidebar button {
+    cursor: pointer;
+}
+
+.rightSidebar h3 {
+    font-size: 16px;
+    margin: 12px 0;
+}
+
+.closeRightSidebarButton {
+    background: none;
+    border: none;
+    color: var(--eggshell);
+    font-size: 18px;
+    padding: 0;
+}
+
+.warningBox {
+    background: var(--darkgray);
+    text-align: center;
+    border-radius: 4px;
+    padding: 24px 0;
+    margin: 18px 0;
+}
+
+.section {
+    margin: 16px 0;
+}
+
+.rightSidebar .sectionButton {
+    width: 100%;
+    background: var(--green);
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.rightSidebar .sectionButton:hover {
+    background: var(--lightgreen)
+}
+
+.saveSection input {
+    width: 100%;
+    padding: 8px 6px;
+    box-sizing: border-box;
+    border-radius: 4px;
+    border: none;
+    font-size: 12px;
+    margin-bottom: 14px;
+}
+
+.notesContainer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+}
+
+.notesCategory {
+    background: var(--eggshell);
+    border: none;
+    border-radius: 4px;
+    width: 70px;
+    font-weight: bold;
+}
+
+.notesCategory p {
+    margin: 2px 0;
+}
+
+.notesIcon {
+    font-size: 24px;
+    margin: 4px 0;
+}
+
+.notesCategory:hover {
+    background: var(--darkeggshell);
+}
