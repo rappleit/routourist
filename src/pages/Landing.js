@@ -18,14 +18,29 @@ const Landing = () => {
     const businessButton = document.getElementsByClassName("business");
     const consumerButton = document.getElementsByClassName("consumer");
     const setBusiness = () => {
-        console.log(businessContent)
         businessContent[0].style.display = 'block'
         consumerContent[0].style.display = 'none'
+
+        businessButton[0].style.background = '#393939'
+        businessButton[0].style.color = '#E0E0E0'
+        businessButton[0].style.boxShadow = 'none'
+
+        consumerButton[0].style.background = "#E0E0E0"
+        consumerButton[0].style.color = "#393939"
+        consumerButton[0].style.boxShadow = '0 3px 10px rgb(0 0 0 / 0.2)'
     }
 
     const setConsumer = () => {
         businessContent[0].style.display = 'none'
         consumerContent[0] .style.display = 'block'
+
+        businessButton[0].style.background = '#E0E0E0'
+        businessButton[0].style.color = '#393939'
+        businessButton[0].style.boxShadow = '0 3px 10px rgb(0 0 0 / 0.2)'
+
+        consumerButton[0].style.background = "#393939"
+        consumerButton[0].style.color = "#E0E0E0"
+        consumerButton[0].style.boxShadow = 'none'
     }
     return ( 
         
@@ -95,7 +110,7 @@ const Landing = () => {
             </div>
             <div className='consumer_section'>
                 <div className="sus_section">
-                    <h1>We aspire Sustainable Tourism.</h1>
+                    <h1>We aspire Sustainable Travelling.</h1>
                     <p>We made your travelling more sustainble to enchance your experience
                         and the future of tourism.
                     </p>
@@ -117,11 +132,72 @@ const Landing = () => {
 
                 </div>
 
-                <div className="comment_section">
+                <div className='feature_section'>
+                    <h2>Features</h2>
+                    <div className='feature_sub'>
+                        <div className='feature_sub_1'>
+                            <img></img>
+                            <h3>Routing System</h3>
+                            <p>Optimised multi-Destination travelling with a list of preset routes and community routes</p>
+                        </div>
+                        <div className='feature_sub_1'>
+                            <img></img>
+                            <h3>Information Bar</h3>
+                            <p>Access data that will affect your travel and others such as carbon footprint, weather, culture of the surrounding area and more</p>
+                        </div>
+                        <div className='feature_sub_1'>
+                            <img></img>
+                            <h3>Recommendation Service</h3>
+                            <p>As you travel, make impromptu plans and live a little through our smart recommendation system.</p>
+                        </div>
+                    </div>
+                </div>
 
+                <div className="comment_section">
+                    <div>
+                        <p>"Seamless travel. Multiple planned out routes to choose from. Information in a click of a button. I can now travel anywhere seamlessly anywhere. I even used this app during my travel in Cambodia. It showed me a whole new side to Cambodia"</p>
+                        <h3>- Amy, Singapore</h3>
+                        <div>
+                            <span>
+
+                            </span>
+                        </div>
+                    </div>
                 </div>
 
                 <div className="procedure_section">
+                    <div>
+                        <img></img>
+                        <div>
+                            <h1>Start off with a selection of presetted/community routes</h1>
+                            <p>Choose a wide range of routes from different categories to best suit your needs.</p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div>
+                            <h1>Customise your route</h1>
+                            <p>Seamlessly remove and add any location to your selected route.</p>
+                        </div>
+                        <img></img>
+                    </div>
+
+                    <div>
+                        <img></img>
+                        <div>
+                            <h1>Save your route</h1>
+                            <p>Who knows? Maybe youll need it in the future.</p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div>
+                            <h1>Share your route to others</h1>
+                            <p>Share your route to share others the same experience. It can also be used for your safety.</p>
+                        </div>
+                        <img></img>
+                    </div>
+
 
                 </div>
 

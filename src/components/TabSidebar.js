@@ -3,6 +3,7 @@ import '../styles/tabSidebar.css';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { HiHome } from "react-icons/hi";
 import { FaMap } from "react-icons/fa";
+import {SiBookstack} from "react-icons/si"
 import { IoLogIn, IoLogOut } from "react-icons/io5";
 import { UserAuth } from '../context/AuthContext';
 import { Store } from 'react-notifications-component';
@@ -48,6 +49,14 @@ const TabSidebar = () => {
                         <button className={(currentPath === "/map") ? "selected" : ""} >
                             <FaMap className="tabIcon" />
                             <p>Map</p>
+                        </button>
+                    </Link>
+                </li>
+                <li>
+                    <Link to="/libraryroute">
+                        <button className={(currentPath === "/libraryroute") ? "selected" : ""} >
+                            <SiBookstack className="tabIcon" />
+                            <p>Library Route</p>
                         </button>
                     </Link>
                 </li>
