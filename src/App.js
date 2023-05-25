@@ -5,10 +5,16 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Map from './pages/Map';
 import TabSidebar from './components/TabSidebar';
+import { AuthContextProvider } from './context/AuthContext';
+import { ReactNotifications } from 'react-notifications-component'
+import 'react-notifications-component/dist/theme.css'
+
 
 function App() {
   return (
     <div className="App">
+      <AuthContextProvider>
+      <ReactNotifications />
       <BrowserRouter>
       <TabSidebar />
       <Routes>
@@ -26,6 +32,7 @@ function App() {
           element={<Signup/>}/>
       </Routes>
       </BrowserRouter>
+      </AuthContextProvider>
     </div>
   );
 }

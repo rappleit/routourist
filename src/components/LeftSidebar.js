@@ -18,7 +18,7 @@ const LeftSidebar = ({
     currentRoute,
     showLeftSidebar,
     setShowLeftSideBar,
-    resetWaypoints
+    resetWaypoints,
 }) => {
     const [view, setView] = useState("routeBuilder");
 

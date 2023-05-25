@@ -1,0 +1,92 @@
+.loginPage {
+    background: var(--darkgray);
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loginContainer {
+    background: var(--gray);
+    width: 40vw;
+    color: var(--eggshell);
+    border-radius: 12px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.loginContainer h2 {
+    margin-bottom: 2px;
+}
+
+.loginContainer input {
+    background: var(--darkgray);
+    border: none;
+    font-size: 16px;
+    padding: 8px 12px;
+    width: 100%;
+    color: var(--eggshell);
+    border-radius: 4px;
+}
+
+.loginContainer form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.loginField {
+    margin: 12px 0;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    width: 70%;
+}
+
+.fieldIcon {
+    font-size: 24px;
+}
+
+.loginButton {
+    width: 70%;
+    background: var(--green);
+    font-family: Inter;
+    border: none;
+    margin: 24px 0;
+    border-radius: 4px;
+    font-size: 16px;
+    padding: 8px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.loginButton:hover {
+    background: var(--lightgreen);
+}
+
+.signupLink {
+    color: var(--green);
+}
+
+.signupLink:hover {
+    color: var(--lightgreen);
+}
+
+.mapLink{
+    color: var(--green);
+}
+
+.errorMsg {
+    margin: 0;
+    font-style: italic;
+    color: #e85a5a;
+}

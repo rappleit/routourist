@@ -11,7 +11,17 @@
     list-style: none;
     padding: 0;
     margin: 0;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    height: 100%;
 
+}
+
+.bottomTab {
+    list-style: none;
+    padding: 0;
+    margin-top: auto;
 }
 
 .tabSidebar button {
@@ -24,6 +34,12 @@
     cursor: pointer;
 }
 
+.tabSidebar button p {
+    font-size: 10px;
+    margin: 2px 0;
+    font-weight: 600;
+}
+
 .tabSidebar button:hover {
     background: var(--lightgray);
 }
@@ -34,4 +50,7 @@
     pointer-events: none;
 }
 
+.tabIcon {
+    margin: 0;
+}
 

@@ -4,11 +4,13 @@ import { Helmet } from "react-helmet";
 import LeftSidebar from "../components/LeftSidebar";
 import { FaChevronRight, FaChevronLeft } from "react-icons/fa";
 import RightSidebar from "../components/RightSidebar";
-
-
+import { UserAuth } from '../context/AuthContext';
 
 
 const Map = () => {
+    //user information
+    const { user } = UserAuth();
+
     const autoCompleteOptions = {
         componentRestrictions: { country: "sg" },
     };
@@ -1006,14 +1008,14 @@ return (
         <div className="mapPage">
             <div id="map"></div>
             {
-                (showLeftSidebar) ? <LeftSidebar {...{ fromRef, toRef, waypointsNum, setWaypointsNum, waypointValues, setWaypointValues, addWaypoint, calcRoute, currentRouteOverview, currentRoute, showLeftSidebar, setShowLeftSideBar, resetWaypoints }} />
+                (showLeftSidebar) ? <LeftSidebar {...{ fromRef, toRef, waypointsNum, setWaypointsNum, waypointValues, setWaypointValues, addWaypoint, calcRoute, currentRouteOverview, currentRoute, showLeftSidebar, setShowLeftSideBar, resetWaypoints}} />
                     :
                     <button className="openLeftSidebarButton" onClick={() => setShowLeftSideBar(!showLeftSidebar)}>
                         <FaChevronRight />
                     </button>
             }
             {
-                (showRightSidebar) ? <RightSidebar {...{showRightSidebar, setShowRightSideBar, currentRoute}}/> :
+                (showRightSidebar) ? <RightSidebar {...{showRightSidebar, setShowRightSideBar, currentRoute, user}}/> :
                 <button className="openRightSidebarButton" onClick={() => setShowRightSideBar(!showRightSidebar)}>
                         <FaChevronLeft />
                     </button>

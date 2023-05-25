@@ -38,7 +38,7 @@
 }
 
 .section {
-    margin: 16px 0;
+    margin: 18px 0;
 }
 
 .rightSidebar .sectionButton {
@@ -62,6 +62,15 @@
     border: none;
     font-size: 12px;
     margin-bottom: 14px;
+}
+
+.saveSection p {
+    font-size: 14px;
+    font-style: italic;
+}
+
+.saveSection a {
+    color: var(--green);
 }
 
 .notesContainer {
