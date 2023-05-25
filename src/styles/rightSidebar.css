@@ -100,3 +100,32 @@
 .notesCategory:hover {
     background: var(--darkeggshell);
 }
+
+.viewHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.viewHeader .backButton {
+    background: none;
+    border: none;
+    text-decoration: underline;
+    color: var(--green);
+    font-family: Inter;
+    font-size: 14px;
+}
+
+.viewHeader .backButton:hover {
+    color: var(--lightgreen);
+}
+
+.viewTitle {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.viewTitle h3 {
+    font-size: 18px;
+}

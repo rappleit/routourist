@@ -3,7 +3,7 @@ import '../styles/map.css';
 import { Helmet } from "react-helmet";
 import LeftSidebar from "../components/LeftSidebar";
 import { FaChevronRight, FaChevronLeft } from "react-icons/fa";
-import RightSidebar from "../components/RightSidebar";
+import RightSidebar from "../components/rightSidebar/RightSidebar";
 import { UserAuth } from '../context/AuthContext';
 
 
