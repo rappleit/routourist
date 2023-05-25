@@ -1,5 +1,7 @@
 import { useEffect } from "react";
 import { FaRegFlag, FaRegTimesCircle, FaRegDotCircle, FaCar } from "react-icons/fa";
+import { Store } from 'react-notifications-component';
+
 
 const RouteBuilder = ({
     fromRef,
@@ -27,6 +29,49 @@ const RouteBuilder = ({
             setWaypointsNum(waypointsNum - 1);
             setWaypointValues(prevWaypoints => prevWaypoints.filter((_, i) => i !== index));
         }
+    }
+
+    const createRoute = (e) => {
+        e.preventDefault();
+        //check if every input field is filled
+        let fromValue = document.getElementById("fromRef").value
+        let toInputs = document.querySelectorAll(".toRef")
+
+        if (fromValue === "") {
+            Store.addNotification({
+                title: "Error",
+                message: "Please fill in all input fields",
+                type: "danger",
+                insert: "top",
+                container: "bottom-right",
+                animationIn: ["animate__animated", "animate__fadeIn"],
+                animationOut: ["animate__animated", "animate__fadeOut"],
+                dismiss: {
+                  duration: 5000,
+                  onScreen: true
+                }
+              });
+              return false;
+        } 
+        for (let i = 0; i < toInputs.length; i++) {
+            if (toInputs[i].value === "") {
+                Store.addNotification({
+                    title: "Error",
+                    message: "Please fill in all input fields",
+                    type: "danger",
+                    insert: "top",
+                    container: "bottom-right",
+                    animationIn: ["animate__animated", "animate__fadeIn"],
+                    animationOut: ["animate__animated", "animate__fadeOut"],
+                    dismiss: {
+                      duration: 5000,
+                      onScreen: true
+                    }
+                  });
+                return false;
+            }
+        }
+        calcRoute(e);        
     }
 
     return (
@@ -97,7 +142,7 @@ const RouteBuilder = ({
                 </div>
                 <p>You can reduce your carbon footprint by optmising your route! </p>
             </div>
-            <button className="createRouteButton" onClick={(e) => calcRoute(e)}>Create Route</button>
+            <button className="createRouteButton" onClick={(e) => createRoute(e)}>Create Route</button>
         </div>
     );
 }
