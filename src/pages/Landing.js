@@ -8,8 +8,16 @@ import environment from '../images/environment_logo.png';
 import economic from '../images/economic_logo.png';
 import ethics from '../images/ethics_logo.png';
 import social from '../images/social_logo.png';
+import modifyroute from '../images/modifyroute.svg';
+import selectroute from '../images/selectroute.svg';
+import saveroute from '../images/saveroute.svg';
+import shareroute from '../images/shareroute.svg';
 import {BsCheckCircleFill} from 'react-icons/bs';
+import {FaClipboardList} from 'react-icons/fa'
+import {ImLocation} from 'react-icons/im'
+import {FiThumbsUp} from 'react-icons/fi'
 import { useState,useEffect } from 'react';
+
 
 const Landing = () => {
     const businessContent = document.getElementsByClassName('business_section');
@@ -112,7 +120,7 @@ const Landing = () => {
                 <div className="sus_section">
                     <h1>We aspire Sustainable Travelling.</h1>
                     <p>We made your travelling more sustainble to enchance your experience
-                        and the future of tourism.
+                        and the future of travelling.
                     </p>
 
                     <div className='sus_sub'>
@@ -136,17 +144,17 @@ const Landing = () => {
                     <h2>Features</h2>
                     <div className='feature_sub'>
                         <div className='feature_sub_1'>
-                            <img></img>
+                            <ImLocation className='icon'/>
                             <h3>Routing System</h3>
                             <p>Optimised multi-Destination travelling with a list of preset routes and community routes</p>
                         </div>
                         <div className='feature_sub_1'>
-                            <img></img>
+                            <FaClipboardList className='icon'/>
                             <h3>Information Bar</h3>
                             <p>Access data that will affect your travel and others such as carbon footprint, weather, culture of the surrounding area and more</p>
                         </div>
                         <div className='feature_sub_1'>
-                            <img></img>
+                            <FiThumbsUp className='icon'/>
                             <h3>Recommendation Service</h3>
                             <p>As you travel, make impromptu plans and live a little through our smart recommendation system.</p>
                         </div>
@@ -154,48 +162,52 @@ const Landing = () => {
                 </div>
 
                 <div className="comment_section">
-                    <div>
+                    <hr></hr>
+                    <div className='comment_sub'>
+                        
                         <p>"Seamless travel. Multiple planned out routes to choose from. Information in a click of a button. I can now travel anywhere seamlessly anywhere. I even used this app during my travel in Cambodia. It showed me a whole new side to Cambodia"</p>
                         <h3>- Amy, Singapore</h3>
+                        
                         <div>
                             <span>
 
                             </span>
                         </div>
                     </div>
+                    <hr></hr>
                 </div>
 
                 <div className="procedure_section">
-                    <div>
-                        <img></img>
-                        <div>
-                            <h1>Start off with a selection of presetted/community routes</h1>
+                    <div className='procedure_sub'>
+                        <img src={selectroute}></img>
+                        <div className='procedure_text'>
+                            <h1>Start with a selection of presetted/community routes</h1>
                             <p>Choose a wide range of routes from different categories to best suit your needs.</p>
                         </div>
                     </div>
 
-                    <div>
-                        <div>
+                    <div className='procedure_sub'>
+                        <div className='procedure_text'>
                             <h1>Customise your route</h1>
                             <p>Seamlessly remove and add any location to your selected route.</p>
                         </div>
-                        <img></img>
+                        <img src={modifyroute}></img>
                     </div>
 
-                    <div>
-                        <img></img>
-                        <div>
+                    <div className='procedure_sub'>
+                        <img src={saveroute}></img>
+                        <div className='procedure_text'>
                             <h1>Save your route</h1>
                             <p>Who knows? Maybe youll need it in the future.</p>
                         </div>
                     </div>
 
-                    <div>
-                        <div>
+                    <div className='procedure_sub'>
+                        <div className='procedure_text'>
                             <h1>Share your route to others</h1>
                             <p>Share your route to share others the same experience. It can also be used for your safety.</p>
                         </div>
-                        <img></img>
+                        <img src={shareroute}></img>
                     </div>
 
 
