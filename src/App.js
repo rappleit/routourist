@@ -4,6 +4,7 @@ import Landing from './pages/Landing';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Map from './pages/Map';
+import LibraryRoute from './pages/LibraryRoute';
 import TabSidebar from './components/TabSidebar';
 import { AuthContextProvider } from './context/AuthContext';
 import { ReactNotifications } from 'react-notifications-component'
@@ -24,6 +25,9 @@ function App() {
         <Route
           path="/map"
           element={<Map/>}/>
+        <Route
+        path="/libraryroute"
+        element={<LibraryRoute/>}/>
         <Route
           path="/login"
           element={<Login/>}/>

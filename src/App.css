@@ -8,6 +8,25 @@
   --lightgray: #878887;
   --green: #76B989;
   --lightgreen: #99dead;
+
+  --ff-primary: 'Epilogue';
+  --ff-secondary: 'Inter';
+
+  --fs-title: 3.5rem;
+  --fs-sub: 1.3rem;
+  --fs-text: 1rem;
+  --fs-logo:1.2rem;
+
+  --fw-black: 900;
+  --fw-bold: 700;
+  --fw-normal: 500;
+  --fw-light: 400;
+
+
+  --primary-clr: #EEEDE6;
+  --primary-darker-clr:#E0E0E0;
+  --secondary-clr: #393939;
+  --contrast-clr: #5BAE73;
 }
 
 .App {
