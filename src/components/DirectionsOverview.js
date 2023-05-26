@@ -7,7 +7,7 @@ const DirectionsOverview = ({
         <div className="directionsOverview">
             <h3>Directions</h3>
             {(currentRouteOverview != "") ? (
-                <div>
+                <div className="summarisedDirections">
                     <p className="routeOverviewTitle">{currentRoute["travelMode"]}:</p>
                     <p>{currentRouteOverview}</p>
                     <button onClick={() => setView("directionsPanel")}>See full directions</button>

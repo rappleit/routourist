@@ -5,6 +5,7 @@ import LeftSidebar from "../components/LeftSidebar";
 import { FaChevronRight, FaChevronLeft } from "react-icons/fa";
 import RightSidebar from "../components/rightSidebar/RightSidebar";
 import { UserAuth } from '../context/AuthContext';
+import { Store } from 'react-notifications-component';
 
 
 const Map = () => {
@@ -126,9 +127,19 @@ const Map = () => {
             setWaypointsNum(waypointsNum + 1);
             setWaypointValues(prevWaypoints => [...prevWaypoints, ""])
         } else if (waypointsNum === 8) {
-            alert(
-                "You may only add up till 8 waypoints"
-            );
+            Store.addNotification({
+                title: "Error",
+                message: "You may only add up till 8 waypoints",
+                type: "danger",
+                insert: "top",
+                container: "bottom-right",
+                animationIn: ["animate__animated", "animate__fadeIn"],
+                animationOut: ["animate__animated", "animate__fadeOut"],
+                dismiss: {
+                  duration: 5000,
+                  onScreen: true
+                }
+              });
         }
     };
 
