@@ -229,6 +229,11 @@
     font-size: 14px;
 }
 
+.summarisedDirections {
+    height: 80px;
+    overflow-y: auto;
+}
+
 .directionsOverview p {
     font-size: 12px;
     margin: 2px 0;
