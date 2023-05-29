@@ -6,6 +6,9 @@ import {FaChevronRight, FaChevronLeft} from "react-icons/fa";
 import RightSidebar from "../components/rightSidebar/RightSidebar";
 import {UserAuth} from "../context/AuthContext";
 import {Store} from "react-notifications-component";
+import ResearchedData from "../data/ResearchedData.json";
+import BlueSGData from "../data/BlueSGData.json";
+import OneMapData from "../data/OneMapData.json";
 
 const Map = () => {
     //user information
@@ -69,22 +72,20 @@ const Map = () => {
     ];
     const [categoriesChecked, setCategoriesChecked] = useState([]);
     const [waypointValues, setWaypointValues] = useState([""]);
-    // const [gCarbonFootprintCount, setGCarbonFootprintCount] = useState({
-    //     carbonFootprintCount: 0,
-    //     otherCarbonFootprintCount: 0,
-    // });
-    // const [gTravelDuration, setGTravelDuration] = useState({
-    //     travelDuration: 0,
-    //     otherTravelDuration: 0,
-    // });
-    const gCarbonFootprintCount = useRef({
-        carbonFootprintCount: 0,
-        otherCarbonFootprintCount: 0,
+    const [travelStats, setTravelStats] = useState({
+        chosen: "",
+        DRIVING: {carbonFootprintCount: 0, travelDuration: 0},
+        TRANSIT: {carbonFootprintCount: 0, travelDuration: 0},
+        WALKING: {carbonFootprintCount: 0, travelDuration: 0},
+        BICYCLING: {carbonFootprintCount: 0, travelDuration: 0},
     });
-    const gTravelDuration = useRef({
-        travelDuration: 0,
-        otherTravelDuration: 0,
-    });
+    // const travelStats = useRef({
+    //     chosen: "",
+    //     DRIVING: {carbonFootprintCount: 0, travelDuration: 0},
+    //     TRANSIT: {carbonFootprintCount: 0, travelDuration: 0},
+    //     WALKING: {carbonFootprintCount: 0, travelDuration: 0},
+    //     BICYCLING: {carbonFootprintCount: 0, travelDuration: 0},
+    // });
 
     //FOR SAVING ROUTES
     const [currentRoute, setCurrentRoute] = useState({});
@@ -425,15 +426,15 @@ const Map = () => {
                             );
                             directionsPanel.innerHTML = `${routeString}`;
 
-                            // nearbyPlaceSearch(
-                            //     getLat_LngArray(
-                            //         routeLegsAndPolylineArray.map(
-                            //             (route) => route["legs"]
-                            //         ),
-                            //         "directions"
-                            //     ),
-                            //     categoriesChecked
-                            // );
+                            nearbyPlaceSearch(
+                                getLat_LngArray(
+                                    routeLegsAndPolylineArray.map(
+                                        (route) => route["legs"]
+                                    ),
+                                    "directions"
+                                ),
+                                categoriesChecked
+                            );
                             const partialData = calculatePartialStats(
                                 routeLegsAndPolylineArray,
                                 transportMode,
@@ -441,11 +442,29 @@ const Map = () => {
                             );
                             carbonFootprintCount += partialData[0];
                             duration += partialData[1];
-                            // calculateStats(
-                            //     REQUEST,
-                            //     carbonFootprintCount,
-                            //     duration
-                            // );
+                            calculateStats(
+                                REQUEST,
+                                carbonFootprintCount,
+                                duration
+                            );
+                            setTravelStats((prevStats) => {
+                                return {
+                                    ...prevStats,
+                                    chosen: transportMode,
+                                    [transportMode]: {
+                                        carbonFootprintCount:
+                                            carbonFootprintCount,
+                                        travelDuration: duration,
+                                    },
+                                };
+                            });
+                            // travelStats.current["chosen"] = transportMode;
+                            // travelStats.current[transportMode][
+                            //     "carbonFootprintCount"
+                            // ] = carbonFootprintCount;
+                            // travelStats.current[transportMode][
+                            //     "travelDuration"
+                            // ] = duration;
 
                             // saveRoute(user["userID"], user["request"], routeString);
                         }, 750);
@@ -598,10 +617,10 @@ const Map = () => {
                                 );
                                 directionsPanel.innerHTML = `${routeString}`;
 
-                                // nearbyPlaceSearch(
-                                //     getLat_LngArray(routeLegsArray, "routes"),
-                                //     categoriesChecked
-                                // );
+                                nearbyPlaceSearch(
+                                    getLat_LngArray(routeLegsArray, "routes"),
+                                    categoriesChecked
+                                );
                                 const partialData = calculatePartialStats(
                                     routeLegsArray,
                                     transportMode,
@@ -614,6 +633,25 @@ const Map = () => {
                                     carbonFootprintCount,
                                     duration
                                 );
+                                setTravelStats((prevStats) => {
+                                    return {
+                                        ...prevStats,
+                                        chosen: transportMode,
+                                        [transportMode]: {
+                                            carbonFootprintCount:
+                                                carbonFootprintCount,
+                                            travelDuration: duration,
+                                        },
+                                    };
+                                });
+
+                                // travelStats.current["chosen"] = transportMode;
+                                // travelStats.current[transportMode][
+                                //     "carbonFootprintCount"
+                                // ] = carbonFootprintCount;
+                                // travelStats.current[transportMode][
+                                //     "travelDuration"
+                                // ] = duration;
                             })
                             .catch((status) =>
                                 console.log(
@@ -940,7 +978,7 @@ const Map = () => {
          * @returns {void}
          */
 
-        const dataSets = ["ResearchedData", "BlueSGData", "OneMapData"];
+        const dataSets = [ResearchedData, BlueSGData, OneMapData];
         // createCrowdControl();
 
         for (const lat_lng of lat_lngArray) {
@@ -1288,26 +1326,22 @@ const Map = () => {
                                     otherDuration,
                                     outputStringArray[i + 1]
                                 );
-                                // setGCarbonFootprintCount((prevValues) => ({
-                                //     ...prevValues,
-                                //     carbonFootprintCount: carbonFootprintCount,
-                                //     otherCarbonFootprintCount:
-                                //         otherCarbonFootprintCount,
-                                // }));
-                                // setGTravelDuration((prevValues) => ({
-                                //     ...prevValues,
-                                //     duration: duration,
-                                //     otherDuration: otherDuration,
-                                // }));
-                                gCarbonFootprintCount.current = {
-                                    carbonFootprintCount: carbonFootprintCount,
-                                    otherCarbonFootprintCount:
-                                        otherCarbonFootprintCount,
-                                };
-                                gTravelDuration.current = {
-                                    duration: duration,
-                                    otherDuration: otherDuration,
-                                };
+                                setTravelStats((prevStats) => {
+                                    return {
+                                        ...prevStats,
+                                        [otherTravelModes[i]]: {
+                                            carbonFootprintCount:
+                                                otherCarbonFootprintCount,
+                                            travelDuration: otherDuration,
+                                        },
+                                    };
+                                });
+                                // travelStats.current[otherTravelModes[i]][
+                                //     "carbonFootprintCount"
+                                // ] = otherCarbonFootprintCount;
+                                // travelStats.current[otherTravelModes[i]][
+                                //     "travelDuration"
+                                // ] = otherDuration;
                             }, 750);
                         }, 750);
                 }
@@ -1461,6 +1495,22 @@ const Map = () => {
                                     otherDuration,
                                     outputStringArray[i + 1]
                                 );
+                                setTravelStats((prevStats) => {
+                                    return {
+                                        ...prevStats,
+                                        [otherTravelModes[i]]: {
+                                            carbonFootprintCount:
+                                                otherCarbonFootprintCount,
+                                            travelDuration: otherDuration,
+                                        },
+                                    };
+                                });
+                                // travelStats.current[otherTravelModes[i]][
+                                //     "carbonFootprintCount"
+                                // ] = otherCarbonFootprintCount;
+                                // travelStats.current[otherTravelModes[i]][
+                                //     "travelDuration"
+                                // ] = otherDuration;
                             })
                             .catch((status) =>
                                 console.log(
@@ -1475,14 +1525,17 @@ const Map = () => {
             setTimeout(() => {
                 statsTest.innerHTML = outputStringArray.join("");
                 if (!optimizeRoute) {
-                    statsTest.innerHTML +=
-                        `<br>Optimize your route now for greater efficiency!<br> Or perhaps you'd like to expand your search radius and look for more sustainable options?` +
-                        JSON.stringify(gCarbonFootprintCount.current) +
-                        JSON.stringify(gTravelDuration.current);
+                    statsTest.innerHTML += `<br>Optimize your route now for greater efficiency!<br> Or perhaps you'd like to expand your search radius and look for more sustainable options?`;
                 }
+                statsTest.innerHTML += JSON.stringify(travelStats);
             }, 2200);
         }
     };
+
+    // TEST: Log the updated travelStats whenever it changes
+    useEffect(() => {
+        console.log(travelStats);
+    }, [travelStats]);
 
     const compareStats = (
         carbonFootprintCount,
@@ -1531,9 +1584,7 @@ const Map = () => {
     const autocompleteAddListener = (autocomplete, waypointsNum) => {
         google.maps.event.addListener(autocomplete, "place_changed", () => {
             const place = autocomplete.getPlace();
-            // useState hooks require immutability
-            // ∴ .map / const updatedWaypoints = [...prevWaypoints] + updatedWaypoints[prevWaypoints.length - 1] = place creates new array & returns
-            // X [...prevWaypoints][prevWaypoints.length - 1] = place;
+
             if (waypointsNum > 0) {
                 setWaypointValues((prevWaypoints) =>
                     prevWaypoints.map((input, i) =>
@@ -1547,16 +1598,6 @@ const Map = () => {
                 document.querySelector("#fromPlace").value =
                     JSON.stringify(place);
             }
-
-            // console.log(`PREV: ${waypointValues}`);
-            // console.log(place);
-            // setWaypointValues((prevWaypoints) => {
-            //     const updatedWaypoints = [...prevWaypoints];
-            //     updatedWaypoints[prevWaypoints.length - 1] =
-            //         place !== "" ? place : "";
-            //     return updatedWaypoints;
-            // });
-            // console.log(`NOW: ${waypointValues}`);
 
             // Stringify is problematic, doesn't preserve Dates, functions, undefined, RegExps, Maps, Sets, Blobs, FileLists
             // ∴ replacer parameter in Stringify and reviver parameter in Parse, but still doesn't preserve nested objects/functions
@@ -1633,7 +1674,7 @@ const Map = () => {
                 : locationNameSplit[0]
         }`;
     };
-    const getLat_LngArray = (result) => {
+    const getLat_LngArray = (result, api) => {
         /**
          * Returns array of latitudes and longitudes from the given Google Maps Directions API result object
          * @param {Object} result - Result object returned by the Google Maps Directions API
@@ -1641,18 +1682,29 @@ const Map = () => {
          *
          * Eg. i % 100 takes every 100th lat_lng from each step, from each leg, from each route
          */
+        let lat_lngArray;
 
-        const lat_lngArray = result["routes"]
-            .map((route) =>
-                route["legs"].map((leg) =>
-                    leg["steps"].map((step) =>
+        switch (api) {
+            case "directions":
+                lat_lngArray = result.map((leg) =>
+                    leg[0]["steps"].map((step) =>
                         step["lat_lngs"].filter((info, i) => i % 100 === 0)
                     )
-                )
-            )
-            .flat(3);
-        return lat_lngArray;
+                );
+                break;
+            case "routes":
+                lat_lngArray = result
+                    .map((leg) =>
+                        google.maps.geometry.encoding
+                            .decodePath(leg["polyline"]["encodedPolyline"])
+                            .filter((info, i) => i % 100 === 0)
+                    )
+                    .flat(2);
+                break;
+        }
+        return lat_lngArray.flat(2);
     };
+
     const getLat_LngFromPlace = (place) => {
         const placeLat_Lng = JSON.parse(place)["geometry"]["location"];
         return {lat: placeLat_Lng["lat"], lng: placeLat_Lng["lng"]};
