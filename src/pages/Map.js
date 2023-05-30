@@ -6,6 +6,7 @@ import {FaChevronRight, FaChevronLeft} from "react-icons/fa";
 import RightSidebar from "../components/rightSidebar/RightSidebar";
 import {UserAuth} from "../context/AuthContext";
 import {Store} from "react-notifications-component";
+import * as Cesium from "cesium";
 import ResearchedData from "../data/ResearchedData.json";
 import BlueSGData from "../data/BlueSGData.json";
 import OneMapData from "../data/OneMapData.json";
@@ -34,11 +35,15 @@ const Map = () => {
     const firstToPlaceName = document.querySelector("#firstToPlaceName");
 
     const [gmap, setGMap] = useState(null);
-    const [ggeocoder, setGGeocoder] = useState(null);
+    const [gGeocoder, setGGeocoder] = useState(null);
     const [gDirectionsService, setGDirectionsService] = useState(null);
     const originLat_Lng = useRef({});
-    const [cesiumViewer, setCesiumViewer] = useState(null);
-    const [rotateCesium, setRotateCesium] = useState(null);
+    const [cesiumMapVisible, setCesiumMapVisible] = useState(false);
+    const [cesiumBtnsVisible, setCesiumBtnsVisible] = useState(false);
+    const [gMapVisible, setGMapVisible] = useState(true);
+    const cesiumCreated = useRef(false);
+    const cesiumViewer = useRef(null);
+    const rotateCesium = useRef(null);
     const [waypointsNum, setWaypointsNum] = useState(1);
     const [gToAutoComplete, setGToAutoComplete] = useState(null);
     const [weatherForecasts, setWeatherForecasts] = useState([]);
@@ -72,20 +77,20 @@ const Map = () => {
     ];
     const [categoriesChecked, setCategoriesChecked] = useState([]);
     const [waypointValues, setWaypointValues] = useState([""]);
-    const [travelStats, setTravelStats] = useState({
-        chosen: "",
-        DRIVING: {carbonFootprintCount: 0, travelDuration: 0},
-        TRANSIT: {carbonFootprintCount: 0, travelDuration: 0},
-        WALKING: {carbonFootprintCount: 0, travelDuration: 0},
-        BICYCLING: {carbonFootprintCount: 0, travelDuration: 0},
-    });
-    // const travelStats = useRef({
+    // const [travelStats, setTravelStats] = useState({
     //     chosen: "",
     //     DRIVING: {carbonFootprintCount: 0, travelDuration: 0},
     //     TRANSIT: {carbonFootprintCount: 0, travelDuration: 0},
     //     WALKING: {carbonFootprintCount: 0, travelDuration: 0},
     //     BICYCLING: {carbonFootprintCount: 0, travelDuration: 0},
     // });
+    const travelStats = useRef({
+        chosen: "",
+        DRIVING: {carbonFootprintCount: 0, travelDuration: 0},
+        TRANSIT: {carbonFootprintCount: 0, travelDuration: 0},
+        WALKING: {carbonFootprintCount: 0, travelDuration: 0},
+        BICYCLING: {carbonFootprintCount: 0, travelDuration: 0},
+    });
 
     //FOR SAVING ROUTES
     const [currentRoute, setCurrentRoute] = useState({});
@@ -107,38 +112,25 @@ const Map = () => {
                 mapId: "741626712eb9af1",
                 center: {lat: 1.3521, lng: 103.8198},
                 zoom: 12,
-                mapTypeControl: true,
+                mapTypeControl: false,
                 mapTypeControlOptions: {
                     style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
-                    position: google.maps.ControlPosition.TOP_CENTER,
+                    position: google.maps.ControlPosition.BOTTOM_CENTER,
                 },
                 zoomControl: false,
                 scaleControl: true,
                 streetViewControl: true,
                 streetViewControlOptions: {
-                    position: google.maps.ControlPosition.TOP_CENTER,
+                    position: google.maps.ControlPosition.BOTTOM_CENTER,
                 },
                 fullscreenControl: true,
                 fullscreenControlOptions: {
-                    position: google.maps.ControlPosition.TOP_CENTER,
+                    position: google.maps.ControlPosition.BOTTOM_CENTER,
                 },
             });
             google.maps.event.addListener(map, "click", function () {
                 this.setOptions({scrollwheel: true});
             });
-
-            // const toggleMap = document.querySelector("#toggleMap");
-            // toggleMap.addEventListener("click", () => {
-            //     const mapContainer = document.querySelector("#map");
-            //     const cesiumContainer = document.querySelector("#cesium");
-            //     if (mapContainer.style.display === "none") {
-            //         mapContainer.style.display = "block";
-            //         cesiumContainer.style.display = "none";
-            //     } else {
-            //         mapContainer.style.display = "none";
-            //         cesiumContainer.style.display = "block";
-            //     }
-            // });
 
             const geocoder = new google.maps.Geocoder();
 
@@ -208,8 +200,6 @@ const Map = () => {
             } else {
                 console.log("Your browser doesn't support Geolocation");
             }
-            // Waiting for originLat_Lng
-            // setTimeout(() => createCesium(), 200);
 
             setGMap(map);
             setGGeocoder(geocoder);
@@ -217,6 +207,327 @@ const Map = () => {
             setGToAutoComplete(toAutocomplete);
         };
     }
+
+    const toggleMapClick = () => {
+        setCesiumMapVisible(!cesiumMapVisible);
+        setCesiumBtnsVisible(!cesiumBtnsVisible);
+        setGMapVisible(!gMapVisible);
+
+        switch (cesiumCreated.current) {
+            case false:
+                createCesium();
+                cesiumCreated.current = true;
+            case true:
+                const fromPlaceName =
+                    document.querySelector("#fromPlaceName").value;
+                const toPlaceNames = Array.from(
+                    document.querySelectorAll(".toPlaceName")
+                );
+
+                if (
+                    fromPlaceName !== "" &&
+                    toPlaceNames.every(
+                        (toPlaceName) => toPlaceName.value !== ""
+                    )
+                ) {
+                    updateCesium();
+                } else {
+                    resetCesiumViewer();
+                }
+                break;
+        }
+    };
+
+    const createCesium = () => {
+        const cesiumPlace = document.querySelector("#cesiumPlace");
+
+        // https://developers.google.com/maps/documentation/tile/use-renderer
+        // Alternative: https://developers.google.com/maps/documentation/aerial-view/get-video
+        // Enable simultaneous requests.
+        Cesium.RequestScheduler.requestsByServer[
+            "tile.googleapis.com:443"
+        ] = 18;
+
+        // Create the viewer.
+        cesiumViewer.current = new Cesium.Viewer("cesiumMap", {
+            imageryProvider: false,
+            baseLayerPicker: false,
+            homeButton: false,
+            vrButton: false,
+            sceneModePicker: false,
+            geocoder: false,
+            globe: false,
+            infobox: false,
+            selectionIndicator: false,
+            timeline: false,
+            projectionPicker: false,
+            clockViewModel: null,
+            animation: false,
+            fullscreenButton: true,
+            navigationHelpButton: true,
+            requestRenderMode: true,
+        });
+
+        // Add 3D Tiles tileset.
+        Cesium.Cesium3DTileset.fromUrl(
+            `https://tile.googleapis.com/v1/3dtiles/root.json?key=${gApiKey}`,
+            {
+                // skipLevelOfDetail: true,
+                // baseScreenSpaceError: 1024,
+                // skipScreenSpaceErrorFactor: 16,
+                // skipLevels: 1,
+                // immediatelyLoadDesiredLevelOfDetail: false,
+                // loadSiblings: false,
+                // cullWithChildrenBounds: true,
+                showCreditsOnScreen: true,
+            }
+        )
+            .then((tileset) => {
+                cesiumViewer.current.scene.primitives.add(tileset);
+            })
+            .catch((status) =>
+                status.code === 429
+                    ? alert(
+                          "Sorry, 3D viewer quota exceeded, please try again in a few hours!"
+                      )
+                    : console.log(
+                          `${createCesium.name} failed due to ${status}`
+                      )
+            );
+
+        // Text Search API to get user's origin location, without needing to click on autocomplete option & automatically show on Cesium
+        if (!originLat_Lng.current) {
+            originLat_Lng.current = {lat: 1.3521, lng: 103.8198};
+        }
+
+        gGeocoder
+            .geocode({
+                location: originLat_Lng.current,
+                region: "SG",
+            })
+            .then((response) => {
+                if (response["results"]) {
+                    const place = response["results"][0];
+                    cesiumPlace.value = place["formatted_address"];
+                    const viewport = place["geometry"]["viewport"];
+
+                    cesiumViewer.current.entities.add({
+                        polyline: {
+                            positions: Cesium.Cartesian3.fromDegreesArray([
+                                viewport.getNorthEast().lng(),
+                                viewport.getNorthEast().lat(),
+                                viewport.getSouthWest().lng(),
+                                viewport.getNorthEast().lat(),
+                                viewport.getSouthWest().lng(),
+                                viewport.getSouthWest().lat(),
+                                viewport.getNorthEast().lng(),
+                                viewport.getSouthWest().lat(),
+                                viewport.getNorthEast().lng(),
+                                viewport.getNorthEast().lat(),
+                            ]),
+                            width: 10,
+                            material: Cesium.Color.RED,
+                        },
+                    });
+                    cesiumViewer.current.flyTo(cesiumViewer.current.entities);
+                } else {
+                    console.log("origin location not found");
+                    return "";
+                }
+            })
+            .catch((status) =>
+                console.log(`${createCesium.name} failed due to ${status}`)
+            );
+
+        // If user wants to use Cesium
+        const cesiumAutocomplete = new google.maps.places.Autocomplete(
+            cesiumPlace,
+            gAutoCompleteOptions
+        );
+        cesiumAutocomplete.addListener("place_changed", () => {
+            const place = cesiumAutocomplete.getPlace();
+            cesiumPlace.value = place["name"];
+            resetCesiumViewer();
+            cesiumViewPlace(JSON.parse(JSON.stringify(place)));
+        });
+    };
+
+    const updateCesium = () => {
+        resetCesiumViewer();
+        const colors = [
+            "#B10DC9",
+            "#0074D9",
+            "#7FDBFF",
+            "#F012BE",
+            "#3D9970",
+            "#2ECC40",
+            "#8FB7B3",
+            "#9C4C4E",
+            "#F67280",
+            "#C06C84",
+            "#6C5B7B",
+            "#F8B195",
+            "#264653",
+        ];
+        const cesiumPlace = document.querySelector("#cesiumPlace");
+        const cesiumCheckbox = document.querySelector("#cesiumCheckbox");
+        let currentCesiumViewIndex = -1;
+        let cesiumViews = Array.from(document.querySelectorAll(".toPlace")).map(
+            (toPlaceBox) => JSON.parse(toPlaceBox.value)
+        );
+        cesiumViews.unshift(
+            JSON.parse(document.querySelector("#fromPlace").value)
+        );
+
+        cesiumCheckbox.addEventListener("change", () => {
+            cesiumPlace.disabled = cesiumCheckbox.checked;
+            if (!cesiumCheckbox.checked) {
+                currentCesiumViewIndex = -1;
+                cesiumPlace.value = "";
+            }
+        });
+        document
+            .querySelector("#cesiumBackward")
+            .addEventListener("click", () => {
+                if (currentCesiumViewIndex > 0) {
+                    cesiumPlace.disabled = true;
+                    cesiumCheckbox.checked = true;
+                    currentCesiumViewIndex--;
+                    cesiumViewPlace(cesiumViews[currentCesiumViewIndex]);
+                    cesiumPlace.value =
+                        cesiumViews[currentCesiumViewIndex]["name"];
+                }
+            });
+        document
+            .querySelector("#cesiumForward")
+            .addEventListener("click", () => {
+                if (currentCesiumViewIndex < cesiumViews.length - 1) {
+                    cesiumPlace.disabled = true;
+                    cesiumCheckbox.checked = true;
+                    currentCesiumViewIndex++;
+                    cesiumViewPlace(cesiumViews[currentCesiumViewIndex]);
+                    cesiumPlace.value =
+                        cesiumViews[currentCesiumViewIndex]["name"];
+                }
+            });
+
+        // for (let i = 1; i < cesiumViews.length + 1; i++) {
+        //     const prevViewport = cesiumViews[i - 1]["geometry"]["viewport"];
+        //     const prevPosition = Cesium.Cartesian3.fromDegreesArray([
+        //         prevViewport["east"],
+        //         prevViewport["north"],
+        //         prevViewport["west"],
+        //         prevViewport["north"],
+        //         prevViewport["west"],
+        //         prevViewport["south"],
+        //         prevViewport["east"],
+        //         prevViewport["south"],
+        //         prevViewport["east"],
+        //         prevViewport["north"],
+        //     ]);
+        //     console.log(prevPosition);
+        //     if (i < cesiumViews.length) {
+        //         const currViewport = cesiumViews[i]["geometry"]["viewport"];
+        //         const currPosition = Cesium.Cartesian3.fromDegreesArray([
+        //             currViewport["east"],
+        //             currViewport["north"],
+        //             currViewport["west"],
+        //             currViewport["north"],
+        //             currViewport["west"],
+        //             currViewport["south"],
+        //             currViewport["east"],
+        //             currViewport["south"],
+        //             currViewport["east"],
+        //             currViewport["north"],
+        //         ]);
+        //         console.log(currPosition);
+        //         cesiumViewer.current.entities.add({
+        //             polyline: {
+        //                 positions: [prevPosition, currPosition],
+        //                 width: 3,
+        //                 material: colors[i - 1],
+        //                 clampToGround: true,
+        //                 classificationType:
+        //                     Cesium.ClassificationType.CESIUM_3D_TILE,
+        //             },
+        //         });
+        //     }
+        //     cesiumViewer.current.entities.add({
+        //         position: prevPosition,
+        //         ellipsoid: {
+        //             radii: new Cesium.Cartesian3(1, 1, 1),
+        //             material: Cesium.Color.WHITE,
+        //         },
+        //     });
+        //     cesiumViewer.current.entities.add({
+        //         position: prevPosition,
+        //         label: {
+        //             text: String.fromCharCode(65 + i),
+        //             disableDepthTestDistance: Number.POSITIVE_INFINITY,
+        //             pixelOffset: new Cesium.Cartesian2(0, -10),
+        //             showBackground: true,
+        //             verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
+        //         },
+        //     });
+        // }
+    };
+
+    const cesiumViewPlace = async (place) => {
+        // Get place elevation using the ElevationService.
+        const elevatorService = new google.maps.ElevationService();
+        const elevationResponse =
+            await elevatorService.getElevationForLocations({
+                locations: [place["geometry"]["location"]],
+            });
+        const elevation =
+            elevationResponse["results"][0]["elevation"] * 40 || 100;
+        rotateCameraAround(
+            place["geometry"]["location"],
+            place["geometry"]["viewport"],
+            elevation
+        );
+    };
+
+    const rotateCameraAround = (location, viewport, elevation) => {
+        pointCameraAt(location, viewport, elevation);
+        if (!rotateCesium.current) {
+            rotateCesium.current =
+                cesiumViewer.current.clock.onTick.addEventListener(() => {
+                    cesiumViewer.current.camera.rotate(
+                        Cesium.Cartesian3.UNIT_Z,
+                        Math.PI / 10800
+                    );
+                });
+        }
+    };
+    const pointCameraAt = (location, viewport, elevation) => {
+        const distance =
+            Cesium.Cartesian3.distance(
+                Cesium.Cartesian3.fromDegrees(
+                    // SouthWest.lng = west, SouthWest.lat = south
+                    viewport["west"],
+                    viewport["south"],
+                    elevation
+                ),
+                Cesium.Cartesian3.fromDegrees(
+                    viewport["east"],
+                    viewport["north"],
+                    elevation
+                )
+            ) / 50;
+        const target = new Cesium.Cartesian3.fromDegrees(
+            location["lng"],
+            location["lat"],
+            elevation
+        );
+        const pitch = -Math.PI / 4;
+        const heading = 0;
+
+        cesiumViewer.current.camera.lookAt(
+            target,
+            new Cesium.HeadingPitchRange(heading, pitch, distance)
+        );
+    };
 
     const addWaypoint = (e) => {
         /**
@@ -447,24 +758,24 @@ const Map = () => {
                                 carbonFootprintCount,
                                 duration
                             );
-                            setTravelStats((prevStats) => {
-                                return {
-                                    ...prevStats,
-                                    chosen: transportMode,
-                                    [transportMode]: {
-                                        carbonFootprintCount:
-                                            carbonFootprintCount,
-                                        travelDuration: duration,
-                                    },
-                                };
-                            });
-                            // travelStats.current["chosen"] = transportMode;
-                            // travelStats.current[transportMode][
-                            //     "carbonFootprintCount"
-                            // ] = carbonFootprintCount;
-                            // travelStats.current[transportMode][
-                            //     "travelDuration"
-                            // ] = duration;
+                            // setTravelStats((prevStats) => {
+                            //     return {
+                            //         ...prevStats,
+                            //         chosen: transportMode,
+                            //         [transportMode]: {
+                            //             carbonFootprintCount:
+                            //                 carbonFootprintCount,
+                            //             travelDuration: duration,
+                            //         },
+                            //     };
+                            // });
+                            travelStats.current["chosen"] = transportMode;
+                            travelStats.current[transportMode][
+                                "carbonFootprintCount"
+                            ] = carbonFootprintCount;
+                            travelStats.current[transportMode][
+                                "travelDuration"
+                            ] = duration;
 
                             // saveRoute(user["userID"], user["request"], routeString);
                         }, 750);
@@ -633,25 +944,25 @@ const Map = () => {
                                     carbonFootprintCount,
                                     duration
                                 );
-                                setTravelStats((prevStats) => {
-                                    return {
-                                        ...prevStats,
-                                        chosen: transportMode,
-                                        [transportMode]: {
-                                            carbonFootprintCount:
-                                                carbonFootprintCount,
-                                            travelDuration: duration,
-                                        },
-                                    };
-                                });
+                                // setTravelStats((prevStats) => {
+                                //     return {
+                                //         ...prevStats,
+                                //         chosen: transportMode,
+                                //         [transportMode]: {
+                                //             carbonFootprintCount:
+                                //                 carbonFootprintCount,
+                                //             travelDuration: duration,
+                                //         },
+                                //     };
+                                // });
 
-                                // travelStats.current["chosen"] = transportMode;
-                                // travelStats.current[transportMode][
-                                //     "carbonFootprintCount"
-                                // ] = carbonFootprintCount;
-                                // travelStats.current[transportMode][
-                                //     "travelDuration"
-                                // ] = duration;
+                                travelStats.current["chosen"] = transportMode;
+                                travelStats.current[transportMode][
+                                    "carbonFootprintCount"
+                                ] = carbonFootprintCount;
+                                travelStats.current[transportMode][
+                                    "travelDuration"
+                                ] = duration;
                             })
                             .catch((status) =>
                                 console.log(
@@ -1326,22 +1637,22 @@ const Map = () => {
                                     otherDuration,
                                     outputStringArray[i + 1]
                                 );
-                                setTravelStats((prevStats) => {
-                                    return {
-                                        ...prevStats,
-                                        [otherTravelModes[i]]: {
-                                            carbonFootprintCount:
-                                                otherCarbonFootprintCount,
-                                            travelDuration: otherDuration,
-                                        },
-                                    };
-                                });
-                                // travelStats.current[otherTravelModes[i]][
-                                //     "carbonFootprintCount"
-                                // ] = otherCarbonFootprintCount;
-                                // travelStats.current[otherTravelModes[i]][
-                                //     "travelDuration"
-                                // ] = otherDuration;
+                                // setTravelStats((prevStats) => {
+                                //     return {
+                                //         ...prevStats,
+                                //         [otherTravelModes[i]]: {
+                                //             carbonFootprintCount:
+                                //                 otherCarbonFootprintCount,
+                                //             travelDuration: otherDuration,
+                                //         },
+                                //     };
+                                // });
+                                travelStats.current[otherTravelModes[i]][
+                                    "carbonFootprintCount"
+                                ] = otherCarbonFootprintCount;
+                                travelStats.current[otherTravelModes[i]][
+                                    "travelDuration"
+                                ] = otherDuration;
                             }, 750);
                         }, 750);
                 }
@@ -1495,22 +1806,22 @@ const Map = () => {
                                     otherDuration,
                                     outputStringArray[i + 1]
                                 );
-                                setTravelStats((prevStats) => {
-                                    return {
-                                        ...prevStats,
-                                        [otherTravelModes[i]]: {
-                                            carbonFootprintCount:
-                                                otherCarbonFootprintCount,
-                                            travelDuration: otherDuration,
-                                        },
-                                    };
-                                });
-                                // travelStats.current[otherTravelModes[i]][
-                                //     "carbonFootprintCount"
-                                // ] = otherCarbonFootprintCount;
-                                // travelStats.current[otherTravelModes[i]][
-                                //     "travelDuration"
-                                // ] = otherDuration;
+                                // setTravelStats((prevStats) => {
+                                //     return {
+                                //         ...prevStats,
+                                //         [otherTravelModes[i]]: {
+                                //             carbonFootprintCount:
+                                //                 otherCarbonFootprintCount,
+                                //             travelDuration: otherDuration,
+                                //         },
+                                //     };
+                                // });
+                                travelStats.current[otherTravelModes[i]][
+                                    "carbonFootprintCount"
+                                ] = otherCarbonFootprintCount;
+                                travelStats.current[otherTravelModes[i]][
+                                    "travelDuration"
+                                ] = otherDuration;
                             })
                             .catch((status) =>
                                 console.log(
@@ -1521,21 +1832,16 @@ const Map = () => {
                 }
             }
             const statsTest = document.querySelector(".directionsOverview p");
-            statsTest.innerHTML = "Generating statistics!";
+            statsPanel.innerHTML = "Generating statistics!";
             setTimeout(() => {
-                statsTest.innerHTML = outputStringArray.join("");
+                statsPanel.innerHTML = outputStringArray.join("");
                 if (!optimizeRoute) {
-                    statsTest.innerHTML += `<br>Optimize your route now for greater efficiency!<br> Or perhaps you'd like to expand your search radius and look for more sustainable options?`;
+                    statsPanel.innerHTML += `<br>Optimize your route now for greater efficiency!<br> Or perhaps you'd like to expand your search radius and look for more sustainable options?`;
                 }
                 statsTest.innerHTML += JSON.stringify(travelStats);
             }, 2200);
         }
     };
-
-    // TEST: Log the updated travelStats whenever it changes
-    useEffect(() => {
-        console.log(travelStats);
-    }, [travelStats]);
 
     const compareStats = (
         carbonFootprintCount,
@@ -1585,6 +1891,9 @@ const Map = () => {
         google.maps.event.addListener(autocomplete, "place_changed", () => {
             const place = autocomplete.getPlace();
 
+            // Stringify is problematic, doesn't preserve Dates, functions, undefined, RegExps, Maps, Sets, Blobs, FileLists
+            // ∴ replacer parameter in Stringify and reviver parameter in Parse, but still doesn't preserve nested objects/functions
+            // ∴ Create own recursive function / libraries
             if (waypointsNum > 0) {
                 setWaypointValues((prevWaypoints) =>
                     prevWaypoints.map((input, i) =>
@@ -1598,21 +1907,12 @@ const Map = () => {
                 document.querySelector("#fromPlace").value =
                     JSON.stringify(place);
             }
-
-            // Stringify is problematic, doesn't preserve Dates, functions, undefined, RegExps, Maps, Sets, Blobs, FileLists
-            // ∴ replacer parameter in Stringify and reviver parameter in Parse, but still doesn't preserve nested objects/functions
-            // ∴ Create own recursive function / libraries
-
-            if (
-                fromPlaceName.value !== "" &&
-                Array.from(
-                    document.querySelectorAll("input.toPlaceName")
-                ).every((toPlaceName) => toPlaceName.value !== "")
-            ) {
-                // updateCesium();
-                console.log("WORKKK");
-            }
         });
+    };
+
+    const resetCesiumViewer = () => {
+        cesiumViewer.current.entities.removeAll();
+        cesiumViewer.current.dataSources.removeAll();
     };
 
     const clearMap = () => {
@@ -1797,7 +2097,45 @@ const Map = () => {
                 ></link>
             </Helmet>
             <div className="mapPage">
-                <div id="map"></div>
+                <div id="cesium">
+                    <button id="toggleMap" onClick={toggleMapClick}>
+                        Toggle 3D
+                    </button>
+                    <br />
+                    <div
+                        id="cesiumBtnsDiv"
+                        style={{
+                            display: cesiumBtnsVisible ? "block" : "none",
+                        }}
+                    >
+                        <input id="cesiumCheckbox" type="checkbox" />
+                        <input id="cesiumPlace" type="text" defaultValue="" />
+                        <input
+                            id="cesiumBackward"
+                            type="button"
+                            value="<"
+                            readOnly
+                        />
+                        <input
+                            id="cesiumForward"
+                            type="button"
+                            value=">"
+                            readOnly
+                        />
+                    </div>
+                </div>
+                <div
+                    id="map"
+                    style={{
+                        display: gMapVisible ? "block" : "none",
+                    }}
+                ></div>
+                <div
+                    id="cesiumMap"
+                    style={{
+                        display: cesiumMapVisible ? "block" : "none",
+                    }}
+                ></div>
                 {showLeftSidebar ? (
                     <LeftSidebar
                         {...{
