@@ -1,9 +1,30 @@
-#map {
+#map, #cesiumMap {
     height: 100vh;
     width: 100vw;
     z-index: -1;
     position: fixed !important;
 }
+
+#cesium {
+    position: absolute;
+    z-index: 1;
+    left: 50%;
+    transform: translate(-50%); /* Added */
+    padding: 5px 8px;
+    border-radius: 5px;
+    text-align: center;  
+  }
+
+  .centerControl, #toggleMap {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.3);
+    padding: 0.5em 0.5em;
+    font: 400 14px Roboto, Arial, sans-serif;
+    overflow: hidden;
+    cursor: pointer;
+  }
 
 .openLeftSidebarButton {
     background: var(--gray);
