@@ -147,7 +147,7 @@ const RouteBuilder = ({
             </div>
             <div className="optimizeRouteContainer">
                 <div className="optimizeRouteFlex">
-                    <label for="OptimizeChoice">Optimise Route</label>
+                    <label htmlFor="OptimizeChoice">Optimise Route</label>
                     <input
                         id="optimizeRoute"
                         type="checkbox"
