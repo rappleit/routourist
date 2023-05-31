@@ -1,8 +1,8 @@
 .loginPage {
     background: var(--darkgray);
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
+    min-width: 100vw;
+    min-height: 100vh;
+    overflow-x: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
