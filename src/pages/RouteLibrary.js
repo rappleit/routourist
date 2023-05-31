@@ -3,7 +3,7 @@ import '../styles/libraryroute.css';
 import { BiSearch } from 'react-icons/bi'
 
 
-const LibraryRoute = () => { 
+const RouteLibrary = () => { 
     const [isPreset,setIsPreset] = useState(false)
     const [isCommunity,setIsCommunity] = useState(false)
 
@@ -123,4 +123,4 @@ const LibraryRoute = () => {
 }
 
 
-export default LibraryRoute;
+export default RouteLibrary;

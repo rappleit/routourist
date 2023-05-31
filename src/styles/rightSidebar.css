@@ -54,6 +54,12 @@
     background: var(--lightgreen)
 }
 
+.rightSidebarContainer {
+    overflow-y: auto;
+    height: 95vh;
+    padding-right: 8px;
+}
+
 .saveSection input {
     width: 100%;
     padding: 8px 6px;
@@ -128,4 +134,64 @@
 
 .viewTitle h3 {
     font-size: 18px;
+}
+
+.impactContent p {
+    font-size: 14px;
+    margin: 4px 0;
+}
+
+.impactContent .currentMode {
+    font-weight: 500;
+}
+
+.impactCard {
+    background-color: var(--eggshell);
+    color: var(--gray);
+    padding: 4px 8px;
+    box-sizing: content-box;
+    border-radius: 4px;
+    margin-bottom: 8px;
+}
+
+.impactCard h3 {
+    margin: 4px 0;
+    font-size: 20px;
+}
+
+.impactCard .impactCardHeader {
+    font-weight: 500;
+    margin: 3px 0;
+}
+
+.impactCard .impactCardDuration {
+    font-weight: 400;
+    margin: 3px 0;
+}
+
+.otherImpactCard {
+    background: var(--darkgray) ;
+    padding: 4px 8px;
+    box-sizing: content-box;
+    border-radius: 4px;
+}
+
+.otherImpactCard p {
+    font-size: 12px;
+}
+
+.otherModeHeader {
+    font-weight: 600;
+}
+
+.statComparison {
+    font-weight: 500;
+}
+
+.statComparison.positive {
+    color: var(--green);
+}
+
+.statComparison.negative {
+    color: #f35353;
 }

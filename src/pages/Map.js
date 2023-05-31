@@ -1,11 +1,11 @@
-import {useEffect, useRef, useState} from "react";
+import { useEffect, useRef, useState } from "react";
 import "../styles/map.css";
-import {Helmet} from "react-helmet";
+import { Helmet } from "react-helmet";
 import LeftSidebar from "../components/LeftSidebar";
-import {FaChevronRight, FaChevronLeft} from "react-icons/fa";
+import { FaChevronRight, FaChevronLeft } from "react-icons/fa";
 import RightSidebar from "../components/rightSidebar/RightSidebar";
-import {UserAuth} from "../context/AuthContext";
-import {Store} from "react-notifications-component";
+import { UserAuth } from "../context/AuthContext";
+import { Store } from "react-notifications-component";
 import * as Cesium from "cesium";
 import ResearchedData from "../data/ResearchedData.json";
 import BlueSGData from "../data/BlueSGData.json";
@@ -13,7 +13,7 @@ import OneMapData from "../data/OneMapData.json";
 
 const Map = () => {
     //user information
-    const {user} = UserAuth();
+    const { user } = UserAuth();
 
     const gApiKey = "AIzaSyBthJKxacm0pSrgo2yEEM_BUjmIryn8VOI";
     const google = (window.google = window.google ? window.google : {});
@@ -21,7 +21,7 @@ const Map = () => {
     // const language = ...
     // const mapCenter = document.querySelector(#regionMapCenter) (hidden, center=mapCenter)
     const gAutoCompleteOptions = {
-        componentRestrictions: {country: "SG"},
+        componentRestrictions: { country: "SG" },
         // "rating", "user_ratings_total" for data
         fields: ["name", "geometry"],
     };
@@ -76,18 +76,29 @@ const Map = () => {
     ];
     const [categoriesChecked, setCategoriesChecked] = useState([]);
     const [waypointValues, setWaypointValues] = useState([""]);
-    const travelStats = useRef({
+
+    const [travelStats, setTravelStats] = useState({
         chosen: "",
-        DRIVING: {carbonFootprintCount: 0, travelDuration: 0},
-        TRANSIT: {carbonFootprintCount: 0, travelDuration: 0},
-        WALKING: {carbonFootprintCount: 0, travelDuration: 0},
-        BICYCLING: {carbonFootprintCount: 0, travelDuration: 0},
+        DRIVING: { carbonFootprintCount: 0, travelDuration: 0 },
+        TRANSIT: { carbonFootprintCount: 0, travelDuration: 0 },
+        WALKING: { carbonFootprintCount: 0, travelDuration: 0 },
+        BICYCLING: { carbonFootprintCount: 0, travelDuration: 0 },
     });
+
+    /*const travelStats = useRef({
+        chosen: "",
+        DRIVING: { carbonFootprintCount: 0, travelDuration: 0 },
+        TRANSIT: { carbonFootprintCount: 0, travelDuration: 0 },
+        WALKING: { carbonFootprintCount: 0, travelDuration: 0 },
+        BICYCLING: { carbonFootprintCount: 0, travelDuration: 0 },
+    });*/
 
     //FOR SAVING ROUTES
     const [currentRoute, setCurrentRoute] = useState({});
     const [currentRouteOverview, setCurrentRouteOverview] = useState("");
     const [savedRouteName, setSavedRouteName] = useState("");
+
+
 
     if (typeof window != "undefined") {
         window.initMap = () => {
@@ -101,7 +112,7 @@ const Map = () => {
 
             const map = new google.maps.Map(document.querySelector("#map"), {
                 mapId: "741626712eb9af1",
-                center: {lat: 1.3521, lng: 103.8198},
+                center: { lat: 1.3521, lng: 103.8198 },
                 zoom: 12,
                 mapTypeControl: false,
                 mapTypeControlOptions: {
@@ -120,7 +131,7 @@ const Map = () => {
                 },
             });
             google.maps.event.addListener(map, "click", function () {
-                this.setOptions({scrollwheel: true});
+                this.setOptions({ scrollwheel: true });
             });
 
             const geocoder = new google.maps.Geocoder();
@@ -145,7 +156,7 @@ const Map = () => {
                 navigator.geolocation.watchPosition(
                     (position) => {
                         // speed, heading, accuracy
-                        const {latitude, longitude} = position["coords"];
+                        const { latitude, longitude } = position["coords"];
                         originLat_Lng.current = {
                             lat: latitude,
                             lng: longitude,
@@ -198,6 +209,8 @@ const Map = () => {
             setGToAutoComplete(toAutocomplete);
         };
     }
+
+
 
     const toggleMapClick = () => {
         /**
@@ -291,16 +304,16 @@ const Map = () => {
             .catch((status) =>
                 status.code === 429
                     ? alert(
-                          "Sorry, 3D viewer quota exceeded, please try again in a few hours!"
-                      )
+                        "Sorry, 3D viewer quota exceeded, please try again in a few hours!"
+                    )
                     : console.log(
-                          `${createCesium.name} failed due to ${status}`
-                      )
+                        `${createCesium.name} failed due to ${status}`
+                    )
             );
 
         // Text Search API to get user's origin location, without needing to click on autocomplete option & automatically show on Cesium
         if (!originLat_Lng.current) {
-            originLat_Lng.current = {lat: 1.3521, lng: 103.8198};
+            originLat_Lng.current = { lat: 1.3521, lng: 103.8198 };
         }
 
         gGeocoder
@@ -590,13 +603,14 @@ const Map = () => {
         if (waypointsNum > 1) {
             const newToAutoComplete = new google.maps.places.Autocomplete(
                 document.querySelectorAll("input.toPlaceName")[
-                    waypointsNum - 1
+                waypointsNum - 1
                 ],
                 gAutoCompleteOptions
             );
             autocompleteAddListener(newToAutoComplete, waypointsNum);
         }
     }, [waypointsNum]);
+
 
     const resetWaypoints = (e) => {
         /**
@@ -723,8 +737,7 @@ const Map = () => {
                                     );
                                 } else {
                                     console.log(
-                                        `${
-                                            retrieveRoute.name
+                                        `${retrieveRoute.name
                                         } with optimizeRequest ${JSON.stringify(
                                             optimizeRequest
                                         )} failed due to ${status}`
@@ -757,8 +770,7 @@ const Map = () => {
                                             result["routes"][0];
                                     } else {
                                         console.log(
-                                            `${
-                                                retrieveRoute.name
+                                            `${retrieveRoute.name
                                             } with request ${JSON.stringify(
                                                 request
                                             )} failed due to ${status}`
@@ -799,13 +811,25 @@ const Map = () => {
                                 carbonFootprintCount,
                                 duration
                             );
-                            travelStats.current["chosen"] = transportMode;
+
+                            setTravelStats((prevStats) => {
+                                return {
+                                    ...prevStats,
+                                    chosen: transportMode,
+                                    [transportMode]: {
+                                        carbonFootprintCount:
+                                            carbonFootprintCount,
+                                        travelDuration: duration,
+                                    },
+                                };
+                            });
+                            /*travelStats.current["chosen"] = transportMode;
                             travelStats.current[transportMode][
                                 "carbonFootprintCount"
                             ] = carbonFootprintCount;
                             travelStats.current[transportMode][
                                 "travelDuration"
-                            ] = duration;
+                            ] = duration;*/
 
                             // saveRoute(user["userID"], user["request"], routeString);
                         }, 750);
@@ -863,8 +887,7 @@ const Map = () => {
                                     );
                                 } else {
                                     console.log(
-                                        `${
-                                            retrieveRoute.name
+                                        `${retrieveRoute.name
                                         } with optimizeRequest ${JSON.stringify(
                                             optimizeRequest
                                         )} failed due to ${status}`
@@ -886,11 +909,11 @@ const Map = () => {
                                 latLng: {
                                     latitude:
                                         waypointsLat_Lng[
-                                            waypointsLat_Lng.length - 1
+                                        waypointsLat_Lng.length - 1
                                         ]["lat"],
                                     longitude:
                                         waypointsLat_Lng[
-                                            waypointsLat_Lng.length - 1
+                                        waypointsLat_Lng.length - 1
                                         ]["lng"],
                                 },
                             },
@@ -979,13 +1002,24 @@ const Map = () => {
                                     carbonFootprintCount,
                                     duration
                                 );
-                                travelStats.current["chosen"] = transportMode;
+                                setTravelStats((prevStats) => {
+                                    return {
+                                        ...prevStats,
+                                        chosen: transportMode,
+                                        [transportMode]: {
+                                            carbonFootprintCount:
+                                                carbonFootprintCount,
+                                            travelDuration: duration,
+                                        },
+                                    };
+                                });
+                                /*(travelStats.current["chosen"] = transportMode;
                                 travelStats.current[transportMode][
                                     "carbonFootprintCount"
                                 ] = carbonFootprintCount;
                                 travelStats.current[transportMode][
                                     "travelDuration"
-                                ] = duration;
+                                ] = duration;*/
                             });
                         // .catch((status) =>
                         //     console.log(
@@ -1018,7 +1052,9 @@ const Map = () => {
             .splice(0, waypointsName.length - 1)
             .map((waypointName) => (routePath += waypointName + " ➡️ "));
         routePath += waypointsName[waypointsName.length - 1];
+
         return routePath;
+
     };
 
     const drawRoute = (routePath, result, api) => {
@@ -1087,12 +1123,9 @@ const Map = () => {
                     );
 
                     routeDirections +=
-                        `${String.fromCharCode(65 + i)} (${
-                            routePathSplit[i]
-                        }) ➡️ ${String.fromCharCode(66 + i)} (${
-                            routePathSplit[i + 1]
-                        })<br>${
-                            routeLegsArray[i][0]["distance"]["text"]
+                        `${String.fromCharCode(65 + i)} (${routePathSplit[i]
+                        }) ➡️ ${String.fromCharCode(66 + i)} (${routePathSplit[i + 1]
+                        })<br>${routeLegsArray[i][0]["distance"]["text"]
                         }. About ${secondsToHms(
                             routeLegsArray[i][0]["duration"]["value"]
                         )} <hr>` +
@@ -1104,7 +1137,7 @@ const Map = () => {
                                             {
                                                 position:
                                                     step["transit"][
-                                                        "departure_stop"
+                                                    "departure_stop"
                                                     ]["location"],
                                                 content:
                                                     new google.maps.marker.PinView(
@@ -1127,7 +1160,7 @@ const Map = () => {
                                             {
                                                 position:
                                                     step["transit"][
-                                                        "arrival_stop"
+                                                    "arrival_stop"
                                                     ]["location"],
                                                 content:
                                                     new google.maps.marker.PinView(
@@ -1145,35 +1178,29 @@ const Map = () => {
                                             }
                                         )
                                     );
-                                    return `${index + 1}. Take ${
-                                        step["transit"]["line"]["name"].length <
-                                            4 ||
+                                    return `${index + 1}. Take ${step["transit"]["line"]["name"].length <
+                                        4 ||
                                         step["transit"]["line"][
                                             "name"
                                         ].includes("Sentosa") ||
                                         step["transit"]["line"][
                                             "name"
                                         ].includes("Shuttle")
-                                            ? "🚌 BUS"
-                                            : "🚄 MRT"
-                                    } <b>${
-                                        step["transit"]["line"]["name"]
-                                    }</b>  ${
-                                        step["transit"]["departure_stop"][
-                                            "name"
+                                        ? "🚌 BUS"
+                                        : "🚄 MRT"
+                                        } <b>${step["transit"]["line"]["name"]
+                                        }</b>  ${step["transit"]["departure_stop"][
+                                        "name"
                                         ]
-                                    } -> ${
-                                        step["transit"]["arrival_stop"]["name"]
-                                    } for ${step["transit"]["num_stops"]} ${
-                                        step["transit"]["num_stops"] > 1
+                                        } -> ${step["transit"]["arrival_stop"]["name"]
+                                        } for ${step["transit"]["num_stops"]} ${step["transit"]["num_stops"] > 1
                                             ? "stops"
                                             : "stop"
-                                    }
+                                        }
                                     (<i>${step["distance"]["text"]}</i>)`;
                                 }
-                                return `${index + 1}. 🚶${
-                                    step["instructions"]
-                                } (<i>${step["distance"]["text"]}</i>)`;
+                                return `${index + 1}. 🚶${step["instructions"]
+                                    } (<i>${step["distance"]["text"]}</i>)`;
                             })
                             .join("<br>") +
                         "<br><br>";
@@ -1183,7 +1210,7 @@ const Map = () => {
                     new google.maps.marker.AdvancedMarkerView({
                         position:
                             routeLegsArray[routeLegsArray.length - 1][0][
-                                "end_location"
+                            "end_location"
                             ],
                         content: new google.maps.marker.PinView({
                             scale: 1,
@@ -1264,10 +1291,8 @@ const Map = () => {
                         })
                     );
                     routeDirections +=
-                        `${String.fromCharCode(65 + i)} (${
-                            routePathSplit[i]
-                        }) ➡️ ${String.fromCharCode(66 + i)} (${
-                            routePathSplit[i + 1]
+                        `${String.fromCharCode(65 + i)} (${routePathSplit[i]
+                        }) ➡️ ${String.fromCharCode(66 + i)} (${routePathSplit[i + 1]
                         })<br>${metersToKm(
                             result[i]["distanceMeters"]
                         )}. About ${secondsToHms(
@@ -1276,13 +1301,12 @@ const Map = () => {
                         result[i]["steps"]
                             .map((step, index) => {
                                 if (step["navigationInstruction"]) {
-                                    return `${index}. ${
-                                        step["navigationInstruction"][
-                                            "instructions"
-                                        ]
-                                    } (<i>${metersToKm(
-                                        step["distanceMeters"]
-                                    )}</i>)<br>`;
+                                    return `${index}. ${step["navigationInstruction"][
+                                        "instructions"
+                                    ]
+                                        } (<i>${metersToKm(
+                                            step["distanceMeters"]
+                                        )}</i>)<br>`;
                                 }
                             })
                             .join("");
@@ -1335,8 +1359,8 @@ const Map = () => {
                                     position: place["address"],
                                     url: `https://www.google.com/search?q=${encodeURIComponent(
                                         place["name"] +
-                                            " " +
-                                            place["formatted_address"]
+                                        " " +
+                                        place["formatted_address"]
                                     )}`,
                                     content: buildContent({
                                         type: place["type"],
@@ -1426,8 +1450,7 @@ const Map = () => {
 
         content.innerHTML = `
         <div class="icon">
-            <i aria-hidden="true" class="fa fa-icon fa-${
-                property["type"]
+            <i aria-hidden="true" class="fa fa-icon fa-${property["type"]
             }" title="${property["type"]}"></i>
             <span class="fa-sr-only">${property["type"]}</span>
         </div>
@@ -1449,9 +1472,8 @@ const Map = () => {
             <div>
                 <i aria-hidden="true" class="fa fa-solid fa-dollar price" title="price"></i>
                 <span class="fa-sr-only">price</span>
-                <span${
-                    property["price"] * "$" || property["price"] || "$$$$$$$$"
-                }  span>
+                <span${property["price"] * "$" || property["price"] || "$$$$$$$$"
+            }  span>
             </div>
             </div>
         </div>
@@ -1521,8 +1543,8 @@ const Map = () => {
                                     mode === "Subway" || mode === "Tram"
                                         ? "MRT"
                                         : mode === "Bus"
-                                        ? "Bus"
-                                        : "Walk";
+                                            ? "Bus"
+                                            : "Walk";
                                 carbonFootprintCount +=
                                     carbonFootprintBase[stepMode] *
                                     (step["distance"]["value"] / 1000);
@@ -1541,8 +1563,8 @@ const Map = () => {
                     transportMode === "DRIVING"
                         ? "Conventional Car"
                         : transportMode === "BICYCLING"
-                        ? "Conventional Bicycle"
-                        : "Walk";
+                            ? "Conventional Bicycle"
+                            : "Walk";
                 carbonFootprintCount +=
                     carbonFootprintBase[stepMode] * (routeDistance / 1000);
                 break;
@@ -1668,12 +1690,23 @@ const Map = () => {
                                     otherDuration,
                                     outputStringArray[i + 1]
                                 );
-                                travelStats.current[otherTravelModes[i]][
+                                setTravelStats((prevStats) => {
+                                    return {
+                                        ...prevStats,
+                                        [otherTravelModes[i]]: {
+                                            carbonFootprintCount:
+                                                otherCarbonFootprintCount,
+                                            travelDuration: otherDuration,
+                                        },
+                                    };
+                                });
+                                /*travelStats.current[otherTravelModes[i]][
                                     "carbonFootprintCount"
                                 ] = otherCarbonFootprintCount;
                                 travelStats.current[otherTravelModes[i]][
                                     "travelDuration"
-                                ] = otherDuration;
+                                ] = otherDuration;*/
+
                             }, 750);
                         }, 750);
                 }
@@ -1745,11 +1778,11 @@ const Map = () => {
                                 latLng: {
                                     latitude:
                                         waypointsLat_Lng[
-                                            waypointsLat_Lng.length - 1
+                                        waypointsLat_Lng.length - 1
                                         ]["lat"],
                                     longitude:
                                         waypointsLat_Lng[
-                                            waypointsLat_Lng.length - 1
+                                        waypointsLat_Lng.length - 1
                                         ]["lng"],
                                 },
                             },
@@ -1827,12 +1860,22 @@ const Map = () => {
                                     otherDuration,
                                     outputStringArray[i + 1]
                                 );
-                                travelStats.current[otherTravelModes[i]][
+                                /*travelStats.current[otherTravelModes[i]][
                                     "carbonFootprintCount"
                                 ] = otherCarbonFootprintCount;
                                 travelStats.current[otherTravelModes[i]][
                                     "travelDuration"
-                                ] = otherDuration;
+                                ] = otherDuration;*/
+                                setTravelStats((prevStats) => {
+                                    return {
+                                        ...prevStats,
+                                        [otherTravelModes[i]]: {
+                                            carbonFootprintCount:
+                                                otherCarbonFootprintCount,
+                                            travelDuration: otherDuration,
+                                        },
+                                    };
+                                });
                             })
                             .catch((status) =>
                                 console.log(
@@ -1985,16 +2028,15 @@ const Map = () => {
          * @returns {string} Formatted representation of the location name
          */
         const locationNameSplit = locationName.split(", ");
-        return `${
-            locationNameSplit.length > 2
-                ? locationNameSplit[1].length > 4
-                    ? // if word more than 4 letters, takes word
-                      locationNameSplit[1]
-                    : // Else takes Postal Code
-                      // Eg. Suntec City became 3 Temasek Blvd, #1, #327-328, Singapore 038983
-                      locationNameSplit[locationNameSplit.length - 1]
-                : locationNameSplit[0]
-        }`;
+        return `${locationNameSplit.length > 2
+            ? locationNameSplit[1].length > 4
+                ? // if word more than 4 letters, takes word
+                locationNameSplit[1]
+                : // Else takes Postal Code
+                // Eg. Suntec City became 3 Temasek Blvd, #1, #327-328, Singapore 038983
+                locationNameSplit[locationNameSplit.length - 1]
+            : locationNameSplit[0]
+            }`;
     };
 
     const getLat_LngArray = (result, api) => {
@@ -2037,7 +2079,7 @@ const Map = () => {
          * @returns {Object} - An object containing the latitude and longitude
          */
         const placeLat_Lng = JSON.parse(place)["geometry"]["location"];
-        return {lat: placeLat_Lng["lat"], lng: placeLat_Lng["lng"]};
+        return { lat: placeLat_Lng["lat"], lng: placeLat_Lng["lng"] };
     };
 
     const todayOrTomorrow = (givenDate) => {
@@ -2087,10 +2129,10 @@ const Map = () => {
             Math.asin(
                 Math.sqrt(
                     Math.sin(difflat / 2) * Math.sin(difflat / 2) +
-                        Math.cos(rlat1) *
-                            Math.cos(rlat2) *
-                            Math.sin(difflon / 2) *
-                            Math.sin(difflon / 2)
+                    Math.cos(rlat1) *
+                    Math.cos(rlat2) *
+                    Math.sin(difflon / 2) *
+                    Math.sin(difflon / 2)
                 )
             );
         return distance.toFixed(2);
@@ -2122,19 +2164,12 @@ const Map = () => {
         return hDisplay + mDisplay;
     };
     // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
     return (
         <>
             <Helmet>
                 <script
-                    src={
-                        "https://maps.googleapis.com/maps/api/js?key=" +
-                        gApiKey +
-                        "&libraries=places,geometry,marker,visualization&v=beta&callback=initMap"
-                    }
-                    async
-                    defer
-                ></script>
+                    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBthJKxacm0pSrgo2yEEM_BUjmIryn8VOI&libraries=places,geometry,marker,visualization&v=beta&callback=initMap"
+                    async defer></script>
 
                 <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"></script>
                 <script src="https://ajax.googleapis.com/ajax/libs/cesiumjs/1.105/Build/Cesium/Cesium.js"></script>
@@ -2216,6 +2251,7 @@ const Map = () => {
                             setShowRightSideBar,
                             currentRoute,
                             user,
+                            travelStats,
                         }}
                     />
                 ) : (

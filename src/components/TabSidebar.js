@@ -42,10 +42,10 @@ const TabSidebar = () => {
         <div className="tabSidebar" style={(currentPath === "/" || currentPath === "/login" || currentPath === "/signup") ? { display: "none" } : { display: "block" }}>
             <ul>
                 <li>
-                    <Link to="/"><button className={(currentPath === "/") ? "selected" : ""}><HiHome /></button></Link>
+                    <Link to="/" reloadDocument><button className={(currentPath === "/") ? "selected" : ""}><HiHome /></button></Link>
                 </li>
                 <li>
-                    <Link to="/map">
+                    <Link to="/map" reloadDocument>
                         <button className={(currentPath === "/map") ? "selected" : ""} >
                             <FaMap className="tabIcon" />
                             <p>Map</p>
@@ -53,10 +53,10 @@ const TabSidebar = () => {
                     </Link>
                 </li>
                 <li>
-                    <Link to="/libraryroute">
-                        <button className={(currentPath === "/libraryroute") ? "selected" : ""} >
+                    <Link to="/routelibrary" reloadDocument>
+                        <button className={(currentPath === "/routelibrary") ? "selected" : ""} >
                             <SiBookstack className="tabIcon" />
-                            <p>Library Route</p>
+                            <p>Route Library</p>
                         </button>
                     </Link>
                 </li>
