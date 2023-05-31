@@ -16,7 +16,6 @@ const DirectionsPanel = ({
                 <p className="directionsTravelMode">{currentRoute["travelMode"]}:</p>
                 <p className="routeOverview">{currentRouteOverview}</p>
             </div>
-
             <div id="directionsPanel"></div>
         </div>
     );

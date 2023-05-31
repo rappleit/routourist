@@ -333,43 +333,7 @@
     text-align: left;
 }
 
-#directionsPanel span{
-    color: var(--eggshell);
 
-}
-#directionsPanel td {
-    color: var(--eggshell);
-    font-size: 12px;
-}
-
-#directionsPanel .adp-text {
-    color: var(--gray);
-    font-weight: bold;
-}
-
-#directionsPanel .adp-summary {
-    font-style: italic;
-    font-size: 12px;
-}
-
-#directionsPanel .adp-stepicon {
-    background-color: var(--eggshell);
-    border-radius: 4px;
-}
-
-#directionsPanel .adp-legal {
-    color: var(--eggshell);
-    font-size: 10px;
-}
-
-#directionsPanel .adp-agencies {
-    color: var(--eggshell);
-    font-size: 12px;
-}
-
-.warnbox-content {
-    font-size: 12px;
-}
 
 
 

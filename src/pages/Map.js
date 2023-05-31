@@ -270,7 +270,7 @@ const Map = () => {
 
         // Add 3D Tiles tileset.
         Cesium.Cesium3DTileset.fromUrl(
-            `https://tile.googleapis.com/v1/3dtiles/root.json?key=${gApiKey}`,
+            `https://tile.googleapis.com/v1/3dtiles/root.json?key=AIzaSyBthJKxacm0pSrgo2yEEM_BUjmIryn8VOI`,
             {
                 // skipLevelOfDetail: true,
                 // baseScreenSpaceError: 1024,
@@ -645,7 +645,7 @@ const Map = () => {
         clearMap();
         setCurrentRoute(REQUEST);
 
-        const directionsPanel = document.querySelector(".directionsOverview p");
+        const directionsPanel = document.querySelector("#directionsPanel");
         const directionsRenderer = new google.maps.DirectionsRenderer();
 
         directionsRenderer.setMap(gmap);
@@ -730,12 +730,14 @@ const Map = () => {
 
                         setTimeout(() => {
                             waypoints.shift(from);
-                            routeString += drawRoute(
+                            
+                           directionsPanel.innerHTML = `${drawRoute(
                                 createRoutePath(from, waypoints),
                                 routeLegsAndPolylineArray,
                                 "directions"
-                            );
-                            directionsPanel.innerHTML = `${routeString}`;
+                            )}`;
+
+                           setCurrentRouteOverview(createRoutePath(from, waypoints));
 
                             nearbyPlaceSearch(
                                 getLat_LngArray(
@@ -921,12 +923,14 @@ const Map = () => {
                                     .forEach((tempLeg, i) => {
                                         routeLegsArray[i] = tempLeg;
                                     });
-                                routeString += drawRoute(
+                                
+                                directionsPanel.innerHTML = `${drawRoute(
                                     createRoutePath(from, waypoints),
                                     routeLegsArray,
                                     "routes"
-                                );
-                                directionsPanel.innerHTML = `${routeString}`;
+                                )}`; 
+                                setCurrentRouteOverview(createRoutePath(from, waypoints));
+
 
                                 nearbyPlaceSearch(
                                     getLat_LngArray(routeLegsArray, "routes"),
@@ -991,7 +995,9 @@ const Map = () => {
             .splice(0, waypointsName.length - 1)
             .map((waypointName) => (routePath += waypointName + " ➡️ "));
         routePath += waypointsName[waypointsName.length - 1];
+        
         return routePath;
+        
     };
 
     const drawRoute = (routePath, result, api) => {
@@ -1831,14 +1837,12 @@ const Map = () => {
                         break;
                 }
             }
-            const statsTest = document.querySelector(".directionsOverview p");
-            statsPanel.innerHTML = "Generating statistics!";
+            /*statsPanel.innerHTML = "Generating statistics!";*/
             setTimeout(() => {
-                statsPanel.innerHTML = outputStringArray.join("");
+                /*statsPanel.innerHTML = outputStringArray.join("");*/
                 if (!optimizeRoute) {
-                    statsPanel.innerHTML += `<br>Optimize your route now for greater efficiency!<br> Or perhaps you'd like to expand your search radius and look for more sustainable options?`;
+                    /*statsPanel.innerHTML += `<br>Optimize your route now for greater efficiency!<br> Or perhaps you'd like to expand your search radius and look for more sustainable options?`;*/
                 }
-                statsTest.innerHTML += JSON.stringify(travelStats);
             }, 2200);
         }
     };
@@ -2081,9 +2085,7 @@ const Map = () => {
             <Helmet>
                 <script
                     src={
-                        "https://maps.googleapis.com/maps/api/js?key=" +
-                        gApiKey +
-                        "&libraries=places,geometry,marker,visualization&v=beta&callback=initMap"
+                        "https://maps.googleapis.com/maps/api/js?key=AIzaSyBthJKxacm0pSrgo2yEEM_BUjmIryn8VOI&libraries=places,geometry,marker,visualization&v=beta&callback=initMap"
                     }
                     async
                     defer
