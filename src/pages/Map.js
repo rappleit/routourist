@@ -10,10 +10,15 @@ import * as Cesium from "cesium";
 import ResearchedData from "../data/ResearchedData.json";
 import BlueSGData from "../data/BlueSGData.json";
 import OneMapData from "../data/OneMapData.json";
+import { getDatabase } from "firebase/database";
+
 
 const Map = () => {
     //user information
     const { user } = UserAuth();
+
+    //firebase db
+    const database = getDatabase();
 
     const gApiKey = "AIzaSyBthJKxacm0pSrgo2yEEM_BUjmIryn8VOI";
     const google = (window.google = window.google ? window.google : {});
@@ -2251,6 +2256,8 @@ const Map = () => {
                             currentRoute,
                             user,
                             travelStats,
+                            database,
+                            currentRouteOverview
                         }}
                     />
                 ) : (

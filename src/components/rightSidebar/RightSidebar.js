@@ -8,6 +8,7 @@ import LawsInfo from './LawsInfo';
 import CultureInfo from './CultureInfo';
 import AttractionsView from './AttractionsView';
 import EnvironmentalImpact from './EnvironmentalImpact';
+import SaveRoute from './SaveRoute';
 
 
 
@@ -16,7 +17,9 @@ const RightSidebar = ({
     setShowRightSideBar,
     currentRoute,
     user,
-    travelStats
+    travelStats,
+    database,
+    currentRouteOverview
 }) => {
 
     const [view, setView] = useState("main")
@@ -57,19 +60,7 @@ const RightSidebar = ({
                         </div>
                         <div className="saveSection section">
                             <h3><IoSaveSharp /> Save and Share</h3>
-                            {
-                                (!user) ?
-                                    <div>
-                                        <p>Please <Link to="/login">login</Link> to save your route</p>
-                                    </div> :
-                                    <div>
-
-                                        <input
-                                            type="text"
-                                            placeholder='Enter a name for your route'></input>
-                                        <button className="sectionButton">Save Route</button>
-                                    </div>
-                            }
+                            <SaveRoute {...{user, currentRoute, database, currentRouteOverview, travelStats}} />
 
                         </div>
                     </div>

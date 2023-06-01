@@ -10,7 +10,8 @@ const firebaseConfig = {
   projectId: "routourist-4dbb0",
   storageBucket: "routourist-4dbb0.appspot.com",
   messagingSenderId: "814465646719",
-  appId: "1:814465646719:web:e99bc097276bcd07dcbf4a"
+  appId: "1:814465646719:web:e99bc097276bcd07dcbf4a",
+  databaseURL: "https://routourist-4dbb0-default-rtdb.asia-southeast1.firebasedatabase.app/"
 };
 
 // Initialize Firebase
