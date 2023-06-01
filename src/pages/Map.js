@@ -28,7 +28,7 @@ const Map = () => {
 
     //sidebars
     const [showLeftSidebar, setShowLeftSideBar] = useState(true);
-    const [showRightSidebar, setShowRightSideBar] = useState(false);
+    const [showRightSidebar, setShowRightSideBar] = useState(true);
 
     const fromPlaceNameRef = useRef("");
     const toPlaceNameRef = useRef("");
@@ -672,7 +672,6 @@ const Map = () => {
         };
 
         retrieveRoute(reqRoute);
-        setShowRightSideBar(true);
     };
 
     const retrieveRoute = (route) => {
