@@ -1,0 +1,113 @@
+.savedRoutesPage {
+    margin-left: 60px;
+    z-index: -1;
+    text-align: left;
+    background:var(--lightgray);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.savedRoutesHeader {
+    background: var(--gray);
+    color: var(--eggshell);
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.savedRoutesHeaderLeft {
+    display: flex;
+    align-items: center;
+}
+
+.savedRoutesHeader h1 {
+    margin: 0;
+    margin-left: 50px;
+    font-family: var(--ff-primary);
+    font-weight: var(--fw-black);
+}
+
+.savedRoutesContainer {
+    margin: 48px 32px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 32px;
+}
+
+.savedRoutesCard {
+    background: var(--eggshell);
+    width: 250px;
+    height: 230px;
+    border-radius: 8px;
+    box-sizing: border-box;
+    padding: 14px;
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.savedRoutesCard h3 {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin: 6px 0;
+}
+
+.savedRoutesCard p {
+    font-size: 14px;
+    margin: 4px 0;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.savedRouteCardInfoHeader {
+    font-weight: 600;
+    border-radius: 8px;
+}
+
+.savedRoutesCard img {
+    width: 222px;
+    height: 120px;
+}
+
+.backToSavedRoutesButton {
+    margin: 0 24px;
+    background: none;
+    border: solid 2px var(--eggshell);
+    padding: 8px 24px; 
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: var(--eggshell);
+
+}
+
+.backToSavedRoutesButton:hover {
+    background: var(--eggshell);
+    color: var(--gray);
+}
+
+.backButtonIcon {
+    margin-right: 4px;
+}
+
+.viewButton {
+    background: var(--green);
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    margin: 12px 32px;
+}
+
+.viewButton:hover {
+    background: var(--lightgreen);
+}

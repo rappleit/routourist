@@ -1,0 +1,84 @@
+.savedRouteDetailView {
+    margin: 12px 48px;
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 42px;
+    justify-content: space-between;
+}
+
+.savedRouteDetailView .section {
+    width: 45%;
+    
+}
+
+.savedRouteDetailView .section h2 {
+    margin: 12px 0;
+}
+
+
+.infoDiv {
+    margin-bottom: 12px;
+    border-radius: 8px;
+}
+
+
+.infoDiv p {
+    margin: 6px 0;
+}
+
+.infoDivHighlight {
+    font-weight: 600;
+}
+
+
+
+.impactDiv {
+    background: var(--gray);
+    color: var(--eggshell);
+    padding: 8px 24px;
+    border-radius: 8px;
+}
+
+.impactDiv h4 {
+    margin: 4px 0;
+}
+
+.emissionsNum {
+    font-size: 32px;
+    margin: 0;
+    font-weight: 700;
+}
+
+.impactDiv p {
+    margin: 4px 0;
+}
+
+.routeItem {
+    background: var(--gray);
+    color: var(--eggshell);
+    padding: 8px 16px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin: 18px 0;
+}
+
+
+.routeItem h4 {
+    margin: 8px 0;
+}
+
+.routeItem p {
+    margin: 4px 0;
+}
+
+.routeItemIcon {
+    font-size: 18px;
+}
+
+.routeOrigin {
+    background: var(--eggshell);
+    color: var(--gray);
+}
