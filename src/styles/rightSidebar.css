@@ -54,6 +54,12 @@
     background: var(--lightgreen)
 }
 
+.rightSidebarContainer {
+    overflow-y: auto;
+    height: 95vh;
+    padding-right: 8px;
+}
+
 .saveSection input {
     width: 100%;
     padding: 8px 6px;
@@ -129,3 +135,4 @@
 .viewTitle h3 {
     font-size: 18px;
 }
+

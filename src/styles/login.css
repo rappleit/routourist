@@ -23,6 +23,7 @@
 
 .loginContainer h2 {
     margin-bottom: 2px;
+    color: var(--eggshell);
 }
 
 .loginContainer input {

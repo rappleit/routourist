@@ -23,6 +23,7 @@
 
 .signupContainer h2 {
     margin-bottom: 2px;
+    color: var(--eggshell);
 }
 
 .signupContainer input {
