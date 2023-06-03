@@ -86,9 +86,9 @@ const EnvironmentalImpact = ({
                         <div className="otherImpactCard">
 
                             {
-                                getOtherTransport(currentRoute["travelMode"]).map(mode => (
-                                    (getImpact(mode).carbonEmissions === 0) ? (<p>Generating...</p>) :
-                                        (<p><span>
+                                getOtherTransport(currentRoute["travelMode"]).map((mode, i) => (
+                                    (getImpact(mode).carbonEmissions === 0) ? (<p key={i}>Generating...</p>) :
+                                        (<p key={i}><span>
                                             {
                                                 getIcon(mode)
                                             }

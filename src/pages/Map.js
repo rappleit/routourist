@@ -1866,95 +1866,7 @@ const Map = () => {
         //createCrowdMapControls();
     };
 
-    const createCrowdMapControls = () => {
-        
-
-        if (!crowdMapData["active"]) {
-            const daysOfWeek = [
-                "Sunday",
-                "Monday",
-                "Tuesday",
-                "Wednesday",
-                "Thursday",
-                "Friday",
-                "Saturday",
-            ];
-            const hoursOfDay = [
-                "0000",
-                "0100",
-                "0200",
-                "0300",
-                "0400",
-                "0500",
-                "0600",
-                "0700",
-                "0800",
-                "0900",
-                "1000",
-                "1100",
-                "1200",
-                "1300",
-                "1400",
-                "1500",
-                "1600",
-                "1700",
-                "1800",
-                "1900",
-                "2000",
-                "2100",
-                "2200",
-                "2300",
-            ];
-            const defaultOption = document.createElement("option");
-            defaultOption.textContent = "Please select an option";
-            defaultOption.disabled = true;
-            defaultOption.selected = true;
-
-            const dayDropdown = document.querySelector("#dayDropDown")
-            dayDropdown.appendChild(defaultOption);
-            daysOfWeek.forEach((day) => {
-                const option = document.createElement("option");
-                option.textContent = day;
-                option.value = day;
-                dayDropdown.appendChild(option);
-            });
-            dayDropdown.addEventListener("change", () => {
-                const existingCrowdHourDropdown =
-                    document.querySelector("#crowdHourDropdown");
-                if (!existingCrowdHourDropdown) {
-                    const hourDropdown = document.createElement("select");
-                    hourDropdown.id = "crowdHourDropdown";
-                    hourDropdown.appendChild(defaultOption);
-                    hoursOfDay.forEach((hour) => {
-                        const option = document.createElement("option");
-                        option.textContent = hour;
-                        option.value = hour;
-                        hourDropdown.appendChild(option);
-                        document
-                            .querySelector("#crowdMap")
-                            .appendChild(hourDropdown);
-                    });
-                    hourDropdown.addEventListener("change", () => {
-                        setCrowdMapData((prevData) => {
-                            return {
-                                ...prevData,
-                                day: dayDropdown.value,
-                                time: hourDropdown.value,
-                            };
-                        });
-                        createHeatmap();
-                    });
-                }
-            });
-
-            setCrowdMapData((prevData) => {
-                return {
-                    ...prevData,
-                    active: !prevData["active"],
-                };
-            });
-        }
-    };
+    
 
     const createHeatmap = () => {
         // Displaying crowd data at these locations
@@ -1993,9 +1905,6 @@ const Map = () => {
         });
     };
 
-    useEffect(() => {
-        clearHeatMap();
-    }, [crowdMapData["time"]]);
 
     const createAttractionMarker = (details) => {
         /**
@@ -2646,13 +2555,12 @@ const Map = () => {
         setCrowdMapData((prevData) => {
             return {
                 ...prevData,
+                active: "false",
                 heatMaps: [],
                 heatMapData: [],
             };
         });
-        document
-            .querySelectorAll("#crowdMap select")
-            .forEach((dropdown) => dropdown.remove());
+        
     }
 
     function clearWeatherForecasts() {
@@ -2928,7 +2836,6 @@ const Map = () => {
                             travelStats,
                             database,
                             currentRouteOverview,
-                            
                             allCategories,
                             setCategoriesChecked,
                             categoriesChecked,
@@ -2936,8 +2843,10 @@ const Map = () => {
                             weatherForecasts,
                             setWeatherForecasts,
                             handleWeatherForecastClick,
-                            createCrowdMapControls,
                             crowdMapData,
+                            setCrowdMapData,
+                            createHeatmap,
+                            clearHeatMap
                         }}
                     />
                 ) : (

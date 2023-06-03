@@ -20,7 +20,7 @@ const WeatherInfo = ({
             </div>
             <div id="weatherForecasts">
                 <div className="weatherButtons">
-                    {weatherForecasts["options"].map((option) => (
+                    {weatherForecasts["options"].map((option, i) => (
                         <input
                             type="button"
                             id={`${option}WeatherForecasts`}
@@ -29,6 +29,7 @@ const WeatherInfo = ({
                             }
                             value={option}
                             onClick={() => handleWeatherForecastClick(option)}
+                            key={i}
                         />
                     ))}
                 </div>

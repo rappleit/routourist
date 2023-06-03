@@ -35,11 +35,13 @@ const RightSidebar = ({
     weatherForecasts,
     setWeatherForecasts,
     handleWeatherForecastClick,
-    createCrowdMapControls,
     crowdMapData,
+    setCrowdMapData,
     allCategories,
     setCategoriesChecked,
     categoriesChecked,
+    createHeatmap,
+    clearHeatMap
 }) => {
     const [view, setView] = useState("main");
     const [isTransitLayerActive, setIsTransitLayerActive] = useState(false);
@@ -170,11 +172,13 @@ const RightSidebar = ({
                         <AttractionsView
                             {...{
                                 setView,
-                                createCrowdMapControls,
                                 currentRoute,
                                 allCategories,
                                 setCategoriesChecked,
                                 categoriesChecked,
+                                setCrowdMapData,
+                                createHeatmap,
+                                clearHeatMap
                             }}
                         />
                     </div>
