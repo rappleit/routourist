@@ -62,7 +62,7 @@ const Map = () => {
     });
     const [weatherForecasts, setWeatherForecasts] = useState({
         active: "",
-        notification: "",
+        notification: "Please select a time frame to view the weather forecase",
         overlay: [],
         options: ["2-hour", "24-hour"],
     });
@@ -609,9 +609,9 @@ const Map = () => {
                     setWeatherForecasts((prevForecasts) => {
                         return {
                             ...prevForecasts,
-                            notification: `Weather forecast shown between (${get24Hr(
+                            notification: `Weather forecast shown between ${get24Hr(
                                 valid_period["start"]
-                            )} - ${get24Hr(valid_period["end"])})`,
+                            )} - ${get24Hr(valid_period["end"])}`,
                             overlay: weatherForecastOverlays,
                         };
                     });
@@ -619,7 +619,6 @@ const Map = () => {
                     option === "24-hour" &&
                     weatherForecasts["active"] !== option
                 ) {
-
                     setWeatherForecasts((prevForecasts) => {
                         return {
                             ...prevForecasts,
@@ -642,7 +641,7 @@ const Map = () => {
                     defaultDropdownOption.selected = true;
                     dropdown.appendChild(defaultDropdownOption);
 
-                    data["items"][0]["periods"].forEach((period, i) => {
+                    data["items"][0]["periods"].forEach((period) => {
                         const dropdownOption = document.createElement("option");
                         dropdownOption.textContent = `${todayOrTomorrow(
                             period["time"]["start"].split("T")[0]
@@ -656,15 +655,6 @@ const Map = () => {
                     });
 
                     dropdown.addEventListener("change", (e) => {
-                        clearWeatherForecasts();
-                        document
-                        .querySelector("#weatherForecasts")
-                        .insertBefore(
-                            dropdown,
-                            document.querySelector(
-                                ".clearWeatherButton"
-                            )
-                        );
                         const selectedPeriod = JSON.parse(e.target.value);
 
                         Object.values(selectedPeriod["regions"]).forEach(
@@ -695,6 +685,7 @@ const Map = () => {
                             overlay.setMap(gmap);
                             weatherForecastOverlays.push(overlay);
                         });
+                        clearWeatherForecasts();
                         setWeatherForecasts((prevForecasts) => {
                             return {
                                 ...prevForecasts,
@@ -711,9 +702,7 @@ const Map = () => {
                         .querySelector("#weatherForecasts")
                         .insertBefore(
                             dropdown,
-                            document.querySelector(
-                                ".clearWeatherButton"
-                            )
+                            document.querySelector(".clearWeatherButton")
                         );
                 }
             })
@@ -1863,98 +1852,27 @@ const Map = () => {
                 heatMapData: heatMapData,
             };
         });
-        //createCrowdMapControls();
     };
 
-    const createCrowdMapControls = () => {
-        
+    // const createCrowdHeatMap = () => {
+    //     if (!crowdMapData["active"]) {
+    //         setCrowdMapData((prevData) => {
+    //             return {
+    //                 ...prevData,
+    //                 day: dayDropdown.value,
+    //                 time: hourDropdown.value,
+    //             };
+    //         });
+    //         createHeatmap();
 
-        if (!crowdMapData["active"]) {
-            const daysOfWeek = [
-                "Sunday",
-                "Monday",
-                "Tuesday",
-                "Wednesday",
-                "Thursday",
-                "Friday",
-                "Saturday",
-            ];
-            const hoursOfDay = [
-                "0000",
-                "0100",
-                "0200",
-                "0300",
-                "0400",
-                "0500",
-                "0600",
-                "0700",
-                "0800",
-                "0900",
-                "1000",
-                "1100",
-                "1200",
-                "1300",
-                "1400",
-                "1500",
-                "1600",
-                "1700",
-                "1800",
-                "1900",
-                "2000",
-                "2100",
-                "2200",
-                "2300",
-            ];
-            const defaultOption = document.createElement("option");
-            defaultOption.textContent = "Please select an option";
-            defaultOption.disabled = true;
-            defaultOption.selected = true;
-
-            const dayDropdown = document.querySelector("#dayDropDown")
-            dayDropdown.appendChild(defaultOption);
-            daysOfWeek.forEach((day) => {
-                const option = document.createElement("option");
-                option.textContent = day;
-                option.value = day;
-                dayDropdown.appendChild(option);
-            });
-            dayDropdown.addEventListener("change", () => {
-                const existingCrowdHourDropdown =
-                    document.querySelector("#crowdHourDropdown");
-                if (!existingCrowdHourDropdown) {
-                    const hourDropdown = document.createElement("select");
-                    hourDropdown.id = "crowdHourDropdown";
-                    hourDropdown.appendChild(defaultOption);
-                    hoursOfDay.forEach((hour) => {
-                        const option = document.createElement("option");
-                        option.textContent = hour;
-                        option.value = hour;
-                        hourDropdown.appendChild(option);
-                        document
-                            .querySelector("#crowdMap")
-                            .appendChild(hourDropdown);
-                    });
-                    hourDropdown.addEventListener("change", () => {
-                        setCrowdMapData((prevData) => {
-                            return {
-                                ...prevData,
-                                day: dayDropdown.value,
-                                time: hourDropdown.value,
-                            };
-                        });
-                        createHeatmap();
-                    });
-                }
-            });
-
-            setCrowdMapData((prevData) => {
-                return {
-                    ...prevData,
-                    active: !prevData["active"],
-                };
-            });
-        }
-    };
+    //         setCrowdMapData((prevData) => {
+    //             return {
+    //                 ...prevData,
+    //                 active: !prevData["active"],
+    //             };
+    //         });
+    //     }
+    // };
 
     const createHeatmap = () => {
         // Displaying crowd data at these locations
@@ -1993,9 +1911,9 @@ const Map = () => {
         });
     };
 
-    useEffect(() => {
-        clearHeatMap();
-    }, [crowdMapData["time"]]);
+    // useEffect(() => {
+    //     clearHeatMap();
+    // }, [crowdMapData["time"]]);
 
     const createAttractionMarker = (details) => {
         /**
@@ -2054,14 +1972,53 @@ const Map = () => {
          */
         const content = document.createElement("div");
         content.classList.add("property");
-        property["type"] = "building";
+        let markerIcon = "";
+
+        switch (property["type"]) {
+            case "building":
+                markerIcon = "building";
+                break;
+            case "hotel":
+                markerIcon = "hotel";
+                break;
+            case "bicycle":
+                markerIcon = "bicycle";
+                break;
+            case "food":
+                markerIcon = "utensils";
+                break;
+            case "water":
+                markerIcon = "droplet";
+                break;
+            case "monument":
+                markerIcon = "landmark-dome";
+                break;
+            case "museum":
+                markerIcon = "building-columns";
+                break;
+            case "historic_site":
+                markerIcon = "clock-rotate-left";
+                break;
+            case "park":
+                markerIcon = "tree";
+                break;
+            case "skyrise_greenery":
+                markerIcon = "skyatlas";
+                break;
+            case "green_mark":
+                markerIcon = "trophy-star";
+                break;
+            case "ev":
+                markerIcon = "car-side";
+                break;
+            default:
+                markerIcon = "circle-exclamation";
+        }
 
         content.innerHTML = `
         <div class="icon">
-            <i aria-hidden="true" class="fa fa-icon fa-${
-                property["type"]
-            }" title="${property["type"]}"></i>
-            <span class="fa-sr-only">${property["type"]}</span>
+            <i aria-hidden="true" class="fa fa-icon fa-${markerIcon}"></i>
+            <span class="fa-sr-only">${markerIcon}</span>
         </div>
         <div class="details">
             <div class="name">${property["name"]}</div>
@@ -2646,13 +2603,11 @@ const Map = () => {
         setCrowdMapData((prevData) => {
             return {
                 ...prevData,
+                active: false,
                 heatMaps: [],
                 heatMapData: [],
             };
         });
-        document
-            .querySelectorAll("#crowdMap select")
-            .forEach((dropdown) => dropdown.remove());
     }
 
     function clearWeatherForecasts() {
@@ -2672,11 +2627,12 @@ const Map = () => {
             return {
                 ...prevForecasts,
                 overlay: [],
-                notification: "",
+                notification:
+                    "Please select a time frame to view the weather forecast",
             };
         });
         document
-            .querySelectorAll("#weatherForecasts  select")
+            .querySelectorAll("#weatherForecasts select")
             .forEach((dropdown) => dropdown.remove());
     }
 
@@ -2729,7 +2685,6 @@ const Map = () => {
                     .flat(2);
                 break;
         }
-        console.log(lat_lngArray.flat(2));
         return lat_lngArray.flat(2);
     };
 
@@ -2928,7 +2883,6 @@ const Map = () => {
                             travelStats,
                             database,
                             currentRouteOverview,
-                            
                             allCategories,
                             setCategoriesChecked,
                             categoriesChecked,
@@ -2936,8 +2890,10 @@ const Map = () => {
                             weatherForecasts,
                             setWeatherForecasts,
                             handleWeatherForecastClick,
-                            createCrowdMapControls,
                             crowdMapData,
+                            setCrowdMapData,
+                            createHeatmap,
+                            clearHeatMap,
                         }}
                     />
                 ) : (

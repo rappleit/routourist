@@ -1,9 +1,16 @@
 :root {
     --building-color: #FF9800;
-    --hotel-color: #0288D1;
-    --shop-color: #7B1FA2;
-    --ev-color: #29ce13;
-    --bicycle-color: #d2ee35;
+  --hotel-color: #ce24af;
+  --bicycle-color: #d2ee35;
+  --food-color: #ff5656;
+  --water-color: #819aff;
+  --monument-color: #FF1493; 
+  --museum-color: #4B0082; 
+  --historic_site-color: #8B4513;
+  --park-color: #168f2a;
+  --skyrise_greenery-color: #00FF00; 
+  --green_mark-color: #168f2a;
+  --ev-color: #2edaa1;
   }
 
   /*
@@ -118,23 +125,8 @@
   }
   
   /*
-   * hotel icon colors.
-   */
-  .property.highlight:has(.fa-hotel) .icon {
-    color: var(--hotel-color);
-  }
-  
-  .property:not(.highlight):has(.fa-hotel) {
-    background-color: var(--hotel-color);
-  }
-  
-  .property:not(.highlight):has(.fa-hotel)::after {
-    border-top: 9px solid var(--hotel-color);
-  }
-  
-  /*
-   * building icon colors.
-   */
+     * building icon colors.
+     */
   .property.highlight:has(.fa-building) .icon {
     color: var(--building-color);
   }
@@ -147,40 +139,25 @@
     border-top: 9px solid var(--building-color);
   }
   
+    /*
+   * hotel icon colors.
+   */
+   .property.highlight:has(.fa-hotel) .icon {
+    color: var(--hotel-color);
+  }
+  
+  .property:not(.highlight):has(.fa-hotel) {
+    background-color: var(--hotel-color);
+  }
+  
+  .property:not(.highlight):has(.fa-hotel)::after {
+    border-top: 9px solid var(--hotel-color);
+  }
+  
   /*
-   * Shop icon colors.
-   */
-  .property.highlight:has(.fa-shop) .icon {
-    color: var(--shop-color);
-  }
-  
-  .property:not(.highlight):has(.fa-shop) {
-    background-color: var(--shop-color);
-  }
-  
-  .property:not(.highlight):has(.fa-shop)::after {
-    border-top: 9px solid var(--shop-color);
-  }
-
-    /*
-   * ev icon colors.
-   */
-   .property.highlight:has(.fa-ev) .icon {
-    color: var(--ev-color);
-  }
-  
-  .property:not(.highlight):has(.fa-ev) {
-    background-color: var(--ev-color);
-  }
-  
-  .property:not(.highlight):has(.fa-ev)::after {
-    border-top: 9px solid var(--ev-color);
-  }
-
-    /*
-   * bicycle icon colors.
-   */
-   .property.highlight:has(.fa-bicycle) .icon {
+     * bicycle icon colors.
+     */
+  .property.highlight:has(.fa-bicycle) .icon {
     color: var(--bicycle-color);
   }
   
@@ -191,6 +168,141 @@
   .property:not(.highlight):has(.fa-bicycle)::after {
     border-top: 9px solid var(--bicycle-color);
   }
+  
+  /*
+     * food icon colors.
+     */
+  .property.highlight:has(.fa-utensils) .icon {
+    color: var(--food-color);
+  }
+  
+  .property:not(.highlight):has(.fa-utensils) {
+    background-color: var(--food-color);
+  }
+  
+  .property:not(.highlight):has(.fa-utensils)::after {
+    border-top: 9px solid var(--food-color);
+  }
+  
+      /*
+     * water icon colors.
+     */
+     .property.highlight:has(.fa-droplet) .icon {
+      color: var(--water-color);
+    }
+    
+    .property:not(.highlight):has(.fa-droplet) {
+      background-color: var(--water-color);
+    }
+    
+    .property:not(.highlight):has(.fa-droplet)::after {
+      border-top: 9px solid var(--water-color);
+    }
+
+         /*
+     * monument icon colors.
+     */
+  .property.highlight:has(.fa-monument) .icon {
+    color: var(--monument-color);
+  }
+  
+  .property:not(.highlight):has(.fa-monument) {
+    background-color: var(--monument-color);
+  }
+  
+  .property:not(.highlight):has(.fa-monument)::after {
+    border-top: 9px solid var(--monument-color);
+  }
+  
+  /*
+     * museum icon colors.
+     */
+     .property.highlight:has(.fa-museum) .icon {
+        color: var(--museum-color);
+      }
+      
+      .property:not(.highlight):has(.fa-museum) {
+        background-color: var(--museum-color);
+      }
+      
+      .property:not(.highlight):has(.fa-museum)::after {
+        border-top: 9px solid var(--museum-color);
+      }
+
+  /*
+     * historic_site icon colors.
+     */
+     .property.highlight:has(.fa-historic_site) .icon {
+        color: var(--historic_site-color);
+      }
+      
+      .property:not(.highlight):has(.fa-historic_site) {
+        background-color: var(--historic_site-color);
+      }
+      
+      .property:not(.highlight):has(.fa-historic_site)::after {
+        border-top: 9px solid var(--historic_site-color);
+      }
+
+ /*
+     * park icon colors.
+     */
+     .property.highlight:has(.fa-tree) .icon {
+        color: var(--park-color);
+      }
+      
+      .property:not(.highlight):has(.fa-tree) {
+        background-color: var(--park-color);
+      }
+      
+      .property:not(.highlight):has(.fa-tree)::after {
+        border-top: 9px solid var(--park-color);
+      }
+
+      /*
+     * skyrise_greenery icon colors.
+     */
+  .property.highlight:has(.fa-skyrise_greenery) .icon {
+    color: var(--skyrise_greenery-color);
+  }
+  
+  .property:not(.highlight):has(.fa-skyrise_greenery) {
+    background-color: var(--skyrise_greenery-color);
+  }
+  
+  .property:not(.highlight):has(.fa-skyrise_greenery)::after {
+    border-top: 9px solid var(--skyrise_greenery-color);
+  }
+
+      /*
+     * green_mark icon colors.
+     */
+  .property.highlight:has(.fa-green_mark) .icon {
+    color: var(--green_mark-color);
+  }
+  
+  .property:not(.highlight):has(.fa-green_mark) {
+    background-color: var(--green_mark-color);
+  }
+  
+  .property:not(.highlight):has(.fa-green_mark)::after {
+    border-top: 9px solid var(--green_mark-color);
+  }
+
+/*
+     * ev icon colors.
+     */
+     .property.highlight:has(.fa-car-side) .icon {
+        color: var(--ev-color);
+      }
+      
+      .property:not(.highlight):has(.fa-car-side) {
+        background-color: var(--ev-color);
+      }
+      
+      .property:not(.highlight):has(.fa-car-side)::after {
+        border-top: 9px solid var(--ev-color);
+      }
 
 #map, #cesiumMap {
     height: 100vh;

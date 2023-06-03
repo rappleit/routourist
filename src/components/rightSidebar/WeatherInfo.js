@@ -1,4 +1,4 @@
-import { FaCloudSun } from "react-icons/fa";
+import {FaCloudSun} from "react-icons/fa";
 import "../../styles/weatherInfo.css";
 
 const WeatherInfo = ({
@@ -20,24 +20,24 @@ const WeatherInfo = ({
             </div>
             <div id="weatherForecasts">
                 <div className="weatherButtons">
-                    {weatherForecasts["options"].map((option) => (
+                    {weatherForecasts["options"].map((option, i) => (
                         <input
                             type="button"
                             id={`${option}WeatherForecasts`}
                             className={
-                                 weatherForecasts.active === option ? "weatherSelected" : ""
+                                weatherForecasts.active === option
+                                    ? "weatherSelected"
+                                    : ""
                             }
                             value={option}
                             onClick={() => handleWeatherForecastClick(option)}
+                            key={i}
                         />
                     ))}
                 </div>
 
-
                 <p className="weatherForecastNotification">
-                    {weatherForecasts["active"] === ""
-                        ? "Please select a time frame to view the weather forecase"
-                        : weatherForecasts["notification"]}
+                    {weatherForecasts["notification"]}
                 </p>
                 <input
                     className="clearWeatherButton"
