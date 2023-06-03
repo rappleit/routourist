@@ -8,19 +8,43 @@
 #cesium {
     position: absolute;
     z-index: 1;
-    left: 50%;
-    transform: translate(-50%); /* Added */
+    left: 54%;
+    transform: translate(-50%);
     padding: 5px 8px;
     border-radius: 5px;
     text-align: center;  
   }
 
-  .centerControl, #toggleMap {
+  #toggleMap {
     background-color: #fff;
     border: 1px solid #ccc;
     border-radius: 2px;
     box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.3);
     padding: 0.5em 0.5em;
+    margin: 0px 5px;
+    font: 400 14px Roboto, Arial, sans-serif;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  #trafficLayer {
+    position: absolute;
+    z-index: 1;
+    left: 47%;
+    transform: translate(-50%);
+    padding: 5px 8px;
+    border-radius: 5px;
+    text-align: center;  
+  }
+
+  #toggleTrafficLayer {
+    display: block;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.3);
+    padding: 0.5em 0.5em;
+    margin: 0px 5px;
     font: 400 14px Roboto, Arial, sans-serif;
     overflow: hidden;
     cursor: pointer;
@@ -333,7 +357,41 @@
     text-align: left;
 }
 
+/* #directionsPanel span{
+    color: var(--eggshell);
 
+}
+#directionsPanel td {
+    color: var(--eggshell);
+    font-size: 12px;
+}
 
+#directionsPanel .adp-text {
+    color: var(--gray);
+    font-weight: bold;
+}
 
+#directionsPanel .adp-summary {
+    font-style: italic;
+    font-size: 12px;
+}
 
+#directionsPanel .adp-stepicon {
+    background-color: var(--eggshell);
+    border-radius: 4px;
+}
+
+#directionsPanel .adp-legal {
+    color: var(--eggshell);
+    font-size: 10px;
+}
+
+#directionsPanel .adp-agencies {
+    color: var(--eggshell);
+    font-size: 12px;
+}
+
+.warnbox-content {
+    font-size: 12px;
+}
+*/
