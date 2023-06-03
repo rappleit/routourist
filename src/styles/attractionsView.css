@@ -97,3 +97,15 @@
 #crowdMapBtn:hover {
     background: var(--lightgreen);
 }
+
+.clearHeatMapButton {
+    background: none;
+    color: var(--eggshell);
+    text-decoration: underline;
+    cursor: pointer;
+    border: none;
+}
+
+.clearHeatMapButton:hover {
+    color: var(--green);
+}

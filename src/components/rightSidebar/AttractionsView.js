@@ -5,11 +5,14 @@ import { useState } from "react";
 
 const AttractionsView = ({
     setView,
-    createCrowdMapControls,
     currentRoute,
     allCategories,
     setCategoriesChecked,
-    categoriesChecked }) => {
+    categoriesChecked,
+    setCrowdMapData,
+    createHeatmap,
+    clearHeatMap
+ }) => {
 
     const [isDropdownActive, setIsDropdownActive] = useState(false);
 
@@ -59,6 +62,21 @@ const AttractionsView = ({
         "2300",
     ];
 
+    const handleCrowdMapClick = () => {
+        if (document.querySelector("#dayDropdown").value != "" && document.querySelector("#hourDropdown").value !="")
+        {setCrowdMapData((prevData) => {
+            return {
+                ...prevData,
+                active: true,
+                day: document.querySelector("#dayDropdown").value,
+                time: document.querySelector("#hourDropdown").value,
+            };
+        });
+        createHeatmap();
+    }
+
+    }
+
     return (
         <div className="attractionsView">
             <div className="viewHeader">
@@ -101,27 +119,29 @@ const AttractionsView = ({
                         <div id="crowdMap">
                             <h4>Crowd Map</h4>
                             <p>Choose a day</p>
-                            <select id="dayDropDown">
-                                <option selected disabled>Please select a day</option>
-                                {daysOfWeek.map((day) => (
-                                    <option value={day}>{day}</option>
+                            <select id="dayDropdown" defaultValue="">
+                                <option disabled value="">Please select a day</option>
+                                {daysOfWeek.map((day, i) => (
+                                    <option value={day} key={i}>{day}</option>
                                 ))}
                             </select>
 
                             <p>Choose a time</p>
-                            <select id="dayDropDown">
-                                <option selected disabled>Please select a time</option>
-                                {hoursOfDay.map((day) => (
-                                    <option value={day}>{day}</option>
+                            <select id="hourDropdown" defaultValue="">
+                                <option disabled value="">Please select a time</option>
+                                {hoursOfDay.map((day, i) => (
+                                    <option value={day} key={i}>{day}</option>
                                 ))}
                             </select>
                             <input
                                 type="button"
                                 id="crowdMapBtn"
-                                value="Show Crowd Heatmap"
-                                onClick={createCrowdMapControls}
+                                value="Generate Crowd Heatmap"
+                                onClick={() => handleCrowdMapClick()}
                             />
-
+                        <button className="clearHeatMapButton" onClick={() => clearHeatMap()}>
+                            Clear Map
+                        </button>
                         </div>
 
                     </div>
