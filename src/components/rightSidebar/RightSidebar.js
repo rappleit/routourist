@@ -36,6 +36,9 @@ const RightSidebar = ({
     handleWeatherForecastClick,
     createCrowdMapControls,
     crowdMapData,
+    allCategories,
+    setCategoriesChecked,
+    categoriesChecked
 }) => {
     const [view, setView] = useState("main");
     // (Object.keys(currentRoute).length === 0)
@@ -140,7 +143,7 @@ const RightSidebar = ({
                         }
                     >
                         <AttractionsView
-                            {...{setView, createCrowdMapControls}}
+                            {...{setView, createCrowdMapControls, currentRoute, allCategories, setCategoriesChecked, categoriesChecked}}
                         />
                     </div>
                     <div
@@ -150,14 +153,14 @@ const RightSidebar = ({
                                 : {display: "none"}
                         }
                     >
-                        <WeatherInfo
+                        {/*<WeatherInfo
                             {...{
                                 setView,
                                 weatherForecasts,
                                 setWeatherForecasts,
                                 handleWeatherForecastClick,
                             }}
-                        />
+                        />*/}
                     </div>
                     <div
                         style={

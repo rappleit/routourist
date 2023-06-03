@@ -60,9 +60,6 @@ const Map = () => {
     const [markersPolylines, setMarkersPolylines] = useState([]);
     const [attractionMarkers, setAttractionMarkers] = useState([]);
     const [lat_lngArray, setLat_LngArray] = useState([]);
-
-    const [isAttractionsDropdownOpen, setIsAttractionsDropdownOpen] =
-        useState(false);
     const allCategories = [
         "Water Activities",
         "SAFRA Centres",
@@ -95,41 +92,41 @@ const Map = () => {
     const [currentRoute, setCurrentRoute] = useState({});
     const [currentRouteOverview, setCurrentRouteOverview] = useState("");
 
-    
-   
+
+
 
     //FOR RETRIEVING SAVED/SHARED/PRESET ROUTES
 
     useEffect(() => {
         if (gDirectionsService) {
-        const fetchedRouteName = localStorage.getItem("routeName");
-        const fetchedRouteRequest = localStorage.getItem("routeRequest")
-        if (fetchedRouteRequest && fetchedRouteRequest != undefined && fetchedRouteRequest != "") {
-            setTimeout(() => {
-                setCurrentRoute(JSON.parse(fetchedRouteRequest));
-                let waypointCount = (JSON.parse(fetchedRouteRequest)["waypoints"].length > 1)
-                    ? JSON.parse(fetchedRouteRequest)["waypoints"].slice(1).length
-                    : 1
-                setWaypointsNum(waypointCount);
-                setWaypointValues(Array(waypointCount).fill(""));
-                const transportModeMenu = document.querySelector("#transportModeMenu");
-                transportModeMenu.value = JSON.parse(fetchedRouteRequest)["travelMode"];
-                const optimizeMenu = document.querySelector("#optimizeRoute");
-                optimizeMenu.checked = JSON.parse(fetchedRouteRequest)["optimizeWaypoints"];
-                fromPlaceNameRef.current.value = JSON.parse(fetchedRouteRequest).origin.name;
+            const fetchedRouteName = localStorage.getItem("routeName");
+            const fetchedRouteRequest = localStorage.getItem("routeRequest")
+            if (fetchedRouteRequest && fetchedRouteRequest != undefined && fetchedRouteRequest != "") {
+                setTimeout(() => {
+                    setCurrentRoute(JSON.parse(fetchedRouteRequest));
+                    let waypointCount = (JSON.parse(fetchedRouteRequest)["waypoints"].length > 1)
+                        ? JSON.parse(fetchedRouteRequest)["waypoints"].slice(1).length
+                        : 1
+                    setWaypointsNum(waypointCount);
+                    setWaypointValues(Array(waypointCount).fill(""));
+                    const transportModeMenu = document.querySelector("#transportModeMenu");
+                    transportModeMenu.value = JSON.parse(fetchedRouteRequest)["travelMode"];
+                    const optimizeMenu = document.querySelector("#optimizeRoute");
+                    optimizeMenu.checked = JSON.parse(fetchedRouteRequest)["optimizeWaypoints"];
+                    fromPlaceNameRef.current.value = JSON.parse(fetchedRouteRequest).origin.name;
 
-                //get origin place object
-                const service = new google.maps.places.PlacesService(document.createElement('div'));
+                    //get origin place object
+                    const service = new google.maps.places.PlacesService(document.createElement('div'));
 
-                service.getDetails({ placeId: JSON.parse(fetchedRouteRequest).origin.place_id,  fields: ["name", "geometry", "place_id"] }, (placeResult, status) => {
-                    if (status === google.maps.places.PlacesServiceStatus.OK) {
-                        document.querySelector("#fromPlace").value = JSON.stringify(placeResult);
-                    } else {
-                        console.log('Place retrieval failed:', status);
-                    }
-                });
+                    service.getDetails({ placeId: JSON.parse(fetchedRouteRequest).origin.place_id, fields: ["name", "geometry", "place_id"] }, (placeResult, status) => {
+                        if (status === google.maps.places.PlacesServiceStatus.OK) {
+                            document.querySelector("#fromPlace").value = JSON.stringify(placeResult);
+                        } else {
+                            console.log('Place retrieval failed:', status);
+                        }
+                    });
 
-                //get all waypoint place objects if there is more than 1 waypoint 
+                    //get all waypoint place objects if there is more than 1 waypoint 
 
 
 
@@ -139,11 +136,11 @@ const Map = () => {
                         document.querySelectorAll(".toPlaceName")
                     );
 
-                    
+
                     const findPlace = (index) => {
                         setTimeout(() => {
                             const toService = new google.maps.places.PlacesService(document.createElement('div'));
-                            toService.getDetails({ placeId: waypointList[index].place_id,  fields: ["name", "geometry", "place_id"] }, (placeResult, status) => {
+                            toService.getDetails({ placeId: waypointList[index].place_id, fields: ["name", "geometry", "place_id"] }, (placeResult, status) => {
                                 if (status === google.maps.places.PlacesServiceStatus.OK) {
                                     setWaypointValues((prevWaypoints) =>
                                         prevWaypoints.map((item, j) =>
@@ -159,8 +156,8 @@ const Map = () => {
                                         findPlace(nextIndex);
                                     } else {
                                         //ROUTE RETRIEVAL COMPLETE
-                                       
-                                        setTimeout(()=> {
+
+                                        setTimeout(() => {
                                             console.log("RETRIEVE COMPLETE");
                                             calcRoute();
                                             Store.addNotification({
@@ -177,7 +174,7 @@ const Map = () => {
                                                 }
                                             });
                                         }, 2000)
-                                        
+
                                     }
 
                                 } else {
@@ -185,16 +182,16 @@ const Map = () => {
                                 }
                             });
 
-                            
+
                         }, 100)
                     }
                     findPlace(0);
 
-                
 
-            }, 1000)
+
+                }, 1000)
+            }
         }
-    }
     }, [typeof window, gDirectionsService])
 
 
@@ -886,15 +883,14 @@ const Map = () => {
                                 routeLegsAndPolylineArray,
                                 "directions"
                             );
-                            nearbyPlaceSearch(
-                                getLat_LngArray(
-                                    routeLegsAndPolylineArray.map(
-                                        (route) => route["legs"]
-                                    ),
-                                    "directions"
+
+                            setLat_LngArray(getLat_LngArray(
+                                routeLegsAndPolylineArray.map(
+                                    (route) => route["legs"]
                                 ),
-                                categoriesChecked
-                            );
+                                "directions"
+                            ));
+                            
                             const partialData = calculatePartialStats(
                                 routeLegsAndPolylineArray,
                                 transportMode,
@@ -919,7 +915,7 @@ const Map = () => {
                                     },
                                 };
                             });
-                            
+
                         }, 750);
                     }, 750);
             }
@@ -1073,11 +1069,8 @@ const Map = () => {
                                     routeLegsArray,
                                     "routes"
                                 );
-
-                                nearbyPlaceSearch(
-                                    getLat_LngArray(routeLegsArray, "routes"),
-                                    categoriesChecked
-                                );
+                                setLat_LngArray(routeLegsArray, "routes");
+                               
                                 const partialData = calculatePartialStats(
                                     routeLegsArray,
                                     transportMode,
@@ -1101,7 +1094,7 @@ const Map = () => {
                                         },
                                     };
                                 });
-                               
+
                             });
                         // .catch((status) =>
                         //     console.log(
@@ -1424,12 +1417,12 @@ const Map = () => {
          * @param {Array} categoriesChecked - Array of categories to search for
          * @returns {void}
          */
-
         const dataSets = [ResearchedData, BlueSGData, OneMapData];
         // createCrowdControl();
 
         for (const lat_lng of lat_lngArray) {
             for (const dataSet of dataSets) {
+                console.log("mlem")
                 for (const [theme, themePlace] of Object.entries(dataSet)) {
                     if (categoriesChecked.includes(theme)) {
                         for (const place of themePlace) {
@@ -1437,6 +1430,7 @@ const Map = () => {
                                 haversine_distance(lat_lng, place["address"]) <=
                                 0.8
                             ) {
+                                
                                 createAttractionMarker({
                                     position: place["address"],
                                     url: `https://www.google.com/search?q=${encodeURIComponent(
@@ -1580,6 +1574,26 @@ const Map = () => {
         markerView.content.classList.remove("highlight");
         markerView.element.style.zIndex = "";
     };
+
+    useEffect(() => {
+        nearbyPlaceSearch(lat_lngArray, categoriesChecked);
+
+        for (const cat of allCategories) {
+            if (!categoriesChecked.includes(cat)) {
+                for (const catToBeRemoved of attractionMarkers.filter(
+                    (item) => item.category == cat
+                ))
+                    try {
+                        catToBeRemoved.marker.setMap(null);
+                    } catch (TypeError) {
+                        catToBeRemoved.marker.map = null;
+                    }
+                setAttractionMarkers(
+                    attractionMarkers.filter((item) => item.category !== cat)
+                );
+            }
+        }
+    }, [categoriesChecked]);
 
     const calculatePartialStats = (routeLegsArray, transportMode, api) => {
         /**
@@ -2155,7 +2169,7 @@ const Map = () => {
          * @param {Object} place - The Google Maps Place object.
          * @returns {Object} - An object containing the latitude and longitude
          */
-        
+
         const placeLat_Lng = JSON.parse(place)["geometry"]["location"];
         return { lat: placeLat_Lng["lat"], lng: placeLat_Lng["lng"] };
     };
@@ -2331,7 +2345,10 @@ const Map = () => {
                             user,
                             travelStats,
                             database,
-                            currentRouteOverview
+                            currentRouteOverview,
+                            allCategories,
+                            setCategoriesChecked,
+                            categoriesChecked
                         }}
                     />
                 ) : (
