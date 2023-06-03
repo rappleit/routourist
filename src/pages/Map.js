@@ -1435,13 +1435,9 @@ const Map = () => {
                                     routeLegsArray,
                                     "routes"
                                 );
-
-                                // nearbyPlaceSearch(
-                                //     getLat_LngArray(routeLegsArray, "routes"),
-                                //     categoriesChecked
-                                // );
-                                setLat_LngArray(routeLegsArray, "routes");
-
+                                setLat_LngArray(
+                                    getLat_LngArray(routeLegsArray, "routes")
+                                );
                                 const partialData = calculatePartialStats(
                                     routeLegsArray,
                                     transportMode,
@@ -2725,6 +2721,7 @@ const Map = () => {
                     .flat(2);
                 break;
         }
+        console.log(lat_lngArray.flat(2));
         return lat_lngArray.flat(2);
     };
 
