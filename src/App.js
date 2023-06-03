@@ -13,6 +13,10 @@ import SavedRoutes from './pages/SavedRoutes';
 
 
 function App() {
+  window.onbeforeunload = () => {
+    localStorage.removeItem('routeName');
+    localStorage.removeItem('routeRequest');
+  }
   return (
     <div className="App">
       <AuthContextProvider>

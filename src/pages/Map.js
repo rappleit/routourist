@@ -28,7 +28,7 @@ const Map = () => {
     const gAutoCompleteOptions = {
         componentRestrictions: { country: "SG" },
         // "rating", "user_ratings_total" for data
-        fields: ["name", "geometry"],
+        fields: ["name", "geometry", "place_id"],
     };
 
     //sidebars
@@ -90,19 +90,112 @@ const Map = () => {
         BICYCLING: { carbonFootprintCount: 0, travelDuration: 0 },
     });
 
-    /*const travelStats = useRef({
-        chosen: "",
-        DRIVING: { carbonFootprintCount: 0, travelDuration: 0 },
-        TRANSIT: { carbonFootprintCount: 0, travelDuration: 0 },
-        WALKING: { carbonFootprintCount: 0, travelDuration: 0 },
-        BICYCLING: { carbonFootprintCount: 0, travelDuration: 0 },
-    });*/
 
     //FOR SAVING ROUTES
     const [currentRoute, setCurrentRoute] = useState({});
     const [currentRouteOverview, setCurrentRouteOverview] = useState("");
-    const [savedRouteName, setSavedRouteName] = useState("");
 
+    
+   
+
+    //FOR RETRIEVING SAVED/SHARED/PRESET ROUTES
+
+    useEffect(() => {
+        if (gDirectionsService) {
+        const fetchedRouteName = localStorage.getItem("routeName");
+        const fetchedRouteRequest = localStorage.getItem("routeRequest")
+        if (fetchedRouteRequest && fetchedRouteRequest != undefined && fetchedRouteRequest != "") {
+            setTimeout(() => {
+                setCurrentRoute(JSON.parse(fetchedRouteRequest));
+                let waypointCount = (JSON.parse(fetchedRouteRequest)["waypoints"].length > 1)
+                    ? JSON.parse(fetchedRouteRequest)["waypoints"].slice(1).length
+                    : 1
+                setWaypointsNum(waypointCount);
+                setWaypointValues(Array(waypointCount).fill(""));
+                const transportModeMenu = document.querySelector("#transportModeMenu");
+                transportModeMenu.value = JSON.parse(fetchedRouteRequest)["travelMode"];
+                const optimizeMenu = document.querySelector("#optimizeRoute");
+                optimizeMenu.checked = JSON.parse(fetchedRouteRequest)["optimizeWaypoints"];
+                fromPlaceNameRef.current.value = JSON.parse(fetchedRouteRequest).origin.name;
+
+                //get origin place object
+                const service = new google.maps.places.PlacesService(document.createElement('div'));
+
+                service.getDetails({ placeId: JSON.parse(fetchedRouteRequest).origin.place_id,  fields: ["name", "geometry", "place_id"] }, (placeResult, status) => {
+                    if (status === google.maps.places.PlacesServiceStatus.OK) {
+                        document.querySelector("#fromPlace").value = JSON.stringify(placeResult);
+                    } else {
+                        console.log('Place retrieval failed:', status);
+                    }
+                });
+
+                //get all waypoint place objects if there is more than 1 waypoint 
+
+
+
+                    let waypointList = (waypointCount > 1) ? JSON.parse(fetchedRouteRequest).waypoints.slice(1) : JSON.parse(fetchedRouteRequest).waypoints; // remove origin from waypoint list if waypointsCount > 1
+                    console.log(waypointList)
+                    const toPlaceNames = Array.from(
+                        document.querySelectorAll(".toPlaceName")
+                    );
+
+                    
+                    const findPlace = (index) => {
+                        setTimeout(() => {
+                            const toService = new google.maps.places.PlacesService(document.createElement('div'));
+                            toService.getDetails({ placeId: waypointList[index].place_id,  fields: ["name", "geometry", "place_id"] }, (placeResult, status) => {
+                                if (status === google.maps.places.PlacesServiceStatus.OK) {
+                                    setWaypointValues((prevWaypoints) =>
+                                        prevWaypoints.map((item, j) =>
+                                            j === index
+                                                ? JSON.stringify(placeResult)
+                                                : prevWaypoints[j]
+                                        )
+                                    );
+
+
+                                    if (index + 1 < waypointList.length) {
+                                        const nextIndex = index + 1;
+                                        findPlace(nextIndex);
+                                    } else {
+                                        //ROUTE RETRIEVAL COMPLETE
+                                       
+                                        setTimeout(()=> {
+                                            console.log("RETRIEVE COMPLETE");
+                                            calcRoute();
+                                            Store.addNotification({
+                                                title: "Success!",
+                                                message: "Route successfully loaded!",
+                                                type: "success",
+                                                insert: "top",
+                                                container: "bottom-right",
+                                                animationIn: ["animate__animated", "animate__fadeIn"],
+                                                animationOut: ["animate__animated", "animate__fadeOut"],
+                                                dismiss: {
+                                                    duration: 5000,
+                                                    onScreen: true
+                                                }
+                                            });
+                                        }, 2000)
+                                        
+                                    }
+
+                                } else {
+                                    console.log('Place retrieval failed:', status);
+                                }
+                            });
+
+                            
+                        }, 100)
+                    }
+                    findPlace(0);
+
+                
+
+            }, 1000)
+        }
+    }
+    }, [typeof window, gDirectionsService])
 
 
     if (typeof window != "undefined") {
@@ -647,6 +740,7 @@ const Map = () => {
             lat_lng: getLat_LngFromPlace(
                 document.querySelector("#fromPlace").value
             ),
+            place_id: JSON.parse(document.querySelector("#fromPlace").value).place_id
         };
         const waypoints = [];
         for (
@@ -659,6 +753,7 @@ const Map = () => {
                 lat_lng: getLat_LngFromPlace(
                     document.querySelectorAll(".toPlace")[i].value
                 ),
+                place_id: JSON.parse(document.querySelectorAll(".toPlace")[i].value).place_id
             };
         }
         const transportMode = document
@@ -675,7 +770,6 @@ const Map = () => {
                 optimizeWaypoints: optimizeRoute,
             },
         };
-
         retrieveRoute(reqRoute);
     };
 
@@ -693,8 +787,6 @@ const Map = () => {
         const optimizeRoute = route["request"]["optimizeWaypoints"];
 
         const REQUEST = route["request"];
-        localStorage.setItem("routeName", "");
-        localStorage.setItem("routePath", JSON.stringify(REQUEST));
 
         let carbonFootprintCount = 0;
         let duration = 0;
@@ -827,15 +919,7 @@ const Map = () => {
                                     },
                                 };
                             });
-                            /*travelStats.current["chosen"] = transportMode;
-                            travelStats.current[transportMode][
-                                "carbonFootprintCount"
-                            ] = carbonFootprintCount;
-                            travelStats.current[transportMode][
-                                "travelDuration"
-                            ] = duration;*/
-
-                            // saveRoute(user["userID"], user["request"], routeString);
+                            
                         }, 750);
                     }, 750);
             }
@@ -1017,13 +1101,7 @@ const Map = () => {
                                         },
                                     };
                                 });
-                                /*(travelStats.current["chosen"] = transportMode;
-                                travelStats.current[transportMode][
-                                    "carbonFootprintCount"
-                                ] = carbonFootprintCount;
-                                travelStats.current[transportMode][
-                                    "travelDuration"
-                                ] = duration;*/
+                               
                             });
                         // .catch((status) =>
                         //     console.log(
@@ -1668,6 +1746,7 @@ const Map = () => {
                                     request,
                                     function (result, status) {
                                         if (status === "OK") {
+                                            console.log("sucess " + j)
                                             routeLegsArray[j] =
                                                 result["routes"][0];
                                         } else {
@@ -1704,12 +1783,6 @@ const Map = () => {
                                         },
                                     };
                                 });
-                                /*travelStats.current[otherTravelModes[i]][
-                                    "carbonFootprintCount"
-                                ] = otherCarbonFootprintCount;
-                                travelStats.current[otherTravelModes[i]][
-                                    "travelDuration"
-                                ] = otherDuration;*/
 
                             }, 750);
                         }, 750);
@@ -2082,6 +2155,7 @@ const Map = () => {
          * @param {Object} place - The Google Maps Place object.
          * @returns {Object} - An object containing the latitude and longitude
          */
+        
         const placeLat_Lng = JSON.parse(place)["geometry"]["location"];
         return { lat: placeLat_Lng["lat"], lng: placeLat_Lng["lng"] };
     };

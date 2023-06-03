@@ -4,6 +4,8 @@ import { getDatabase, onValue, ref } from '@firebase/database';
 import { UserAuth } from '../context/AuthContext';
 import { FaCar, FaMapPin, FaAngleLeft } from "react-icons/fa";
 import SavedRouteDetail from '../components/SavedRouteDetail';
+import { Store } from 'react-notifications-component';
+import { useNavigate } from 'react-router';
 
 const SavedRoutes = ({
 
@@ -11,7 +13,7 @@ const SavedRoutes = ({
     const { user } = UserAuth();
 
     const [savedRoutes, setSavedRoutes] = useState();
-    const [numSavedRoutes, setNumSavedRoutes] = useState();
+    const [numSavedRoutes, setNumSavedRoutes] = useState("Loading...");
 
     const [isDetailView, setIsDetailView] = useState(false); //toggle between all saved routes and saved route detail view
     const [selectedID, setSelectedID] = useState(null);
@@ -36,6 +38,26 @@ const SavedRoutes = ({
         setIsDetailView(true);
     }
 
+    const navigate = useNavigate();
+
+    const fetchSavedRoute = () => {
+        localStorage.setItem("routeName", savedRoutes[selectedID].name);
+        localStorage.setItem("routeRequest", JSON.stringify(savedRoutes[selectedID].route));
+        navigate('/map');
+        Store.addNotification({
+            title: "Generating...",
+            message: "Loading Route " + savedRoutes[selectedID].name,
+            type: "warning",
+            insert: "top",
+            container: "bottom-right",
+            animationIn: ["animate__animated", "animate__fadeIn"],
+            animationOut: ["animate__animated", "animate__fadeOut"],
+            dismiss: {
+                duration: 5000,
+                onScreen: true
+            }
+        });
+    }
 
 
     return (
@@ -50,7 +72,7 @@ const SavedRoutes = ({
                     </h1>
                     {(isDetailView) ? <button className="backToSavedRoutesButton" onClick={() => setIsDetailView(false)}><FaAngleLeft className="backButtonIcon" /> Back</button> : <></>}
                 </div>
-                {(isDetailView) ? <button className="viewButton">View Route in Map</button> : <></>}
+                {(isDetailView) ? <button className="viewButton" onClick={() => fetchSavedRoute()}>View Route in Map</button> : <></>}
                
             </div>
             {(isDetailView) ?

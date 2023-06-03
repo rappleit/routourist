@@ -9,6 +9,7 @@
         "cesium": "^1.105.2",
         "firebase": "^9.22.0",
         "postscribe": "^2.0.8",
+        "process": "^0.11.10",
         "react": "^18.2.0",
         "react-google-button": "^0.7.2",
         "react-helmet": "^6.1.0",
@@ -34,5 +35,8 @@
         ">0.2%",
         "not dead",
         "not op_mini all"
-    ]
+    ],
+    "devDependencies": {
+        "react-error-overlay": "^6.0.9"
+    }
 }

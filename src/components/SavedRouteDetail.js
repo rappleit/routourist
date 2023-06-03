@@ -7,6 +7,7 @@ const SavedRouteDetail = ({
     savedRoutes,
     selectedID
 }) => {
+
     const secondsToHms = (d) => {
         /**
          *Converts seconds into hours, minutes, seconds format
@@ -23,6 +24,8 @@ const SavedRouteDetail = ({
         var sDisplay = s > 0 ? s + (s === 1 ? " s" : " s") : "";
         return hDisplay + mDisplay;
     };
+
+    
 
     if (!savedRoutes[selectedID]) return null;
     return (
