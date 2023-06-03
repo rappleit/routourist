@@ -2,7 +2,7 @@ import { useState } from 'react';
 import '../styles/tabSidebar.css';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { HiHome } from "react-icons/hi";
-import { FaMap } from "react-icons/fa";
+import { FaMap, FaBookmark } from "react-icons/fa";
 import {SiBookstack} from "react-icons/si"
 import { IoLogIn, IoLogOut } from "react-icons/io5";
 import { UserAuth } from '../context/AuthContext';
@@ -57,6 +57,14 @@ const TabSidebar = () => {
                         <button className={(currentPath === "/routelibrary") ? "selected" : ""} >
                             <SiBookstack className="tabIcon" />
                             <p>Route Library</p>
+                        </button>
+                    </Link>
+                </li>
+                <li>
+                    <Link to={(user) ? "/savedroutes" : "/login" } reloadDocument>
+                        <button className={(currentPath === "/savedroutes") ? "selected" : ""} >
+                            <FaBookmark className="tabIcon" />
+                            <p>Saved Routes</p>
                         </button>
                     </Link>
                 </li>

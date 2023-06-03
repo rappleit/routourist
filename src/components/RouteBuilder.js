@@ -1,10 +1,4 @@
-import {useEffect} from "react";
-import {
-    FaRegFlag,
-    FaRegTimesCircle,
-    FaRegDotCircle,
-    FaCar,
-} from "react-icons/fa";
+import {FaRegFlag, FaRegTimesCircle, FaRegDotCircle} from "react-icons/fa";
 import {Store} from "react-notifications-component";
 
 const RouteBuilder = ({
@@ -14,6 +8,8 @@ const RouteBuilder = ({
     setWaypointsNum,
     waypointValues,
     setWaypointValues,
+    chosenOptimizeRoute,
+    chosenTransportMode,
     addWaypoint,
     calcRoute,
     resetWaypoints,
@@ -41,6 +37,7 @@ const RouteBuilder = ({
         //check if every input field is filled
         let fromValue = document.querySelector("#fromPlaceName").value;
         let toInputs = document.querySelectorAll(".toPlaceName");
+        console.log(waypointValues)
 
         if (fromValue === "") {
             Store.addNotification({
@@ -138,7 +135,11 @@ const RouteBuilder = ({
             </div>
             <div className="transportModeList">
                 <h3>Transport Mode</h3>
-                <select id="transportModeMenu" name="ModeTransport">
+                <select
+                    id="transportModeMenu"
+                    name="ModeTransport"
+                    value={chosenTransportMode}
+                >
                     <option value="DRIVING">Driving</option>
                     <option value="TRANSIT">Transit</option>
                     <option value="WALKING">Walk</option>
@@ -147,17 +148,18 @@ const RouteBuilder = ({
             </div>
             <div className="optimizeRouteContainer">
                 <div className="optimizeRouteFlex">
-                    <label htmlFor="OptimizeChoice">Optimise Route</label>
+                    <label htmlFor="OptimizeChoice">Optimize Route</label>
                     <input
                         id="optimizeRoute"
                         type="checkbox"
                         name="OptimizeChoice"
                         value="OptimizeChoice"
+                        checked={chosenOptimizeRoute}
                     ></input>
                 </div>
                 <p>
-                    You can reduce your carbon footprint by optmising your
-                    route!{" "}
+                    You can reduce your carbon footprint by optimizing your
+                    route!
                 </p>
             </div>
             <button

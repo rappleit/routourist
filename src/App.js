@@ -9,9 +9,14 @@ import TabSidebar from './components/TabSidebar';
 import { AuthContextProvider } from './context/AuthContext';
 import { ReactNotifications } from 'react-notifications-component'
 import 'react-notifications-component/dist/theme.css'
+import SavedRoutes from './pages/SavedRoutes';
 
 
 function App() {
+  window.onbeforeunload = () => {
+    localStorage.removeItem('routeName');
+    localStorage.removeItem('routeRequest');
+  }
   return (
     <div className="App">
       <AuthContextProvider>
@@ -28,6 +33,11 @@ function App() {
         <Route
         path="/routelibrary"
         element={<RouteLibrary/>}/>
+        <Route 
+        path="/savedroutes"
+        element={<SavedRoutes/>}
+        exact
+        />
         <Route
           path="/login"
           element={<Login/>}/>
