@@ -5,7 +5,8 @@ import { FaCar, FaGlobe, FaRegFlag, FaMapPin } from "react-icons/fa";
 const SavedRouteDetail = ({
     setIsDetailView,
     savedRoutes,
-    selectedID
+    selectedID,
+    setIsPublishView
 }) => {
 
     const secondsToHms = (d) => {
@@ -56,16 +57,24 @@ const SavedRouteDetail = ({
 
             </div>
             <div className="infoSection section">
-                <div className="infoDiv">
+                <h2>Environmental Impact</h2>
+            <div className="impactDiv subSection">
+                    <h4>Carbon Emissions</h4>
+                    <p className="emissionsNum">{savedRoutes[selectedID].carbonEmissions.toFixed(2)} CO2 kg</p>
+                    <p>For a ~{secondsToHms(savedRoutes[selectedID].duration)} journey</p>
+                </div>
+
+                <div className="infoDiv subSection">
                     <h2>Info</h2>
                     <p><span className="infoDivHighlight"><FaGlobe /> Country:</span> Singapore</p>
                     <p><span className="infoDivHighlight"><FaCar /> Mode of Travel:</span> {savedRoutes[selectedID].route.travelMode}</p>
                 
                 </div>
-                <div className="impactDiv">
-                    <h4>Carbon Emissions</h4>
-                    <p className="emissionsNum">{savedRoutes[selectedID].carbonEmissions.toFixed(2)} CO2 kg</p>
-                    <p>For a ~{secondsToHms(savedRoutes[selectedID].duration)} journey</p>
+                
+                <div className="actionsDiv subSection">
+                    <h2>Share Route</h2>
+                    <p>You must first publish the route before sharing!</p>
+                    <button className="publishButton" onClick={() => {setIsPublishView(true); setIsDetailView(false)}}>Publish Route</button>
                 </div>
 
             </div>
