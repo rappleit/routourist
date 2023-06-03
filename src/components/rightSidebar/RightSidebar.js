@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import "../../styles/rightSidebar.css";
 import {
     FaAngleDoubleRight,
@@ -13,9 +13,9 @@ import {
     IoWarning,
     IoSaveSharp,
     IoBus,
-    IoInformationCircle
+    IoInformationCircle,
 } from "react-icons/io5";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import WeatherInfo from "./WeatherInfo";
 import LawsInfo from "./LawsInfo";
 import CultureInfo from "./CultureInfo";
@@ -31,22 +31,19 @@ const RightSidebar = ({
     travelStats,
     database,
     currentRouteOverview,
-    toggleLayerClick,
-    weatherForecasts,
-    setWeatherForecasts,
-    handleWeatherForecastClick,
-    crowdMapData,
-    setCrowdMapData,
     allCategories,
     setCategoriesChecked,
     categoriesChecked,
+    handleLayerClick,
+    weatherForecasts,
+    setWeatherForecasts,
+    getForecastDetails,
     createHeatmap,
-    clearHeatMap
+    clearHeatMap,
 }) => {
     const [view, setView] = useState("main");
     const [isTransitLayerActive, setIsTransitLayerActive] = useState(false);
     const [isBikeLayerActive, setIsBikeLayerActive] = useState(false);
-
 
     return (
         <div className="rightSidebar">
@@ -63,8 +60,8 @@ const RightSidebar = ({
                         className="mainView"
                         style={
                             view === "main"
-                                ? { display: "block" }
-                                : { display: "none" }
+                                ? {display: "block"}
+                                : {display: "none"}
                         }
                     >
                         <div className="impactSection section">
@@ -72,7 +69,7 @@ const RightSidebar = ({
                                 <IoLeafSharp /> Environmental Impact
                             </h3>
                             <EnvironmentalImpact
-                                {...{ currentRoute, travelStats }}
+                                {...{currentRoute, travelStats}}
                             />
                         </div>
                         <div className="discoverSection section">
@@ -91,28 +88,50 @@ const RightSidebar = ({
                                 <IoBus /> Public Transport Options
                             </h3>
                             <div className="transportCard">
-                                <p className="transportCardHeader"><IoInformationCircle /> Transit System</p>
-                                <p className="transportCardNote">Note: Google Maps Transit Layer may or may not be supported in the current country</p>
+                                <p className="transportCardHeader">
+                                    <IoInformationCircle /> Transit System
+                                </p>
+                                <p className="transportCardNote">
+                                    Note: Google Maps Transit Layer may or may
+                                    not be supported in the current country
+                                </p>
                                 <input
                                     type="button"
                                     id="toggleTransitLayer"
-                                    value={(isTransitLayerActive) ? "Hide Transit": "Show Transit"}
+                                    value={
+                                        isTransitLayerActive
+                                            ? "Hide Transit"
+                                            : "Show Transit"
+                                    }
                                     onClick={() => {
-                                        toggleLayerClick("Transit");
-                                        setIsTransitLayerActive(!isTransitLayerActive);
+                                        handleLayerClick("Transit");
+                                        setIsTransitLayerActive(
+                                            !isTransitLayerActive
+                                        );
                                     }}
                                 />
                             </div>
                             <div className="transportCard">
-                                <p className="transportCardHeader"><IoInformationCircle /> Bicycle paths</p>
-                                <p className="transportCardNote">Note: Google Maps Bicycling Layer may or may not be supported in the current country</p>
+                                <p className="transportCardHeader">
+                                    <IoInformationCircle /> Bicycle paths
+                                </p>
+                                <p className="transportCardNote">
+                                    Note: Google Maps Bicycling Layer may or may
+                                    not be supported in the current country
+                                </p>
                                 <input
                                     type="button"
                                     id="toggleBicyclingLayer"
-                                    value={(isBikeLayerActive) ? "Hide Cycling Paths" :"Show Cycling Paths"}
+                                    value={
+                                        isBikeLayerActive
+                                            ? "Hide Cycling Paths"
+                                            : "Show Cycling Paths"
+                                    }
                                     onClick={() => {
-                                        toggleLayerClick("Bicycling");
-                                        setIsBikeLayerActive(!isBikeLayerActive);
+                                        handleLayerClick("Bicycling");
+                                        setIsBikeLayerActive(
+                                            !isBikeLayerActive
+                                        );
                                     }}
                                 />
                             </div>
@@ -159,14 +178,12 @@ const RightSidebar = ({
                                 }}
                             />
                         </div>
-
-
                     </div>
                     <div
                         style={
                             view === "attractions"
-                                ? { display: "block" }
-                                : { display: "none" }
+                                ? {display: "block"}
+                                : {display: "none"}
                         }
                     >
                         <AttractionsView
@@ -176,17 +193,16 @@ const RightSidebar = ({
                                 allCategories,
                                 setCategoriesChecked,
                                 categoriesChecked,
-                                setCrowdMapData,
                                 createHeatmap,
-                                clearHeatMap
+                                clearHeatMap,
                             }}
                         />
                     </div>
                     <div
                         style={
                             view === "weather"
-                                ? { display: "block" }
-                                : { display: "none" }
+                                ? {display: "block"}
+                                : {display: "none"}
                         }
                     >
                         <WeatherInfo
@@ -194,27 +210,27 @@ const RightSidebar = ({
                                 setView,
                                 weatherForecasts,
                                 setWeatherForecasts,
-                                handleWeatherForecastClick,
+                                getForecastDetails,
                             }}
                         />
                     </div>
                     <div
                         style={
                             view === "laws"
-                                ? { display: "block" }
-                                : { display: "none" }
+                                ? {display: "block"}
+                                : {display: "none"}
                         }
                     >
-                        <LawsInfo {...{ setView }} />
+                        <LawsInfo {...{setView}} />
                     </div>
                     <div
                         style={
                             view === "culture"
-                                ? { display: "block" }
-                                : { display: "none" }
+                                ? {display: "block"}
+                                : {display: "none"}
                         }
                     >
-                        <CultureInfo {...{ setView }} />
+                        <CultureInfo {...{setView}} />
                     </div>
                 </div>
             </div>

@@ -5,8 +5,18 @@ const WeatherInfo = ({
     setView,
     weatherForecasts,
     setWeatherForecasts,
-    handleWeatherForecastClick,
+    getForecastDetails,
 }) => {
+    const handleWeatherForecastClick = (option) => {
+        setWeatherForecasts((prevForecasts) => {
+            return {
+                ...prevForecasts,
+                active: option,
+            };
+        });
+        getForecastDetails(option);
+    };
+
     return (
         <div className="weatherInfo">
             <div className="viewHeader">

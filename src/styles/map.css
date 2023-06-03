@@ -5,7 +5,7 @@
   --food-color: #ff5656;
   --water-color: #819aff;
   --monument-color: #FF1493; 
-  --museum-color: #4B0082; 
+  --museum-color: #9248C6 ; 
   --historic_site-color: #8B4513;
   --park-color: #168f2a;
   --skyrise_greenery-color: #00FF00; 
@@ -202,45 +202,45 @@
          /*
      * monument icon colors.
      */
-  .property.highlight:has(.fa-monument) .icon {
+  .property.highlight:has(.fa-landmark-dome) .icon {
     color: var(--monument-color);
   }
   
-  .property:not(.highlight):has(.fa-monument) {
+  .property:not(.highlight):has(.fa-landmark-dome) {
     background-color: var(--monument-color);
   }
   
-  .property:not(.highlight):has(.fa-monument)::after {
+  .property:not(.highlight):has(.fa-landmark-dome)::after {
     border-top: 9px solid var(--monument-color);
   }
   
   /*
      * museum icon colors.
      */
-     .property.highlight:has(.fa-museum) .icon {
+     .property.highlight:has(.fa-building-columns) .icon {
         color: var(--museum-color);
       }
       
-      .property:not(.highlight):has(.fa-museum) {
+      .property:not(.highlight):has(.fa-building-columns) {
         background-color: var(--museum-color);
       }
       
-      .property:not(.highlight):has(.fa-museum)::after {
+      .property:not(.highlight):has(.fa-building-columns)::after {
         border-top: 9px solid var(--museum-color);
       }
 
   /*
      * historic_site icon colors.
      */
-     .property.highlight:has(.fa-historic_site) .icon {
+     .property.highlight:has(.fa-clock-rotate-left) .icon {
         color: var(--historic_site-color);
       }
       
-      .property:not(.highlight):has(.fa-historic_site) {
+      .property:not(.highlight):has(.fa-clock-rotate-left) {
         background-color: var(--historic_site-color);
       }
       
-      .property:not(.highlight):has(.fa-historic_site)::after {
+      .property:not(.highlight):has(.fa-clock-rotate-left)::after {
         border-top: 9px solid var(--historic_site-color);
       }
 
@@ -262,30 +262,30 @@
       /*
      * skyrise_greenery icon colors.
      */
-  .property.highlight:has(.fa-skyrise_greenery) .icon {
+  .property.highlight:has(.fa-tree-city) .icon {
     color: var(--skyrise_greenery-color);
   }
   
-  .property:not(.highlight):has(.fa-skyrise_greenery) {
+  .property:not(.highlight):has(.fa-tree-city) {
     background-color: var(--skyrise_greenery-color);
   }
   
-  .property:not(.highlight):has(.fa-skyrise_greenery)::after {
+  .property:not(.highlight):has(.fa-tree-city)::after {
     border-top: 9px solid var(--skyrise_greenery-color);
   }
 
       /*
      * green_mark icon colors.
      */
-  .property.highlight:has(.fa-green_mark) .icon {
+  .property.highlight:has(.fa-wreath) .icon {
     color: var(--green_mark-color);
   }
   
-  .property:not(.highlight):has(.fa-green_mark) {
+  .property:not(.highlight):has(.fa-wreath) {
     background-color: var(--green_mark-color);
   }
   
-  .property:not(.highlight):has(.fa-green_mark)::after {
+  .property:not(.highlight):has(.fa-wreath)::after {
     border-top: 9px solid var(--green_mark-color);
   }
 

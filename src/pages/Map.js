@@ -67,11 +67,8 @@ const Map = () => {
         options: ["2-hour", "24-hour"],
     });
     const [crowdMapData, setCrowdMapData] = useState({
-        active: false,
-        heatMaps: [],
+        heatMap: null,
         heatMapData: [],
-        day: null,
-        time: null,
     });
     const [markersPolylines, setMarkersPolylines] = useState([]);
     const [attractionMarkers, setAttractionMarkers] = useState([]);
@@ -106,9 +103,12 @@ const Map = () => {
     const [currentRoute, setCurrentRoute] = useState({});
     const [currentRouteOverview, setCurrentRouteOverview] = useState("");
 
-    //FOR RETRIEVING SAVED/SHARED/PRESET ROUTES
-
+    //FOR
     useEffect(() => {
+        /**
+         * Retrieve Saved/Shared/Preset Routes from localStorage
+         * @returns {void}
+         */
         if (gDirectionsService) {
             const fetchedRouteName = localStorage.getItem("routeName");
             const fetchedRouteRequest = localStorage.getItem("routeRequest");
@@ -162,8 +162,7 @@ const Map = () => {
                         }
                     );
 
-                    //get all waypoint place objects if there is more than 1 waypoint
-
+                    // Get all waypoint place objects if there is more than 1 waypoint
                     let waypointList =
                         waypointCount > 1
                             ? JSON.parse(fetchedRouteRequest).waypoints.slice(1)
@@ -254,9 +253,7 @@ const Map = () => {
             /**
              * Initializes the Google Map, Geocoder, DirectionsService, Autocomplete for the first origin and destination inputs
              * Gathers user's location using HTML5 geolocation
-             *
-             * Note:
-             * For custom marker images, add {suppressMarkers:true}, https://thewebstorebyg.wordpress.com/2013/01/11/custom-directions-panel-with-google-maps-api-v3/
+             * @returns {void}
              */
 
             const map = new google.maps.Map(document.querySelector("#map"), {
@@ -400,7 +397,7 @@ const Map = () => {
 
     const toggleMapClick = () => {
         /**
-         * Toggles the visibility of map elements and performs actions based on the state of the Cesium map.
+         * Toggles the visibility of map elements and performs actions based on the state of the Cesium map
          * @returns {void}
          */
 
@@ -434,7 +431,12 @@ const Map = () => {
         }
     };
 
-    const toggleLayerClick = (layer) => {
+    const handleLayerClick = (layer) => {
+        /**
+         * Handles the click event for a layer
+         * @param {string} layer - The layer to handle the click event for
+         * @returns {void}
+         */
         setGLayers((prevLayers) => {
             return {
                 ...prevLayers,
@@ -444,6 +446,11 @@ const Map = () => {
     };
 
     useEffect(() => {
+        /**
+         * Handles the update of layers on the map based on any changes in gLayers
+         * Sets the active layer on the map and disables other layers
+         * @returns {void}
+         */
         const {active, ...allGLayers} = gLayers;
         const activeLayer = gLayers[active];
         Object.entries(allGLayers).forEach(([gLayerName, gLayer]) => {
@@ -458,22 +465,21 @@ const Map = () => {
         });
     }, [gLayers]);
 
-    const handleWeatherForecastClick = (option) => {
-        setWeatherForecasts((prevForecasts) => {
-            return {
-                ...prevForecasts,
-                active: option,
-            };
-        });
-        // Ensure useEffect happens before getForecastDetails
-        getForecastDetails(option);
-    };
-
     useEffect(() => {
+        /**
+         * Clears weather forecasts based on any changes in the active weather forecast
+         * @returns {void}
+         */
         clearWeatherForecasts();
     }, [weatherForecasts["active"]]);
 
     const getForecastDetails = (option) => {
+        /**
+         * Retrieves forecast details for the specified weather option and updates the weather forecasts
+         *
+         * @param {string} option - The weather forecast option ("2-hour" or "24-hour")
+         * @returns {void}
+         */
         class USGSOverlay extends google.maps.OverlayView {
             bounds;
             image;
@@ -563,7 +569,6 @@ const Map = () => {
         const date = new Date();
         date.setHours(date.getHours() + 8);
         const currentDateTime = date.toISOString().slice(0, 19);
-        let forecastDetails = "";
 
         fetch(
             `https://api.data.gov.sg/v1/environment/${option}-weather-forecast?date_time=${currentDateTime}`
@@ -711,7 +716,6 @@ const Map = () => {
                     `${getForecastDetails.name} failed due to ${status}`
                 );
             });
-        return forecastDetails;
     };
 
     const createCesium = () => {
@@ -1468,21 +1472,23 @@ const Map = () => {
                                         },
                                     };
                                 });
-                            });
-                        // .catch((status) =>
-                        //     console.log(
-                        //         `${
-                        //             retrieveRoute.name
-                        //         } with request ${JSON.stringify(
-                        //             request
-                        //         )} failed due to ${status}`
-                        //     )
-                        // );
+                            })
+                            .catch((status) =>
+                                console.log(
+                                    `${
+                                        retrieveRoute.name
+                                    } with request ${JSON.stringify(
+                                        request
+                                    )} failed due to ${status}`
+                                )
+                            );
                     }, 500);
 
                     break;
             }
         }
+        clearWeatherForecasts();
+        clearHeatMap();
     };
 
     const createRoutePath = (from, waypoints) => {
@@ -1854,30 +1860,44 @@ const Map = () => {
         });
     };
 
-    // const createCrowdHeatMap = () => {
-    //     if (!crowdMapData["active"]) {
-    //         setCrowdMapData((prevData) => {
-    //             return {
-    //                 ...prevData,
-    //                 day: dayDropdown.value,
-    //                 time: hourDropdown.value,
-    //             };
-    //         });
-    //         createHeatmap();
+    useEffect(() => {
+        /**
+         * Performs a nearby place search and updates the attraction markers based on the selected categories
+         *
+         * @param {Array} lat_lngArray - Array of latitude-longitude pairs
+         * @param {Array} categoriesChecked - Array of categories to search for
+         * @returns {void}
+         */
+        nearbyPlaceSearch(lat_lngArray, categoriesChecked);
 
-    //         setCrowdMapData((prevData) => {
-    //             return {
-    //                 ...prevData,
-    //                 active: !prevData["active"],
-    //             };
-    //         });
-    //     }
-    // };
+        for (const cat of allCategories) {
+            if (!categoriesChecked.includes(cat)) {
+                for (const catToBeRemoved of attractionMarkers.filter(
+                    (item) => item.category == cat
+                ))
+                    try {
+                        catToBeRemoved.marker.setMap(null);
+                    } catch (TypeError) {
+                        catToBeRemoved.marker.map = null;
+                    }
+                setAttractionMarkers(
+                    attractionMarkers.filter((item) => item.category !== cat)
+                );
+            }
+        }
+    }, [categoriesChecked]);
 
-    const createHeatmap = () => {
+    const createHeatmap = (day, time) => {
+        /**
+         * Creates a heatmap layer with crowd data for the specified day and time
+         *
+         * @param {string} day - The day for which to display crowd data
+         * @param {string} time - The time for which to display crowd data
+         * @returns {void}
+         */
+        clearHeatMap();
         // Displaying crowd data at these locations
-        const {heatMaps, heatMapData, day, time} = crowdMapData;
-
+        const {heatMapData} = crowdMapData;
         const heatMapDataToMap = heatMapData.map((heatMapDataa) => {
             let weight;
             try {
@@ -1888,32 +1908,27 @@ const Map = () => {
 
             if (weight > 0) {
                 return {
-                    location: heatMapDataa["placeLocation"],
+                    location: heatMapDataa["placeLat_Lng"],
                     weight: weight,
                 };
             }
             return 0;
         });
-        const heatmap = new google.maps.visualization.HeatmapLayer({
+        const heatMapToMap = new google.maps.visualization.HeatmapLayer({
             data: heatMapDataToMap.filter((item) => item !== 0),
             opacity: 0.8,
             radius: 25,
         });
 
-        heatMaps.push(heatmap);
-        heatmap.setMap(gmap);
+        heatMapToMap.setMap(gmap);
 
         setCrowdMapData((prevData) => {
             return {
                 ...prevData,
-                heatMaps: heatMaps,
+                heatMap: heatMapToMap,
             };
         });
     };
-
-    // useEffect(() => {
-    //     clearHeatMap();
-    // }, [crowdMapData["time"]]);
 
     const createAttractionMarker = (details) => {
         /**
@@ -2003,10 +2018,10 @@ const Map = () => {
                 markerIcon = "tree";
                 break;
             case "skyrise_greenery":
-                markerIcon = "skyatlas";
+                markerIcon = "tree-city";
                 break;
             case "green_mark":
-                markerIcon = "trophy-star";
+                markerIcon = "wreath";
                 break;
             case "ev":
                 markerIcon = "car-side";
@@ -2065,26 +2080,6 @@ const Map = () => {
         markerView.content.classList.remove("highlight");
         markerView.element.style.zIndex = "";
     };
-
-    useEffect(() => {
-        nearbyPlaceSearch(lat_lngArray, categoriesChecked);
-
-        for (const cat of allCategories) {
-            if (!categoriesChecked.includes(cat)) {
-                for (const catToBeRemoved of attractionMarkers.filter(
-                    (item) => item.category == cat
-                ))
-                    try {
-                        catToBeRemoved.marker.setMap(null);
-                    } catch (TypeError) {
-                        catToBeRemoved.marker.map = null;
-                    }
-                setAttractionMarkers(
-                    attractionMarkers.filter((item) => item.category !== cat)
-                );
-            }
-        }
-    }, [categoriesChecked]);
 
     const calculatePartialStats = (routeLegsArray, transportMode, api) => {
         /**
@@ -2585,31 +2580,6 @@ const Map = () => {
         setCurrentRouteOverview("");
     };
 
-    function clearHeatMap() {
-        /**
-         * Clears heatmaps from the map
-         * @returns {void}
-         */
-        const heatMaps = crowdMapData["heatMaps"];
-        if (heatMaps.length > 0) {
-            for (let i = 0; i < heatMaps.length; i++) {
-                if (heatMaps[i] != null) {
-                    // deletes heatmap coords + hides heatmap
-                    heatMaps[i].setData([]);
-                    heatMaps[i].setMap(null);
-                }
-            }
-        }
-        setCrowdMapData((prevData) => {
-            return {
-                ...prevData,
-                active: false,
-                heatMaps: [],
-                heatMapData: [],
-            };
-        });
-    }
-
     function clearWeatherForecasts() {
         /**
          * Clears weather forecast overlays from the map
@@ -2634,6 +2604,28 @@ const Map = () => {
         document
             .querySelectorAll("#weatherForecasts select")
             .forEach((dropdown) => dropdown.remove());
+    }
+
+    function clearHeatMap() {
+        /**
+         * Clears heatmaps from the map
+         * @returns {void}
+         */
+
+        const heatMap = crowdMapData["heatMap"];
+
+        if (heatMap != null) {
+            // deletes heatmap coords + hides heatmap
+            heatMap.setData([]);
+            heatMap.setMap(null);
+        }
+
+        setCrowdMapData((prevData) => {
+            return {
+                ...prevData,
+                heatMap: null,
+            };
+        });
     }
 
     const formatRouteName = (locationName) => {
@@ -2803,7 +2795,7 @@ const Map = () => {
                         type="button"
                         id="toggleTrafficLayer"
                         value="Traffic Overview"
-                        onClick={() => toggleLayerClick("Traffic")}
+                        onClick={() => handleLayerClick("Traffic")}
                     />
                 </div>
                 <div id="cesium">
@@ -2886,12 +2878,10 @@ const Map = () => {
                             allCategories,
                             setCategoriesChecked,
                             categoriesChecked,
-                            toggleLayerClick,
+                            handleLayerClick,
                             weatherForecasts,
                             setWeatherForecasts,
-                            handleWeatherForecastClick,
-                            crowdMapData,
-                            setCrowdMapData,
+                            getForecastDetails,
                             createHeatmap,
                             clearHeatMap,
                         }}

@@ -1,7 +1,7 @@
-import { IoLocationSharp } from "react-icons/io5";
-import { FaExclamationTriangle, FaAngleDown } from "react-icons/fa";
+import {IoLocationSharp} from "react-icons/io5";
+import {FaExclamationTriangle, FaAngleDown} from "react-icons/fa";
 import "../../styles/attractionsView.css";
-import { useState } from "react";
+import {useState} from "react";
 
 const AttractionsView = ({
     setView,
@@ -9,11 +9,9 @@ const AttractionsView = ({
     allCategories,
     setCategoriesChecked,
     categoriesChecked,
-    setCrowdMapData,
     createHeatmap,
-    clearHeatMap
- }) => {
-
+    clearHeatMap,
+}) => {
     const [isDropdownActive, setIsDropdownActive] = useState(false);
 
     const handleCategoryChecked = (e) => {
@@ -63,19 +61,12 @@ const AttractionsView = ({
     ];
 
     const handleCrowdMapClick = () => {
-        if (document.querySelector("#dayDropdown").value != "" && document.querySelector("#hourDropdown").value !="")
-        {setCrowdMapData((prevData) => {
-            return {
-                ...prevData,
-                active: true,
-                day: document.querySelector("#dayDropdown").value,
-                time: document.querySelector("#hourDropdown").value,
-            };
-        });
-        createHeatmap();
-    }
-
-    }
+        const dayDropdownValue = document.querySelector("#dayDropdown").value;
+        const hourDropdownValue = document.querySelector("#hourDropdown").value;
+        if (dayDropdownValue != "" && hourDropdownValue != "") {
+            createHeatmap(dayDropdownValue, hourDropdownValue);
+        }
+    };
 
     return (
         <div className="attractionsView">
@@ -88,19 +79,32 @@ const AttractionsView = ({
                     Back
                 </button>
             </div>
-            {(Object.keys(currentRoute).length === 0) ?
+            {Object.keys(currentRoute).length === 0 ? (
                 <div className="attractionsNoticeBox">
-                    <p><FaExclamationTriangle />  Create a route to discover nearby sustainable attractions!</p>
-                </div> :
+                    <p>
+                        <FaExclamationTriangle /> Create a route to discover
+                        nearby sustainable attractions!
+                    </p>
+                </div>
+            ) : (
                 <div className="attractionsContainer">
                     <div className="attractionsOptions">
                         <div className="attractionsCategoriesDropdown">
-                            <div className="attractionsDropdownLabel" onClick={() => setIsDropdownActive(!isDropdownActive)}>
+                            <div
+                                className="attractionsDropdownLabel"
+                                onClick={() =>
+                                    setIsDropdownActive(!isDropdownActive)
+                                }
+                            >
                                 <p>Select category:</p>
                                 <FaAngleDown />
                             </div>
 
-                            <ul className={`${(isDropdownActive) ? "activeDropdown" : ""} attractionsDropdownList`}>
+                            <ul
+                                className={`${
+                                    isDropdownActive ? "activeDropdown" : ""
+                                } attractionsDropdownList`}
+                            >
                                 {allCategories.map((cat, i) => (
                                     <li className="categoryItem" key={i}>
                                         <label>
@@ -110,8 +114,10 @@ const AttractionsView = ({
                                                 }
                                                 className="category"
                                                 name={cat}
-                                                type="checkbox" />
-                                            {cat}</label>
+                                                type="checkbox"
+                                            />
+                                            {cat}
+                                        </label>
                                     </li>
                                 ))}
                             </ul>
@@ -120,17 +126,25 @@ const AttractionsView = ({
                             <h4>Crowd Map</h4>
                             <p>Choose a day</p>
                             <select id="dayDropdown" defaultValue="">
-                                <option disabled value="">Please select a day</option>
+                                <option disabled value="">
+                                    Please select a day
+                                </option>
                                 {daysOfWeek.map((day, i) => (
-                                    <option value={day} key={i}>{day}</option>
+                                    <option value={day} key={i}>
+                                        {day}
+                                    </option>
                                 ))}
                             </select>
 
                             <p>Choose a time</p>
                             <select id="hourDropdown" defaultValue="">
-                                <option disabled value="">Please select a time</option>
+                                <option disabled value="">
+                                    Please select a time
+                                </option>
                                 {hoursOfDay.map((day, i) => (
-                                    <option value={day} key={i}>{day}</option>
+                                    <option value={day} key={i}>
+                                        {day}
+                                    </option>
                                 ))}
                             </select>
                             <input
@@ -139,15 +153,16 @@ const AttractionsView = ({
                                 value="Generate Crowd Heatmap"
                                 onClick={() => handleCrowdMapClick()}
                             />
-                        <button className="clearHeatMapButton" onClick={() => clearHeatMap()}>
-                            Clear Map
-                        </button>
+                            <button
+                                className="clearHeatMapButton"
+                                onClick={() => clearHeatMap()}
+                            >
+                                Clear Map
+                            </button>
                         </div>
-
                     </div>
                 </div>
-            }
-
+            )}
         </div>
     );
 };
