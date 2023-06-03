@@ -37,7 +37,6 @@ const RouteBuilder = ({
         //check if every input field is filled
         let fromValue = document.querySelector("#fromPlaceName").value;
         let toInputs = document.querySelectorAll(".toPlaceName");
-        console.log(waypointValues)
 
         if (fromValue === "") {
             Store.addNotification({

@@ -1,21 +1,22 @@
-import { useEffect, useRef, useState } from "react";
+import {useEffect, useRef, useState} from "react";
 import "../styles/map.css";
-import { Helmet } from "react-helmet";
+import {Helmet} from "react-helmet";
 import LeftSidebar from "../components/LeftSidebar";
-import { FaChevronRight, FaChevronLeft } from "react-icons/fa";
+import {FaChevronRight, FaChevronLeft} from "react-icons/fa";
 import RightSidebar from "../components/rightSidebar/RightSidebar";
-import { UserAuth } from "../context/AuthContext";
-import { Store } from "react-notifications-component";
+import {UserAuth} from "../context/AuthContext";
+import {Store} from "react-notifications-component";
+import {getDatabase} from "firebase/database";
 import * as Cesium from "cesium";
 import ResearchedData from "../data/ResearchedData.json";
 import BlueSGData from "../data/BlueSGData.json";
 import OneMapData from "../data/OneMapData.json";
-import { getDatabase } from "firebase/database";
+import weatherForecastData from "../data/weatherForecastData.json";
 
-
+// Used native Google Maps API, but React library: https://www.npmjs.com/package/google-map-react
 const Map = () => {
     //user information
-    const { user } = UserAuth();
+    const {user} = UserAuth();
 
     //firebase db
     const database = getDatabase();
@@ -26,7 +27,7 @@ const Map = () => {
     // const language = ...
     // const mapCenter = document.querySelector(#regionMapCenter) (hidden, center=mapCenter)
     const gAutoCompleteOptions = {
-        componentRestrictions: { country: "SG" },
+        componentRestrictions: {country: "SG"},
         // "rating", "user_ratings_total" for data
         fields: ["name", "geometry", "place_id"],
     };
@@ -48,10 +49,25 @@ const Map = () => {
     const cesiumCreated = useRef(false);
     const cesiumViewer = useRef(null);
     const rotateCesium = useRef(null);
+    const [fromPlaceValue, setFromPlaceValue] = useState("");
     const [waypointsNum, setWaypointsNum] = useState(1);
-    const [gToAutoComplete, setGToAutoComplete] = useState(null);
-    const [weatherForecasts, setWeatherForecasts] = useState([]);
+    const [waypointValues, setWaypointValues] = useState([""]);
+    const [chosenTransportMode, setChosenTransportMode] = useState("DRIVING");
+    const [chosenOptimizeRoute, setChosenOptimizeRoute] = useState(false);
+    const [gLayers, setGLayers] = useState({
+        active: "",
+        Traffic: null,
+        Transit: null,
+        Bicycling: null,
+    });
+    const [weatherForecasts, setWeatherForecasts] = useState({
+        active: "",
+        notification: "",
+        overlay: [],
+        options: ["2-hour", "24-hour"],
+    });
     const [crowdMapData, setCrowdMapData] = useState({
+        active: false,
         heatMaps: [],
         heatMapData: [],
         day: null,
@@ -61,8 +77,6 @@ const Map = () => {
     const [attractionMarkers, setAttractionMarkers] = useState([]);
     const [lat_lngArray, setLat_LngArray] = useState([]);
 
-    const [isAttractionsDropdownOpen, setIsAttractionsDropdownOpen] =
-        useState(false);
     const allCategories = [
         "Water Activities",
         "SAFRA Centres",
@@ -80,129 +94,166 @@ const Map = () => {
         "BlueSG (EV)",
     ];
     const [categoriesChecked, setCategoriesChecked] = useState([]);
-    const [waypointValues, setWaypointValues] = useState([""]);
-
     const [travelStats, setTravelStats] = useState({
         chosen: "",
-        DRIVING: { carbonFootprintCount: 0, travelDuration: 0 },
-        TRANSIT: { carbonFootprintCount: 0, travelDuration: 0 },
-        WALKING: { carbonFootprintCount: 0, travelDuration: 0 },
-        BICYCLING: { carbonFootprintCount: 0, travelDuration: 0 },
+        DRIVING: {carbonFootprintCount: 0, travelDuration: 0},
+        TRANSIT: {carbonFootprintCount: 0, travelDuration: 0},
+        WALKING: {carbonFootprintCount: 0, travelDuration: 0},
+        BICYCLING: {carbonFootprintCount: 0, travelDuration: 0},
     });
-
 
     //FOR SAVING ROUTES
     const [currentRoute, setCurrentRoute] = useState({});
     const [currentRouteOverview, setCurrentRouteOverview] = useState("");
 
-    
-   
-
     //FOR RETRIEVING SAVED/SHARED/PRESET ROUTES
 
     useEffect(() => {
         if (gDirectionsService) {
-        const fetchedRouteName = localStorage.getItem("routeName");
-        const fetchedRouteRequest = localStorage.getItem("routeRequest")
-        if (fetchedRouteRequest && fetchedRouteRequest != undefined && fetchedRouteRequest != "") {
-            setTimeout(() => {
-                setCurrentRoute(JSON.parse(fetchedRouteRequest));
-                let waypointCount = (JSON.parse(fetchedRouteRequest)["waypoints"].length > 1)
-                    ? JSON.parse(fetchedRouteRequest)["waypoints"].slice(1).length
-                    : 1
-                setWaypointsNum(waypointCount);
-                setWaypointValues(Array(waypointCount).fill(""));
-                const transportModeMenu = document.querySelector("#transportModeMenu");
-                transportModeMenu.value = JSON.parse(fetchedRouteRequest)["travelMode"];
-                const optimizeMenu = document.querySelector("#optimizeRoute");
-                optimizeMenu.checked = JSON.parse(fetchedRouteRequest)["optimizeWaypoints"];
-                fromPlaceNameRef.current.value = JSON.parse(fetchedRouteRequest).origin.name;
+            const fetchedRouteName = localStorage.getItem("routeName");
+            const fetchedRouteRequest = localStorage.getItem("routeRequest");
+            if (
+                fetchedRouteRequest &&
+                fetchedRouteRequest != undefined &&
+                fetchedRouteRequest != ""
+            ) {
+                setTimeout(() => {
+                    setCurrentRoute(JSON.parse(fetchedRouteRequest));
+                    let waypointCount =
+                        JSON.parse(fetchedRouteRequest)["waypoints"].length > 1
+                            ? JSON.parse(fetchedRouteRequest)[
+                                  "waypoints"
+                              ].slice(1).length
+                            : 1;
+                    setWaypointsNum(waypointCount);
+                    setWaypointValues(Array(waypointCount).fill(""));
+                    const transportModeMenu =
+                        document.querySelector("#transportModeMenu");
+                    transportModeMenu.value =
+                        JSON.parse(fetchedRouteRequest)["travelMode"];
+                    const optimizeMenu =
+                        document.querySelector("#optimizeRoute");
+                    optimizeMenu.checked =
+                        JSON.parse(fetchedRouteRequest)["optimizeWaypoints"];
+                    fromPlaceNameRef.current.value =
+                        JSON.parse(fetchedRouteRequest).origin.name;
 
-                //get origin place object
-                const service = new google.maps.places.PlacesService(document.createElement('div'));
+                    //get origin place object
+                    const service = new google.maps.places.PlacesService(
+                        document.createElement("div")
+                    );
 
-                service.getDetails({ placeId: JSON.parse(fetchedRouteRequest).origin.place_id,  fields: ["name", "geometry", "place_id"] }, (placeResult, status) => {
-                    if (status === google.maps.places.PlacesServiceStatus.OK) {
-                        document.querySelector("#fromPlace").value = JSON.stringify(placeResult);
-                    } else {
-                        console.log('Place retrieval failed:', status);
-                    }
-                });
+                    service.getDetails(
+                        {
+                            placeId:
+                                JSON.parse(fetchedRouteRequest).origin.place_id,
+                            fields: ["name", "geometry", "place_id"],
+                        },
+                        (placeResult, status) => {
+                            if (
+                                status ===
+                                google.maps.places.PlacesServiceStatus.OK
+                            ) {
+                                document.querySelector("#fromPlace").value =
+                                    JSON.stringify(placeResult);
+                            } else {
+                                console.log("Place retrieval failed:", status);
+                            }
+                        }
+                    );
 
-                //get all waypoint place objects if there is more than 1 waypoint 
+                    //get all waypoint place objects if there is more than 1 waypoint
 
-
-
-                    let waypointList = (waypointCount > 1) ? JSON.parse(fetchedRouteRequest).waypoints.slice(1) : JSON.parse(fetchedRouteRequest).waypoints; // remove origin from waypoint list if waypointsCount > 1
-                    console.log(waypointList)
+                    let waypointList =
+                        waypointCount > 1
+                            ? JSON.parse(fetchedRouteRequest).waypoints.slice(1)
+                            : JSON.parse(fetchedRouteRequest).waypoints; // remove origin from waypoint list if waypointsCount > 1
+                    console.log(waypointList);
                     const toPlaceNames = Array.from(
                         document.querySelectorAll(".toPlaceName")
                     );
 
-                    
                     const findPlace = (index) => {
                         setTimeout(() => {
-                            const toService = new google.maps.places.PlacesService(document.createElement('div'));
-                            toService.getDetails({ placeId: waypointList[index].place_id,  fields: ["name", "geometry", "place_id"] }, (placeResult, status) => {
-                                if (status === google.maps.places.PlacesServiceStatus.OK) {
-                                    setWaypointValues((prevWaypoints) =>
-                                        prevWaypoints.map((item, j) =>
-                                            j === index
-                                                ? JSON.stringify(placeResult)
-                                                : prevWaypoints[j]
-                                        )
-                                    );
+                            const toService =
+                                new google.maps.places.PlacesService(
+                                    document.createElement("div")
+                                );
+                            toService.getDetails(
+                                {
+                                    placeId: waypointList[index].place_id,
+                                    fields: ["name", "geometry", "place_id"],
+                                },
+                                (placeResult, status) => {
+                                    if (
+                                        status ===
+                                        google.maps.places.PlacesServiceStatus
+                                            .OK
+                                    ) {
+                                        setWaypointValues((prevWaypoints) =>
+                                            prevWaypoints.map((item, j) =>
+                                                j === index
+                                                    ? JSON.stringify(
+                                                          placeResult
+                                                      )
+                                                    : prevWaypoints[j]
+                                            )
+                                        );
 
+                                        if (index + 1 < waypointList.length) {
+                                            const nextIndex = index + 1;
+                                            findPlace(nextIndex);
+                                        } else {
+                                            //ROUTE RETRIEVAL COMPLETE
 
-                                    if (index + 1 < waypointList.length) {
-                                        const nextIndex = index + 1;
-                                        findPlace(nextIndex);
+                                            setTimeout(() => {
+                                                console.log(
+                                                    "RETRIEVE COMPLETE"
+                                                );
+                                                calcRoute();
+                                                Store.addNotification({
+                                                    title: "Success!",
+                                                    message:
+                                                        "Route successfully loaded!",
+                                                    type: "success",
+                                                    insert: "top",
+                                                    container: "bottom-right",
+                                                    animationIn: [
+                                                        "animate__animated",
+                                                        "animate__fadeIn",
+                                                    ],
+                                                    animationOut: [
+                                                        "animate__animated",
+                                                        "animate__fadeOut",
+                                                    ],
+                                                    dismiss: {
+                                                        duration: 5000,
+                                                        onScreen: true,
+                                                    },
+                                                });
+                                            }, 2000);
+                                        }
                                     } else {
-                                        //ROUTE RETRIEVAL COMPLETE
-                                       
-                                        setTimeout(()=> {
-                                            console.log("RETRIEVE COMPLETE");
-                                            calcRoute();
-                                            Store.addNotification({
-                                                title: "Success!",
-                                                message: "Route successfully loaded!",
-                                                type: "success",
-                                                insert: "top",
-                                                container: "bottom-right",
-                                                animationIn: ["animate__animated", "animate__fadeIn"],
-                                                animationOut: ["animate__animated", "animate__fadeOut"],
-                                                dismiss: {
-                                                    duration: 5000,
-                                                    onScreen: true
-                                                }
-                                            });
-                                        }, 2000)
-                                        
+                                        console.log(
+                                            "Place retrieval failed:",
+                                            status
+                                        );
                                     }
-
-                                } else {
-                                    console.log('Place retrieval failed:', status);
                                 }
-                            });
-
-                            
-                        }, 100)
-                    }
+                            );
+                        }, 100);
+                    };
                     findPlace(0);
-
-                
-
-            }, 1000)
+                }, 1000);
+            }
         }
-    }
-    }, [typeof window, gDirectionsService])
-
+    }, [typeof window, gDirectionsService]);
 
     if (typeof window != "undefined") {
         window.initMap = () => {
             /**
              * Initializes the Google Map, Geocoder, DirectionsService, Autocomplete for the first origin and destination inputs
-             * Creates controls for the layers and weather forecast overviews, Gathers user's location using HTML5 geolocation
+             * Gathers user's location using HTML5 geolocation
              *
              * Note:
              * For custom marker images, add {suppressMarkers:true}, https://thewebstorebyg.wordpress.com/2013/01/11/custom-directions-panel-with-google-maps-api-v3/
@@ -210,7 +261,7 @@ const Map = () => {
 
             const map = new google.maps.Map(document.querySelector("#map"), {
                 mapId: "741626712eb9af1",
-                center: { lat: 1.3521, lng: 103.8198 },
+                center: {lat: 1.3521, lng: 103.8198},
                 zoom: 12,
                 mapTypeControl: false,
                 mapTypeControlOptions: {
@@ -229,32 +280,18 @@ const Map = () => {
                 },
             });
             google.maps.event.addListener(map, "click", function () {
-                this.setOptions({ scrollwheel: true });
+                this.setOptions({scrollwheel: true});
             });
 
             const geocoder = new google.maps.Geocoder();
 
             const directionsService = new google.maps.DirectionsService();
 
-            const fromAutocomplete = new google.maps.places.Autocomplete(
-                document.querySelector("#fromPlaceName"),
-                gAutoCompleteOptions
-            );
-            const toAutocomplete = new google.maps.places.Autocomplete(
-                document.querySelector("#firstToPlaceName"),
-                gAutoCompleteOptions
-            );
-
-            autocompleteAddListener(fromAutocomplete, 0);
-            autocompleteAddListener(toAutocomplete, waypointsNum);
-            // createLayersControl();
-            // createWeatherControl();
-
             if (navigator.geolocation) {
                 navigator.geolocation.watchPosition(
                     (position) => {
                         // speed, heading, accuracy
-                        const { latitude, longitude } = position["coords"];
+                        const {latitude, longitude} = position["coords"];
                         originLat_Lng.current = {
                             lat: latitude,
                             lng: longitude,
@@ -304,11 +341,62 @@ const Map = () => {
             setGMap(map);
             setGGeocoder(geocoder);
             setGDirectionsService(directionsService);
-            setGToAutoComplete(toAutocomplete);
+            setGLayers((prevLayers) => {
+                return {
+                    ...prevLayers,
+                    Traffic: new google.maps.TrafficLayer(),
+                    Transit: new google.maps.TransitLayer(),
+                    Bicycling: new google.maps.BicyclingLayer(),
+                };
+            });
         };
     }
 
+    useEffect(() => {
+        /**
+         * Sets up the autocomplete functionality and event listeners for the left sidebar inputs when `showLeftSidebar` = true
+         * Updates the selected transport mode, optimize route, and waypoint values based on user interactions
+         * @returns {void}
+         */
+        setTimeout(() => {
+            if (showLeftSidebar) {
+                const fromAutocomplete = new google.maps.places.Autocomplete(
+                    document.querySelector("#fromPlaceName"),
+                    gAutoCompleteOptions
+                );
+                autocompleteAddListener(fromAutocomplete, 0);
 
+                fromPlaceNameRef.current.value =
+                    fromPlaceValue !== ""
+                        ? JSON.parse(fromPlaceValue)["name"]
+                        : "";
+                document.querySelector("#fromPlace").value =
+                    fromPlaceValue !== "" ? fromPlaceValue : "";
+
+                const transportModeMenu =
+                    document.querySelector("#transportModeMenu");
+                transportModeMenu.addEventListener("change", (e) => {
+                    setChosenTransportMode(e.target.value);
+                });
+                transportModeMenu.value = chosenTransportMode;
+
+                const optimizeRoute = document.querySelector("#optimizeRoute");
+                optimizeRoute.addEventListener("click", () => {
+                    setChosenOptimizeRoute(optimizeRoute.checked);
+                });
+                optimizeRoute.checked = chosenOptimizeRoute;
+
+                waypointValues.forEach((place, i) => {
+                    const newToAutoComplete =
+                        new google.maps.places.Autocomplete(
+                            document.querySelectorAll("input.toPlaceName")[i],
+                            gAutoCompleteOptions
+                        );
+                    autocompleteAddListener(newToAutoComplete, i + 1);
+                });
+            }
+        }, 600);
+    }, [showLeftSidebar]);
 
     const toggleMapClick = () => {
         /**
@@ -324,6 +412,7 @@ const Map = () => {
             case false:
                 createCesium();
                 cesiumCreated.current = true;
+            // Intentional fall-through
             case true:
                 const fromPlaceName =
                     document.querySelector("#fromPlaceName").value;
@@ -343,6 +432,279 @@ const Map = () => {
                 }
                 break;
         }
+    };
+
+    const toggleLayerClick = (layer) => {
+        setGLayers((prevLayers) => {
+            return {
+                ...prevLayers,
+                active: prevLayers["active"] === layer ? "" : layer,
+            };
+        });
+    };
+
+    useEffect(() => {
+        const {active, ...allGLayers} = gLayers;
+        const activeLayer = gLayers[active];
+        Object.entries(allGLayers).forEach(([gLayerName, gLayer]) => {
+            if (gLayer !== null) {
+                if (gLayer === activeLayer) {
+                    gLayer.setMap(gmap);
+                } else {
+                    gLayer.setMap(null);
+                    // Set other buttons to look disabled: document.querySelector(`#toggle${gLayerName}Layer`)
+                }
+            }
+        });
+    }, [gLayers]);
+
+    const handleWeatherForecastClick = (option) => {
+        setWeatherForecasts((prevForecasts) => {
+            return {
+                ...prevForecasts,
+                active: option,
+            };
+        });
+        // Ensure useEffect happens before getForecastDetails
+        getForecastDetails(option);
+    };
+
+    useEffect(() => {
+        clearWeatherForecasts();
+    }, [weatherForecasts["active"]]);
+
+    const getForecastDetails = (option) => {
+        class USGSOverlay extends google.maps.OverlayView {
+            bounds;
+            image;
+            div;
+            constructor(bounds, image) {
+                super();
+                this.bounds = bounds;
+                this.image = image;
+            }
+            onAdd() {
+                this.div = document.createElement("div");
+                this.div.style.borderStyle = "none";
+                this.div.style.borderWidth = "0px";
+                this.div.style.position = "absolute";
+                const img = document.createElement("img");
+                img.src = this.image;
+                img.style.width = "100%";
+                img.style.height = "100%";
+                img.style.position = "absolute";
+                this.div.appendChild(img);
+                const panes = this.getPanes();
+                panes.overlayLayer.appendChild(this.div);
+            }
+            draw() {
+                const overlayProjection = this.getProjection();
+                const sw = overlayProjection.fromLatLngToDivPixel(
+                    this.bounds.getSouthWest()
+                );
+                const ne = overlayProjection.fromLatLngToDivPixel(
+                    this.bounds.getNorthEast()
+                );
+                if (this.div) {
+                    this.div.style.left = sw.x + "px";
+                    this.div.style.top = ne.y + "px";
+                    this.div.style.width = ne.x - sw.x + "px";
+                    this.div.style.height = sw.y - ne.y + "px";
+                }
+            }
+            onRemove() {
+                if (this.div) {
+                    this.div.parentNode.removeChild(this.div);
+                    delete this.div;
+                }
+            }
+
+            hide() {
+                if (this.div) {
+                    this.div.style.visibility = "hidden";
+                }
+            }
+            show() {
+                if (this.div) {
+                    this.div.style.visibility = "visible";
+                }
+            }
+            toggle() {
+                if (this.div) {
+                    if (this.div.style.visibility === "hidden") {
+                        this.show();
+                    } else {
+                        this.hide();
+                    }
+                }
+            }
+            toggleDOM(map) {
+                if (this.getMap()) {
+                    this.setMap(null);
+                } else {
+                    this.setMap(map);
+                }
+            }
+        }
+
+        // Order: Ang Mo Kio, Bedok, Bishan, Boon Lay, Bukit Batok, Bukit Merah, Bukit Panjang, Bukit Timah, Central Water Catchment, Changi, Choa Chu Kang, Clementi, City, Geylang, Hougang, Jalan Bahar, Jurong East, Jurong Island, Jurong West, Kallang, Lim Chu Kang, Mandai, Marine Parade, Novena, Pasir Ris, Paya Lebar, Pioneer, Pulau Tekong, Pulau Ubin, Punggol, Queenstown, Seletar, Sembawang, Sengkang, Sentosa, Serangoon, Southern Islands, Sungei Kadut, Tampines, Tanglin, Tengah, Toa Payoh, Tuas, Western Islands, Western Water Catchment, Woodlands, Yishun
+        // Order: West, East, Central, South, North
+        // https://developers.google.com/maps/documentation/javascript/examples/event-click-latlng
+        const {areasLat_Lng, regions} = weatherForecastData;
+        const weatherImages = {
+            Sunny: "https://www.nea.gov.sg/assets/images/icons/weather/su.png",
+            Cloudy: "https://www.nea.gov.sg/assets/images/icons/weather/cl.png",
+            Rain: "https://www.nea.gov.sg/assets/images/icons/weather/ra.png",
+            Showers:
+                "https://www.nea.gov.sg/assets/images/icons/weather/sh.png",
+            Thundery:
+                "https://www.nea.gov.sg/assets/images/icons/weather/tl.png",
+        };
+        const date = new Date();
+        date.setHours(date.getHours() + 8);
+        const currentDateTime = date.toISOString().slice(0, 19);
+        let forecastDetails = "";
+
+        fetch(
+            `https://api.data.gov.sg/v1/environment/${option}-weather-forecast?date_time=${currentDateTime}`
+        )
+            .then((response) => response.json())
+            .then((data) => {
+                if (
+                    option === "2-hour" &&
+                    weatherForecasts["active"] !== option
+                ) {
+                    const valid_period = data["items"][0]["valid_period"];
+                    const weatherImagesToOverlay = [];
+                    const weatherForecastOverlays = [];
+
+                    data["items"][0]["forecasts"].forEach((forecast) => {
+                        Object.entries(weatherImages).forEach(
+                            ([key, value]) => {
+                                if (forecast["forecast"].includes(key)) {
+                                    weatherImagesToOverlay.push(value);
+                                }
+                            }
+                        );
+                    });
+
+                    areasLat_Lng.forEach((areaLat_Lng, i) => {
+                        const overlay = new USGSOverlay(
+                            new google.maps.LatLngBounds(
+                                new google.maps.LatLng(
+                                    areaLat_Lng["sw"]["lat"],
+                                    areaLat_Lng["sw"]["lng"]
+                                ),
+                                new google.maps.LatLng(
+                                    areaLat_Lng["ne"]["lat"],
+                                    areaLat_Lng["ne"]["lng"]
+                                )
+                            ),
+                            weatherImagesToOverlay[i]
+                        );
+                        overlay.setMap(gmap);
+                        weatherForecastOverlays.push(overlay);
+                    });
+
+                    setWeatherForecasts((prevForecasts) => {
+                        return {
+                            ...prevForecasts,
+                            notification: `Weather displayed only valid today (${get24Hr(
+                                valid_period["start"]
+                            )} - ${get24Hr(valid_period["end"])})`,
+                            overlay: weatherForecastOverlays,
+                        };
+                    });
+                } else if (
+                    option === "24-hour" &&
+                    weatherForecasts["active"] !== option
+                ) {
+                    const weatherImagesToOverlay = [];
+                    const weatherForecastOverlays = [];
+
+                    const dropdown = document.createElement("select");
+
+                    const defaultDropdownOption =
+                        document.createElement("option");
+                    defaultDropdownOption.textContent =
+                        "Please select an option";
+                    defaultDropdownOption.disabled = true;
+                    defaultDropdownOption.selected = true;
+                    dropdown.appendChild(defaultDropdownOption);
+
+                    data["items"][0]["periods"].forEach((period, i) => {
+                        const dropdownOption = document.createElement("option");
+                        dropdownOption.textContent = `${todayOrTomorrow(
+                            period["time"]["start"].split("T")[0]
+                        )} ${get24Hr(
+                            period["time"]["start"]
+                        )} - ${todayOrTomorrow(
+                            period["time"]["end"].split("T")[0]
+                        )} ${get24Hr(period["time"]["end"])}`;
+                        dropdownOption.value = JSON.stringify(period);
+                        dropdown.appendChild(dropdownOption);
+                    });
+
+                    dropdown.addEventListener("change", (e) => {
+                        clearWeatherForecasts();
+                        const selectedPeriod = JSON.parse(e.target.value);
+
+                        Object.values(selectedPeriod["regions"]).forEach(
+                            (forecast) => {
+                                Object.entries(weatherImages).forEach(
+                                    ([key, value]) => {
+                                        if (forecast.includes(key)) {
+                                            weatherImagesToOverlay.push(value);
+                                        }
+                                    }
+                                );
+                            }
+                        );
+                        regions.forEach((region, i) => {
+                            const overlay = new USGSOverlay(
+                                new google.maps.LatLngBounds(
+                                    new google.maps.LatLng(
+                                        region.sw.lat,
+                                        region.sw.lng
+                                    ),
+                                    new google.maps.LatLng(
+                                        region.ne.lat,
+                                        region.ne.lng
+                                    )
+                                ),
+                                weatherImagesToOverlay[i]
+                            );
+                            overlay.setMap(gmap);
+                            weatherForecastOverlays.push(overlay);
+                        });
+                        setWeatherForecasts((prevForecasts) => {
+                            return {
+                                ...prevForecasts,
+                                notification: `Weather displayed only valid ${
+                                    e.target.options[e.target.selectedIndex]
+                                        .textContent
+                                }`,
+                                overlay: weatherForecastOverlays,
+                            };
+                        });
+                    });
+
+                    document
+                        .querySelector("#weatherForecasts")
+                        .insertBefore(
+                            dropdown,
+                            document.querySelector(
+                                "#weatherForecastNotification"
+                            )
+                        );
+                }
+            })
+            .catch((status) => {
+                console.log(
+                    `${getForecastDetails.name} failed due to ${status}`
+                );
+            });
+        return forecastDetails;
     };
 
     const createCesium = () => {
@@ -402,16 +764,16 @@ const Map = () => {
             .catch((status) =>
                 status.code === 429
                     ? alert(
-                        "Sorry, 3D viewer quota exceeded, please try again in a few hours!"
-                    )
+                          "Sorry, 3D viewer quota exceeded, please try again in a few hours!"
+                      )
                     : console.log(
-                        `${createCesium.name} failed due to ${status}`
-                    )
+                          `${createCesium.name} failed due to ${status}`
+                      )
             );
 
         // Text Search API to get user's origin location, without needing to click on autocomplete option & automatically show on Cesium
         if (!originLat_Lng.current) {
-            originLat_Lng.current = { lat: 1.3521, lng: 103.8198 };
+            originLat_Lng.current = {lat: 1.3521, lng: 103.8198};
         }
 
         gGeocoder
@@ -701,14 +1063,13 @@ const Map = () => {
         if (waypointsNum > 1) {
             const newToAutoComplete = new google.maps.places.Autocomplete(
                 document.querySelectorAll("input.toPlaceName")[
-                waypointsNum - 1
+                    waypointsNum - 1
                 ],
                 gAutoCompleteOptions
             );
             autocompleteAddListener(newToAutoComplete, waypointsNum);
         }
     }, [waypointsNum]);
-
 
     const resetWaypoints = (e) => {
         /**
@@ -740,7 +1101,8 @@ const Map = () => {
             lat_lng: getLat_LngFromPlace(
                 document.querySelector("#fromPlace").value
             ),
-            place_id: JSON.parse(document.querySelector("#fromPlace").value).place_id
+            place_id: JSON.parse(document.querySelector("#fromPlace").value)
+                .place_id,
         };
         const waypoints = [];
         for (
@@ -753,13 +1115,13 @@ const Map = () => {
                 lat_lng: getLat_LngFromPlace(
                     document.querySelectorAll(".toPlace")[i].value
                 ),
-                place_id: JSON.parse(document.querySelectorAll(".toPlace")[i].value).place_id
+                place_id: JSON.parse(
+                    document.querySelectorAll(".toPlace")[i].value
+                ).place_id,
             };
         }
-        const transportMode = document
-            .querySelector("#transportModeMenu")
-            .value.toUpperCase();
-        const optimizeRoute = document.querySelector("#optimizeRoute").checked;
+        const transportMode = chosenTransportMode.toUpperCase();
+        const optimizeRoute = chosenOptimizeRoute;
 
         const reqRoute = {
             request: {
@@ -833,7 +1195,8 @@ const Map = () => {
                                     );
                                 } else {
                                     console.log(
-                                        `${retrieveRoute.name
+                                        `${
+                                            retrieveRoute.name
                                         } with optimizeRequest ${JSON.stringify(
                                             optimizeRequest
                                         )} failed due to ${status}`
@@ -866,7 +1229,8 @@ const Map = () => {
                                             result["routes"][0];
                                     } else {
                                         console.log(
-                                            `${retrieveRoute.name
+                                            `${
+                                                retrieveRoute.name
                                             } with request ${JSON.stringify(
                                                 request
                                             )} failed due to ${status}`
@@ -886,14 +1250,13 @@ const Map = () => {
                                 routeLegsAndPolylineArray,
                                 "directions"
                             );
-                            nearbyPlaceSearch(
+                            setLat_LngArray(
                                 getLat_LngArray(
                                     routeLegsAndPolylineArray.map(
                                         (route) => route["legs"]
                                     ),
                                     "directions"
-                                ),
-                                categoriesChecked
+                                )
                             );
                             const partialData = calculatePartialStats(
                                 routeLegsAndPolylineArray,
@@ -907,7 +1270,6 @@ const Map = () => {
                                 carbonFootprintCount,
                                 duration
                             );
-
                             setTravelStats((prevStats) => {
                                 return {
                                     ...prevStats,
@@ -919,7 +1281,6 @@ const Map = () => {
                                     },
                                 };
                             });
-                            
                         }, 750);
                     }, 750);
             }
@@ -975,7 +1336,8 @@ const Map = () => {
                                     );
                                 } else {
                                     console.log(
-                                        `${retrieveRoute.name
+                                        `${
+                                            retrieveRoute.name
                                         } with optimizeRequest ${JSON.stringify(
                                             optimizeRequest
                                         )} failed due to ${status}`
@@ -997,11 +1359,11 @@ const Map = () => {
                                 latLng: {
                                     latitude:
                                         waypointsLat_Lng[
-                                        waypointsLat_Lng.length - 1
+                                            waypointsLat_Lng.length - 1
                                         ]["lat"],
                                     longitude:
                                         waypointsLat_Lng[
-                                        waypointsLat_Lng.length - 1
+                                            waypointsLat_Lng.length - 1
                                         ]["lng"],
                                 },
                             },
@@ -1073,10 +1435,8 @@ const Map = () => {
                                     routeLegsArray,
                                     "routes"
                                 );
-
-                                nearbyPlaceSearch(
-                                    getLat_LngArray(routeLegsArray, "routes"),
-                                    categoriesChecked
+                                setLat_LngArray(
+                                    getLat_LngArray(routeLegsArray, "routes")
                                 );
                                 const partialData = calculatePartialStats(
                                     routeLegsArray,
@@ -1101,7 +1461,6 @@ const Map = () => {
                                         },
                                     };
                                 });
-                               
                             });
                         // .catch((status) =>
                         //     console.log(
@@ -1134,9 +1493,7 @@ const Map = () => {
             .splice(0, waypointsName.length - 1)
             .map((waypointName) => (routePath += waypointName + " ➡️ "));
         routePath += waypointsName[waypointsName.length - 1];
-
         return routePath;
-
     };
 
     const drawRoute = (routePath, result, api) => {
@@ -1205,12 +1562,13 @@ const Map = () => {
                     );
 
                     routeDirections +=
-                        `${String.fromCharCode(65 + i)} (${routePathSplit[i]
-                        }) ➡️ ${String.fromCharCode(66 + i)} (${routePathSplit[i + 1]
-                        })<br>${routeLegsArray[i][0]["distance"]["text"]
-                        }. About ${secondsToHms(
-                            routeLegsArray[i][0]["duration"]["value"]
-                        )} <hr>` +
+                        `${String.fromCharCode(65 + i)} (${
+                            routePathSplit[i]
+                        }) ➡️ ${String.fromCharCode(66 + i)} (${
+                            routePathSplit[i + 1]
+                        })<br>${
+                            routeLegsArray[i][0]["distance"]["text"]
+                        }. <hr>` +
                         routeLegsArray[i][0]["steps"]
                             .map((step, index) => {
                                 if (step["transit"]) {
@@ -1219,7 +1577,7 @@ const Map = () => {
                                             {
                                                 position:
                                                     step["transit"][
-                                                    "departure_stop"
+                                                        "departure_stop"
                                                     ]["location"],
                                                 content:
                                                     new google.maps.marker.PinView(
@@ -1242,7 +1600,7 @@ const Map = () => {
                                             {
                                                 position:
                                                     step["transit"][
-                                                    "arrival_stop"
+                                                        "arrival_stop"
                                                     ]["location"],
                                                 content:
                                                     new google.maps.marker.PinView(
@@ -1260,29 +1618,37 @@ const Map = () => {
                                             }
                                         )
                                     );
-                                    return `${index + 1}. Take ${step["transit"]["line"]["name"].length <
-                                        4 ||
+                                    // STEPS: index + 1
+                                    return `${index + 1}. Take ${
+                                        step["transit"]["line"]["name"].length <
+                                            4 ||
                                         step["transit"]["line"][
                                             "name"
                                         ].includes("Sentosa") ||
                                         step["transit"]["line"][
                                             "name"
                                         ].includes("Shuttle")
-                                        ? "🚌 BUS"
-                                        : "🚄 MRT"
-                                        } <b>${step["transit"]["line"]["name"]
-                                        }</b>  ${step["transit"]["departure_stop"][
-                                        "name"
+                                            ? "🚌 BUS"
+                                            : "🚄 MRT"
+                                    } <b>${
+                                        step["transit"]["line"]["name"]
+                                    }</b>  ${
+                                        step["transit"]["departure_stop"][
+                                            "name"
                                         ]
-                                        } -> ${step["transit"]["arrival_stop"]["name"]
-                                        } for ${step["transit"]["num_stops"]} ${step["transit"]["num_stops"] > 1
+                                    } -> ${
+                                        step["transit"]["arrival_stop"]["name"]
+                                    } for ${step["transit"]["num_stops"]} ${
+                                        step["transit"]["num_stops"] > 1
                                             ? "stops"
                                             : "stop"
-                                        }
+                                    }
                                     (<i>${step["distance"]["text"]}</i>)`;
                                 }
-                                return `${index + 1}. 🚶${step["instructions"]
-                                    } (<i>${step["distance"]["text"]}</i>)`;
+                                // STEPS: index + 1
+                                return `${index + 1}. 🚶${
+                                    step["instructions"]
+                                } (<i>${step["distance"]["text"]}</i>)`;
                             })
                             .join("<br>") +
                         "<br><br>";
@@ -1292,7 +1658,7 @@ const Map = () => {
                     new google.maps.marker.AdvancedMarkerView({
                         position:
                             routeLegsArray[routeLegsArray.length - 1][0][
-                            "end_location"
+                                "end_location"
                             ],
                         content: new google.maps.marker.PinView({
                             scale: 1,
@@ -1373,8 +1739,10 @@ const Map = () => {
                         })
                     );
                     routeDirections +=
-                        `${String.fromCharCode(65 + i)} (${routePathSplit[i]
-                        }) ➡️ ${String.fromCharCode(66 + i)} (${routePathSplit[i + 1]
+                        `${String.fromCharCode(65 + i)} (${
+                            routePathSplit[i]
+                        }) ➡️ ${String.fromCharCode(66 + i)} (${
+                            routePathSplit[i + 1]
                         })<br>${metersToKm(
                             result[i]["distanceMeters"]
                         )}. About ${secondsToHms(
@@ -1383,12 +1751,14 @@ const Map = () => {
                         result[i]["steps"]
                             .map((step, index) => {
                                 if (step["navigationInstruction"]) {
-                                    return `${index}. ${step["navigationInstruction"][
-                                        "instructions"
-                                    ]
-                                        } (<i>${metersToKm(
-                                            step["distanceMeters"]
-                                        )}</i>)<br>`;
+                                    // STEPS: index
+                                    return `${index}. ${
+                                        step["navigationInstruction"][
+                                            "instructions"
+                                        ]
+                                    } (<i>${metersToKm(
+                                        step["distanceMeters"]
+                                    )}</i>)<br>`;
                                 }
                             })
                             .join("");
@@ -1426,7 +1796,7 @@ const Map = () => {
          */
 
         const dataSets = [ResearchedData, BlueSGData, OneMapData];
-        // createCrowdControl();
+        const heatMapData = [];
 
         for (const lat_lng of lat_lngArray) {
             for (const dataSet of dataSets) {
@@ -1441,8 +1811,8 @@ const Map = () => {
                                     position: place["address"],
                                     url: `https://www.google.com/search?q=${encodeURIComponent(
                                         place["name"] +
-                                        " " +
-                                        place["formatted_address"]
+                                            " " +
+                                            place["formatted_address"]
                                     )}`,
                                     content: buildContent({
                                         type: place["type"],
@@ -1456,20 +1826,168 @@ const Map = () => {
                                     }),
                                 });
 
-                                // crowdMapData["heatMapData"].push({
-                                //     placeLocation: new google.maps.LatLng(
-                                //         place["address"]["lat"],
-                                //         place["address"]["lng"]
-                                //     ),
-                                //     placeCrowds: place["crowds"],
-                                // });
+                                heatMapData.push({
+                                    placeLat_Lng: new google.maps.LatLng(
+                                        place["address"]["lat"],
+                                        place["address"]["lng"]
+                                    ),
+                                    placeCrowds: place["crowds"],
+                                });
                             }
                         }
                     }
                 }
             }
         }
+        setCrowdMapData((prevData) => {
+            return {
+                ...prevData,
+                heatMapData: heatMapData,
+            };
+        });
+        createCrowdMapControls();
     };
+
+    const createCrowdMapControls = () => {
+        const crowdMapDiv = document.createElement("div");
+        crowdMapDiv.id = "crowdMap";
+
+        const crowdMapBtn = document.createElement("input");
+        crowdMapBtn.type = "button";
+        crowdMapBtn.id = "crowdMapBtn";
+        crowdMapBtn.value = "Crowd Overview";
+
+        crowdMapDiv.appendChild(crowdMapBtn);
+        document.querySelector(".attractionsView").appendChild(crowdMapDiv);
+
+        if (!crowdMapData["active"]) {
+            const daysOfWeek = [
+                "Sunday",
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday",
+                "Friday",
+                "Saturday",
+            ];
+            const hoursOfDay = [
+                "0000",
+                "0100",
+                "0200",
+                "0300",
+                "0400",
+                "0500",
+                "0600",
+                "0700",
+                "0800",
+                "0900",
+                "1000",
+                "1100",
+                "1200",
+                "1300",
+                "1400",
+                "1500",
+                "1600",
+                "1700",
+                "1800",
+                "1900",
+                "2000",
+                "2100",
+                "2200",
+                "2300",
+            ];
+            const defaultOption = document.createElement("option");
+            defaultOption.textContent = "Please select an option";
+            defaultOption.disabled = true;
+            defaultOption.selected = true;
+
+            const dayDropdown = document.createElement("select");
+            dayDropdown.appendChild(defaultOption);
+            daysOfWeek.forEach((day) => {
+                const option = document.createElement("option");
+                option.textContent = day;
+                option.value = day;
+                dayDropdown.appendChild(option);
+            });
+            dayDropdown.addEventListener("change", () => {
+                const existingCrowdHourDropdown =
+                    document.querySelector("#crowdHourDropdown");
+                if (!existingCrowdHourDropdown) {
+                    const hourDropdown = document.createElement("select");
+                    hourDropdown.id = "crowdHourDropdown";
+                    hourDropdown.appendChild(defaultOption);
+                    hoursOfDay.forEach((hour) => {
+                        const option = document.createElement("option");
+                        option.textContent = hour;
+                        option.value = hour;
+                        hourDropdown.appendChild(option);
+                        document
+                            .querySelector("#crowdMap")
+                            .appendChild(hourDropdown);
+                    });
+                    hourDropdown.addEventListener("change", () => {
+                        setCrowdMapData((prevData) => {
+                            return {
+                                ...prevData,
+                                day: dayDropdown.value,
+                                time: hourDropdown.value,
+                            };
+                        });
+                        createHeatmap();
+                    });
+                }
+            });
+
+            document.querySelector("#crowdMap").appendChild(dayDropdown);
+            setCrowdMapData((prevData) => {
+                return {
+                    ...prevData,
+                    active: !prevData["active"],
+                };
+            });
+        }
+    };
+
+    const createHeatmap = () => {
+        // Displaying crowd data at these locations
+        const {heatMaps, heatMapData, day, time} = crowdMapData;
+
+        const heatMapDataToMap = heatMapData.map((heatMapDataa) => {
+            let weight;
+            try {
+                weight = heatMapDataa["placeCrowds"][day][time];
+            } catch (TypeError) {
+                weight = 0;
+            }
+
+            if (weight > 0) {
+                return {
+                    location: heatMapDataa["placeLocation"],
+                    weight: weight,
+                };
+            }
+            return 0;
+        });
+        const heatmap = new google.maps.visualization.HeatmapLayer({
+            data: heatMapDataToMap.filter((item) => item !== 0),
+            opacity: 0.8,
+            radius: 25,
+        });
+
+        heatMaps.push(heatmap);
+        heatmap.setMap(gmap);
+
+        setCrowdMapData((prevData) => {
+            return {
+                ...prevData,
+                heatMaps: heatMaps,
+            };
+        });
+    };
+
+    useEffect(() => {
+        clearHeatMap();
+    }, [crowdMapData["time"]]);
 
     const createAttractionMarker = (details) => {
         /**
@@ -1532,7 +2050,8 @@ const Map = () => {
 
         content.innerHTML = `
         <div class="icon">
-            <i aria-hidden="true" class="fa fa-icon fa-${property["type"]
+            <i aria-hidden="true" class="fa fa-icon fa-${
+                property["type"]
             }" title="${property["type"]}"></i>
             <span class="fa-sr-only">${property["type"]}</span>
         </div>
@@ -1554,8 +2073,9 @@ const Map = () => {
             <div>
                 <i aria-hidden="true" class="fa fa-solid fa-dollar price" title="price"></i>
                 <span class="fa-sr-only">price</span>
-                <span${property["price"] * "$" || property["price"] || "$$$$$$$$"
-            }  span>
+                <span${
+                    property["price"] * "$" || property["price"] || "$$$$$$$$"
+                }  span>
             </div>
             </div>
         </div>
@@ -1580,6 +2100,26 @@ const Map = () => {
         markerView.content.classList.remove("highlight");
         markerView.element.style.zIndex = "";
     };
+
+    useEffect(() => {
+        nearbyPlaceSearch(lat_lngArray, categoriesChecked);
+
+        for (const cat of allCategories) {
+            if (!categoriesChecked.includes(cat)) {
+                for (const catToBeRemoved of attractionMarkers.filter(
+                    (item) => item.category == cat
+                ))
+                    try {
+                        catToBeRemoved.marker.setMap(null);
+                    } catch (TypeError) {
+                        catToBeRemoved.marker.map = null;
+                    }
+                setAttractionMarkers(
+                    attractionMarkers.filter((item) => item.category !== cat)
+                );
+            }
+        }
+    }, [categoriesChecked]);
 
     const calculatePartialStats = (routeLegsArray, transportMode, api) => {
         /**
@@ -1625,8 +2165,8 @@ const Map = () => {
                                     mode === "Subway" || mode === "Tram"
                                         ? "MRT"
                                         : mode === "Bus"
-                                            ? "Bus"
-                                            : "Walk";
+                                        ? "Bus"
+                                        : "Walk";
                                 carbonFootprintCount +=
                                     carbonFootprintBase[stepMode] *
                                     (step["distance"]["value"] / 1000);
@@ -1645,8 +2185,8 @@ const Map = () => {
                     transportMode === "DRIVING"
                         ? "Conventional Car"
                         : transportMode === "BICYCLING"
-                            ? "Conventional Bicycle"
-                            : "Walk";
+                        ? "Conventional Bicycle"
+                        : "Walk";
                 carbonFootprintCount +=
                     carbonFootprintBase[stepMode] * (routeDistance / 1000);
                 break;
@@ -1660,13 +2200,10 @@ const Map = () => {
          * @param {object} request - Travel request object containing origin, waypoints, optimizeWaypoints, and travelMode properties
          * @param {number} carbonFootprintCount - Total carbon footprint in kg CO2 equivalent emitted for the given travel request
          * @param {number} duration - Total duration for the given travel request, in seconds
-         * @returns {void} Does not return anything, but updates the statsPanel with comparison data between the given travel request's transport mode and all other modes of transport
-         *                 saves these stats in travelStats for future use
+         * @returns {void} Does not return anything, but updates the travelStats with the respective travel data
          *
          * Intention: Carbon footprint depending on mode of transport and their cumulative distance + time as a tradeoff to make informed decisions
          */
-
-        const statsPanel = document.querySelector("#statsPanel");
 
         const from = request["origin"];
         const waypoints = request["waypoints"];
@@ -1746,7 +2283,6 @@ const Map = () => {
                                     request,
                                     function (result, status) {
                                         if (status === "OK") {
-                                            console.log("sucess " + j)
                                             routeLegsArray[j] =
                                                 result["routes"][0];
                                         } else {
@@ -1783,7 +2319,6 @@ const Map = () => {
                                         },
                                     };
                                 });
-
                             }, 750);
                         }, 750);
                 }
@@ -1855,11 +2390,11 @@ const Map = () => {
                                 latLng: {
                                     latitude:
                                         waypointsLat_Lng[
-                                        waypointsLat_Lng.length - 1
+                                            waypointsLat_Lng.length - 1
                                         ]["lat"],
                                     longitude:
                                         waypointsLat_Lng[
-                                        waypointsLat_Lng.length - 1
+                                            waypointsLat_Lng.length - 1
                                         ]["lng"],
                                 },
                             },
@@ -1937,12 +2472,6 @@ const Map = () => {
                                     otherDuration,
                                     outputStringArray[i + 1]
                                 );
-                                /*travelStats.current[otherTravelModes[i]][
-                                    "carbonFootprintCount"
-                                ] = otherCarbonFootprintCount;
-                                travelStats.current[otherTravelModes[i]][
-                                    "travelDuration"
-                                ] = otherDuration;*/
                                 setTravelStats((prevStats) => {
                                     return {
                                         ...prevStats,
@@ -1962,14 +2491,6 @@ const Map = () => {
                         break;
                 }
             }
-            console.log(travelStats);
-            // statsPanel.innerHTML = "Generating statistics!";
-            // setTimeout(() => {
-            //     statsPanel.innerHTML = outputStringArray.join("");
-            //     if (!optimizeRoute) {
-            //         statsPanel.innerHTML += `<br>Optimize your route now for greater efficiency!<br> Or perhaps you'd like to expand your search radius and look for more sustainable options?`;
-            //     }
-            // }, 2200);
         }
     };
 
@@ -2040,9 +2561,10 @@ const Map = () => {
                     )
                 );
             } else {
-                document.querySelector("#fromPlaceName").value = place["name"];
+                fromPlaceNameRef.current.value = place["name"];
                 document.querySelector("#fromPlace").value =
                     JSON.stringify(place);
+                setFromPlaceValue(JSON.stringify(place));
             }
         });
     };
@@ -2098,6 +2620,58 @@ const Map = () => {
         setCurrentRouteOverview("");
     };
 
+    function clearHeatMap() {
+        /**
+         * Clears heatmaps from the map
+         * @returns {void}
+         */
+        const heatMaps = crowdMapData["heatMaps"];
+        if (heatMaps.length > 0) {
+            for (let i = 0; i < heatMaps.length; i++) {
+                if (heatMaps[i] != null) {
+                    // deletes heatmap coords + hides heatmap
+                    heatMaps[i].setData([]);
+                    heatMaps[i].setMap(null);
+                }
+            }
+        }
+        setCrowdMapData((prevData) => {
+            return {
+                ...prevData,
+                heatMaps: [],
+                heatMapData: [],
+            };
+        });
+        document
+            .querySelectorAll("#crowdMap select")
+            .forEach((dropdown) => dropdown.remove());
+    }
+
+    function clearWeatherForecasts() {
+        /**
+         * Clears weather forecast overlays from the map
+         * @returns {void}
+         */
+        const weatherForecastOverlay = weatherForecasts["overlay"];
+        if (weatherForecastOverlay.length > 0) {
+            for (let i = 0; i < weatherForecastOverlay.length; i++) {
+                if (weatherForecastOverlay[i] != null) {
+                    weatherForecastOverlay[i].setMap(null);
+                }
+            }
+        }
+        setWeatherForecasts((prevForecasts) => {
+            return {
+                ...prevForecasts,
+                overlay: [],
+                notification: "",
+            };
+        });
+        document
+            .querySelectorAll("#weatherForecasts  select")
+            .forEach((dropdown) => dropdown.remove());
+    }
+
     const formatRouteName = (locationName) => {
         /**
          * Generates the correct, readable string representation of the location name
@@ -2105,15 +2679,16 @@ const Map = () => {
          * @returns {string} Formatted representation of the location name
          */
         const locationNameSplit = locationName.split(", ");
-        return `${locationNameSplit.length > 2
-            ? locationNameSplit[1].length > 4
-                ? // if word more than 4 letters, takes word
-                locationNameSplit[1]
-                : // Else takes Postal Code
-                // Eg. Suntec City became 3 Temasek Blvd, #1, #327-328, Singapore 038983
-                locationNameSplit[locationNameSplit.length - 1]
-            : locationNameSplit[0]
-            }`;
+        return `${
+            locationNameSplit.length > 2
+                ? locationNameSplit[1].length > 4
+                    ? // if word more than 4 letters, takes word
+                      locationNameSplit[1]
+                    : // Else takes Postal Code
+                      // Eg. Suntec City became 3 Temasek Blvd, #1, #327-328, Singapore 038983
+                      locationNameSplit[locationNameSplit.length - 1]
+                : locationNameSplit[0]
+        }`;
     };
 
     const getLat_LngArray = (result, api) => {
@@ -2146,6 +2721,7 @@ const Map = () => {
                     .flat(2);
                 break;
         }
+        console.log(lat_lngArray.flat(2));
         return lat_lngArray.flat(2);
     };
 
@@ -2155,9 +2731,8 @@ const Map = () => {
          * @param {Object} place - The Google Maps Place object.
          * @returns {Object} - An object containing the latitude and longitude
          */
-        
         const placeLat_Lng = JSON.parse(place)["geometry"]["location"];
-        return { lat: placeLat_Lng["lat"], lng: placeLat_Lng["lng"] };
+        return {lat: placeLat_Lng["lat"], lng: placeLat_Lng["lng"]};
     };
 
     const todayOrTomorrow = (givenDate) => {
@@ -2207,10 +2782,10 @@ const Map = () => {
             Math.asin(
                 Math.sqrt(
                     Math.sin(difflat / 2) * Math.sin(difflat / 2) +
-                    Math.cos(rlat1) *
-                    Math.cos(rlat2) *
-                    Math.sin(difflon / 2) *
-                    Math.sin(difflon / 2)
+                        Math.cos(rlat1) *
+                            Math.cos(rlat2) *
+                            Math.sin(difflon / 2) *
+                            Math.sin(difflon / 2)
                 )
             );
         return distance.toFixed(2);
@@ -2242,12 +2817,15 @@ const Map = () => {
         return hDisplay + mDisplay;
     };
     // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
     return (
         <>
             <Helmet>
                 <script
-                    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBthJKxacm0pSrgo2yEEM_BUjmIryn8VOI&libraries=places,geometry,marker,visualization&v=beta&callback=initMap"
-                    async defer></script>
+                    src={`https://maps.googleapis.com/maps/api/js?key=${gApiKey}&libraries=places,geometry,marker,visualization&v=beta&callback=initMap`}
+                    async
+                    defer
+                ></script>
 
                 <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"></script>
                 <script src="https://ajax.googleapis.com/ajax/libs/cesiumjs/1.105/Build/Cesium/Cesium.js"></script>
@@ -2257,6 +2835,14 @@ const Map = () => {
                 ></link>
             </Helmet>
             <div className="mapPage">
+                <div id="trafficLayer">
+                    <input
+                        type="button"
+                        id="toggleTrafficLayer"
+                        value="Traffic Overview"
+                        onClick={() => toggleLayerClick("Traffic")}
+                    />
+                </div>
                 <div id="cesium">
                     <button id="toggleMap" onClick={toggleMapClick}>
                         Toggle 3D
@@ -2305,6 +2891,8 @@ const Map = () => {
                             setWaypointsNum,
                             waypointValues,
                             setWaypointValues,
+                            chosenOptimizeRoute,
+                            chosenTransportMode,
                             addWaypoint,
                             calcRoute,
                             currentRouteOverview,
@@ -2331,7 +2919,16 @@ const Map = () => {
                             user,
                             travelStats,
                             database,
-                            currentRouteOverview
+                            currentRouteOverview,
+                            allCategories,
+                            setCategoriesChecked,
+                            categoriesChecked,
+                            toggleLayerClick,
+                            weatherForecasts,
+                            setWeatherForecasts,
+                            handleWeatherForecastClick,
+                            createCrowdMapControls,
+                            crowdMapData,
                         }}
                     />
                 ) : (

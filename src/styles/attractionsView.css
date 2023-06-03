@@ -1,0 +1,66 @@
+.attractionsNoticeBox {
+    background: var(--darkgray);
+    font-size: 14px;
+    padding: 2px 12px;
+    border-radius: 4px;
+}
+
+.attractionsOptions {
+    width: 100%;
+}
+
+.attractionsDropdownLabel {
+    font-size: 14px;
+    padding: 6px 12px;
+    background: #ffffff;
+    color: var(--darkgray);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.attractionsDropdownLabel p {
+    margin: 0;
+}
+
+
+.attractionsCategoriesDropdown {
+    user-select: none;
+    cursor: pointer;
+}
+
+
+.attractionsDropdownList {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    overflow-x: hidden;
+    left: 12px;
+    right: 12px;
+    font-size: 14px;
+    background: var(--darkgray);
+    padding: 4px;
+    display: none;
+    
+}
+
+.attractionsDropdownList.activeDropdown {
+    display: block !important;
+}
+
+.attractionsDropdownList li {
+    padding: 2px 0;
+}
+
+.attractionsDropdownList li:hover {
+    background-color: var(--gray);
+}
+
+.attractionsDropdownList label {
+    width: 100%;
+    cursor: pointer;
+    display: block;
+}
+
