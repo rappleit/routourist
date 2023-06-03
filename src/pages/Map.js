@@ -609,7 +609,7 @@ const Map = () => {
                     setWeatherForecasts((prevForecasts) => {
                         return {
                             ...prevForecasts,
-                            notification: `Weather displayed only valid today (${get24Hr(
+                            notification: `Weather forecast shown between (${get24Hr(
                                 valid_period["start"]
                             )} - ${get24Hr(valid_period["end"])})`,
                             overlay: weatherForecastOverlays,
@@ -619,10 +619,20 @@ const Map = () => {
                     option === "24-hour" &&
                     weatherForecasts["active"] !== option
                 ) {
+
+                    setWeatherForecasts((prevForecasts) => {
+                        return {
+                            ...prevForecasts,
+                            notification: "Please select a time period",
+                            overlay: weatherForecastOverlays,
+                        };
+                    });
+
                     const weatherImagesToOverlay = [];
                     const weatherForecastOverlays = [];
 
                     const dropdown = document.createElement("select");
+                    dropdown.classList.add("weatherDropdown");
 
                     const defaultDropdownOption =
                         document.createElement("option");
@@ -647,6 +657,14 @@ const Map = () => {
 
                     dropdown.addEventListener("change", (e) => {
                         clearWeatherForecasts();
+                        document
+                        .querySelector("#weatherForecasts")
+                        .insertBefore(
+                            dropdown,
+                            document.querySelector(
+                                ".clearWeatherButton"
+                            )
+                        );
                         const selectedPeriod = JSON.parse(e.target.value);
 
                         Object.values(selectedPeriod["regions"]).forEach(
@@ -680,7 +698,7 @@ const Map = () => {
                         setWeatherForecasts((prevForecasts) => {
                             return {
                                 ...prevForecasts,
-                                notification: `Weather displayed only valid ${
+                                notification: `Weather forecast shown between ${
                                     e.target.options[e.target.selectedIndex]
                                         .textContent
                                 }`,
@@ -694,7 +712,7 @@ const Map = () => {
                         .insertBefore(
                             dropdown,
                             document.querySelector(
-                                "#weatherForecastNotification"
+                                ".clearWeatherButton"
                             )
                         );
                 }
@@ -1845,20 +1863,11 @@ const Map = () => {
                 heatMapData: heatMapData,
             };
         });
-        createCrowdMapControls();
+        //createCrowdMapControls();
     };
 
     const createCrowdMapControls = () => {
-        const crowdMapDiv = document.createElement("div");
-        crowdMapDiv.id = "crowdMap";
-
-        const crowdMapBtn = document.createElement("input");
-        crowdMapBtn.type = "button";
-        crowdMapBtn.id = "crowdMapBtn";
-        crowdMapBtn.value = "Crowd Overview";
-
-        crowdMapDiv.appendChild(crowdMapBtn);
-        document.querySelector(".attractionsView").appendChild(crowdMapDiv);
+        
 
         if (!crowdMapData["active"]) {
             const daysOfWeek = [
@@ -1901,7 +1910,7 @@ const Map = () => {
             defaultOption.disabled = true;
             defaultOption.selected = true;
 
-            const dayDropdown = document.createElement("select");
+            const dayDropdown = document.querySelector("#dayDropDown")
             dayDropdown.appendChild(defaultOption);
             daysOfWeek.forEach((day) => {
                 const option = document.createElement("option");
@@ -1938,7 +1947,6 @@ const Map = () => {
                 }
             });
 
-            document.querySelector("#crowdMap").appendChild(dayDropdown);
             setCrowdMapData((prevData) => {
                 return {
                     ...prevData,
@@ -2920,6 +2928,7 @@ const Map = () => {
                             travelStats,
                             database,
                             currentRouteOverview,
+                            
                             allCategories,
                             setCategoriesChecked,
                             categoriesChecked,

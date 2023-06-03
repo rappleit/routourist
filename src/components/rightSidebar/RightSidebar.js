@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import "../../styles/rightSidebar.css";
 import {
     FaAngleDoubleRight,
@@ -12,9 +12,10 @@ import {
     IoLocationSharp,
     IoWarning,
     IoSaveSharp,
-    IoSave,
+    IoBus,
+    IoInformationCircle
 } from "react-icons/io5";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import WeatherInfo from "./WeatherInfo";
 import LawsInfo from "./LawsInfo";
 import CultureInfo from "./CultureInfo";
@@ -41,7 +42,10 @@ const RightSidebar = ({
     categoriesChecked,
 }) => {
     const [view, setView] = useState("main");
-    // (Object.keys(currentRoute).length === 0)
+    const [isTransitLayerActive, setIsTransitLayerActive] = useState(false);
+    const [isBikeLayerActive, setIsBikeLayerActive] = useState(false);
+
+
     return (
         <div className="rightSidebar">
             <div className="rightSidebarContainer">
@@ -57,8 +61,8 @@ const RightSidebar = ({
                         className="mainView"
                         style={
                             view === "main"
-                                ? {display: "block"}
-                                : {display: "none"}
+                                ? { display: "block" }
+                                : { display: "none" }
                         }
                     >
                         <div className="impactSection section">
@@ -66,7 +70,7 @@ const RightSidebar = ({
                                 <IoLeafSharp /> Environmental Impact
                             </h3>
                             <EnvironmentalImpact
-                                {...{currentRoute, travelStats}}
+                                {...{ currentRoute, travelStats }}
                             />
                         </div>
                         <div className="discoverSection section">
@@ -79,6 +83,37 @@ const RightSidebar = ({
                             >
                                 Show nearby sustainable attractions
                             </button>
+                        </div>
+                        <div className="transportSection section">
+                            <h3>
+                                <IoBus /> Public Transport Options
+                            </h3>
+                            <div className="transportCard">
+                                <p className="transportCardHeader"><IoInformationCircle /> Transit System</p>
+                                <p className="transportCardNote">Note: Google Maps Transit Layer may or may not be supported in the current country</p>
+                                <input
+                                    type="button"
+                                    id="toggleTransitLayer"
+                                    value={(isTransitLayerActive) ? "Hide Transit": "Show Transit"}
+                                    onClick={() => {
+                                        toggleLayerClick("Transit");
+                                        setIsTransitLayerActive(!isTransitLayerActive);
+                                    }}
+                                />
+                            </div>
+                            <div className="transportCard">
+                                <p className="transportCardHeader"><IoInformationCircle /> Bicycle paths</p>
+                                <p className="transportCardNote">Note: Google Maps Bicycling Layer may or may not be supported in the current country</p>
+                                <input
+                                    type="button"
+                                    id="toggleBicyclingLayer"
+                                    value={(isBikeLayerActive) ? "Hide Cycling Paths" :"Show Cycling Paths"}
+                                    onClick={() => {
+                                        toggleLayerClick("Bicycling");
+                                        setIsBikeLayerActive(!isBikeLayerActive);
+                                    }}
+                                />
+                            </div>
                         </div>
                         <div className="noteSection section">
                             <h3>
@@ -122,24 +157,14 @@ const RightSidebar = ({
                                 }}
                             />
                         </div>
-                        <input
-                            type="button"
-                            id="toggleTransitLayer"
-                            value="Transit Layer"
-                            onClick={() => toggleLayerClick("Transit")}
-                        />
-                        <input
-                            type="button"
-                            id="toggleBicyclingLayer"
-                            value="Bicycling Layer"
-                            onClick={() => toggleLayerClick("Bicycling")}
-                        />
+
+
                     </div>
                     <div
                         style={
                             view === "attractions"
-                                ? {display: "block"}
-                                : {display: "none"}
+                                ? { display: "block" }
+                                : { display: "none" }
                         }
                     >
                         <AttractionsView
@@ -156,8 +181,8 @@ const RightSidebar = ({
                     <div
                         style={
                             view === "weather"
-                                ? {display: "block"}
-                                : {display: "none"}
+                                ? { display: "block" }
+                                : { display: "none" }
                         }
                     >
                         <WeatherInfo
@@ -172,20 +197,20 @@ const RightSidebar = ({
                     <div
                         style={
                             view === "laws"
-                                ? {display: "block"}
-                                : {display: "none"}
+                                ? { display: "block" }
+                                : { display: "none" }
                         }
                     >
-                        <LawsInfo {...{setView}} />
+                        <LawsInfo {...{ setView }} />
                     </div>
                     <div
                         style={
                             view === "culture"
-                                ? {display: "block"}
-                                : {display: "none"}
+                                ? { display: "block" }
+                                : { display: "none" }
                         }
                     >
-                        <CultureInfo {...{setView}} />
+                        <CultureInfo {...{ setView }} />
                     </div>
                 </div>
             </div>

@@ -64,3 +64,36 @@
     display: block;
 }
 
+#crowdMap {
+    margin: 18px 0;
+}
+
+#crowdMap h4 {
+    margin: 2px 0;
+}
+
+#crowdMap p {
+    margin: 4px 0;
+    font-size: 14px;
+}
+
+#crowdMap select {
+    width: 100%;
+    padding: 4px 8px;
+}
+
+#crowdMapBtn {
+    width: 100%;
+    background: var(--green);
+    border: none;
+    margin: 18px 0;
+    padding: 8px 0;
+    border-radius: 4px;
+    font-family: "Inter";
+    font-weight: 500;
+    cursor: pointer;
+}
+
+#crowdMapBtn:hover {
+    background: var(--lightgreen);
+}

@@ -39,6 +39,8 @@
 
 .section {
     margin: 18px 0;
+    border-bottom: solid 2px var(--lightgray);
+    padding-bottom: 24px;
 }
 
 .rightSidebar .sectionButton {
@@ -72,7 +74,6 @@
 
 .saveSection p {
     font-size: 14px;
-    font-style: italic;
 }
 
 .saveSection a {
@@ -136,3 +137,46 @@
     font-size: 18px;
 }
 
+.transportCard {
+    font-size: 14px;
+    background: var(--darkgray);
+    padding: 4px 12px;
+    border-radius: 4px;
+    margin: 12px 0;
+}
+
+.transportCard p {
+    margin: 4px 0;
+}
+
+.transportCard input {
+    font-family: "Inter";
+    margin: 4px 0;
+    width: 100%;
+    padding: 8px 0;
+    background: var(--green);
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+    border-radius: 4px;
+}
+
+.transportCard input:hover {
+    background: var(--lightgreen);
+}
+
+.transportCardHeader {
+    font-weight: 600;
+}
+
+.transportCardNote {
+    font-size: 12px;
+    font-style: italic;
+}
+
+.saveNoticeBox {
+    background: var(--darkgray);
+    padding: 4px 8px;
+    border-radius: 4px;
+
+}
