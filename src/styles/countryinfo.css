@@ -1,0 +1,110 @@
+@import url('https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;600;700;800;900&family=Inter:wght@400;500&display=swap');
+:root{
+    --ff-primary: 'Epilogue';
+    --ff-secondary: 'Inter';
+
+    --fs-title: 3.5rem;
+    --fs-sub: 1.3rem;
+    --fs-text: 1rem;
+    --fs-logo:1.2rem;
+    --fs-tiny:0.8rem;
+
+    --fw-black: 900;
+    --fw-bold: 700;
+    --fw-normal: 500;
+    --fw-light: 400;
+
+
+    --primary-clr: #EEEDE6;
+    --primary-darker-clr:#E0E0E0;
+    --secondary-clr: #393939;
+    --contrast-clr: #5BAE73;
+    
+}
+.countryinfo_section{
+    min-height: 100vh;
+    background-color: var(--secondary-clr);
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+}
+.head_section{
+    display: block;
+    text-align: start;
+    padding-top: 50px;
+    background-color: var(--secondary-clr);
+    width: 85%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.head_section h1{
+    font-family: var(--ff-primary);
+    font-weight: var(--fw-normal);
+    color: var(--primary-clr);
+}
+
+.country_section{
+    font-family: var(--ff-bold);
+    font-weight: var(--fw-bold);
+}
+
+.buttons_section{
+    display: flex;
+    gap: 50px;
+    padding-top: 25px;
+    padding-bottom: 25px;
+}
+
+.buttons_section button{
+    padding: 10px 30px 10px 30px;
+    min-width: 150px;
+    background: var(--contrast-clr);
+    color: var(--primary-clr);
+    border:none;
+    font-family: var(--ff-secondary);
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: 10px;
+    border-radius: 20px;
+    cursor: pointer;
+    box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+    text-decoration: none;
+
+}
+
+li{
+    color: var(--primary-clr);
+    font-family: var(--ff-secondary);
+    font-weight: var(--fw-light);
+    font-size: var(--fs-tiny);
+}
+
+.information_section{
+    width: 85%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: start;
+}
+
+.law_section, .culture_section, .weather_section{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1px;
+    padding: 10px 30px 10px 30px;
+    color: var(--primary-clr);
+    cursor: pointer;
+    box-shadow: 0 3px 10px rgb(0 0 0 / 0.8);
+    text-decoration: none;
+    width: 100%;
+    background-color: var(--contrast-clr);
+}
+.law_section h2{
+    color: var(--primary-clr);
+}
+
+.law_info, .culture_info, .weather_info{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}

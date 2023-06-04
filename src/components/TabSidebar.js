@@ -39,7 +39,7 @@ const TabSidebar = () => {
     }
 
     return (
-        <div className="tabSidebar" style={(currentPath === "/" || currentPath === "/login" || currentPath === "/signup") ? { display: "none" } : { display: "block" }}>
+        <div className="tabSidebar" style={(currentPath === "/" || currentPath === "/login" || currentPath === "/signup"|| currentPath === "/country" || currentPath === "/countryinfo") ? { display: "none" } : { display: "block" }}>
             <ul>
                 <li>
                     <Link to="/" reloadDocument><button className={(currentPath === "/") ? "selected" : ""}><HiHome /></button></Link>

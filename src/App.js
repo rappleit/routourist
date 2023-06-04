@@ -4,6 +4,8 @@ import Landing from './pages/Landing';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Map from './pages/Map';
+import Country from './pages/Country';
+import CountryInfo from './pages/CountryInfo';
 import RouteLibrary from './pages/RouteLibrary';
 import TabSidebar from './components/TabSidebar';
 import { AuthContextProvider } from './context/AuthContext';
@@ -30,6 +32,12 @@ function App() {
         <Route
           path="/map"
           element={<Map/>}/>
+        <Route
+          path="/country"
+          element={<Country/>}/>
+          <Route
+          path="/countryinfo"
+          element={<CountryInfo/>}/>
         <Route
         path="/routelibrary"
         element={<RouteLibrary/>}/>

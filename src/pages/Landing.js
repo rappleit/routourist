@@ -62,7 +62,7 @@ const Landing = () => {
                     
                     <div className='headerbutton'>
                         <a className='faq_button'>FAQ</a>
-                        <a href='/map'>Try Now</a>
+                        <a href='/country'>Try Now</a>
                     </div>
                 </div>
 
