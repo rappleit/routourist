@@ -52,7 +52,7 @@ Step 3.1: Copy and paste the relevant API keys into the respective env variables
 
 Step 4: Run on the root directory
 ```
-npm start
+npm run start
 ```
 ---
 ## Technologies used
