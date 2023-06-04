@@ -12,7 +12,8 @@ import {
     IoLocationSharp,
     IoWarning,
     IoSaveSharp,
-    IoSave,
+    IoBus,
+    IoInformationCircle,
 } from "react-icons/io5";
 import {Link} from "react-router-dom";
 import WeatherInfo from "./WeatherInfo";
@@ -30,18 +31,20 @@ const RightSidebar = ({
     travelStats,
     database,
     currentRouteOverview,
-    toggleLayerClick,
-    weatherForecasts,
-    setWeatherForecasts,
-    handleWeatherForecastClick,
-    createCrowdMapControls,
-    crowdMapData,
     allCategories,
     setCategoriesChecked,
     categoriesChecked,
+    handleLayerClick,
+    weatherForecasts,
+    setWeatherForecasts,
+    getForecastDetails,
+    createHeatmap,
+    clearHeatMap,
 }) => {
     const [view, setView] = useState("main");
-    // (Object.keys(currentRoute).length === 0)
+    const [isTransitLayerActive, setIsTransitLayerActive] = useState(false);
+    const [isBikeLayerActive, setIsBikeLayerActive] = useState(false);
+
     return (
         <div className="rightSidebar">
             <div className="rightSidebarContainer">
@@ -79,6 +82,59 @@ const RightSidebar = ({
                             >
                                 Show nearby sustainable attractions
                             </button>
+                        </div>
+                        <div className="transportSection section">
+                            <h3>
+                                <IoBus /> Public Transport Options
+                            </h3>
+                            <div className="transportCard">
+                                <p className="transportCardHeader">
+                                    <IoInformationCircle /> Transit System
+                                </p>
+                                <p className="transportCardNote">
+                                    Note: Google Maps Transit Layer may or may
+                                    not be supported in the current country
+                                </p>
+                                <input
+                                    type="button"
+                                    id="toggleTransitLayer"
+                                    value={
+                                        isTransitLayerActive
+                                            ? "Hide Transit"
+                                            : "Show Transit"
+                                    }
+                                    onClick={() => {
+                                        handleLayerClick("Transit");
+                                        setIsTransitLayerActive(
+                                            !isTransitLayerActive
+                                        );
+                                    }}
+                                />
+                            </div>
+                            <div className="transportCard">
+                                <p className="transportCardHeader">
+                                    <IoInformationCircle /> Bicycle paths
+                                </p>
+                                <p className="transportCardNote">
+                                    Note: Google Maps Bicycling Layer may or may
+                                    not be supported in the current country
+                                </p>
+                                <input
+                                    type="button"
+                                    id="toggleBicyclingLayer"
+                                    value={
+                                        isBikeLayerActive
+                                            ? "Hide Cycling Paths"
+                                            : "Show Cycling Paths"
+                                    }
+                                    onClick={() => {
+                                        handleLayerClick("Bicycling");
+                                        setIsBikeLayerActive(
+                                            !isBikeLayerActive
+                                        );
+                                    }}
+                                />
+                            </div>
                         </div>
                         <div className="noteSection section">
                             <h3>
@@ -122,18 +178,6 @@ const RightSidebar = ({
                                 }}
                             />
                         </div>
-                        <input
-                            type="button"
-                            id="toggleTransitLayer"
-                            value="Transit Layer"
-                            onClick={() => toggleLayerClick("Transit")}
-                        />
-                        <input
-                            type="button"
-                            id="toggleBicyclingLayer"
-                            value="Bicycling Layer"
-                            onClick={() => toggleLayerClick("Bicycling")}
-                        />
                     </div>
                     <div
                         style={
@@ -145,11 +189,12 @@ const RightSidebar = ({
                         <AttractionsView
                             {...{
                                 setView,
-                                createCrowdMapControls,
                                 currentRoute,
                                 allCategories,
                                 setCategoriesChecked,
                                 categoriesChecked,
+                                createHeatmap,
+                                clearHeatMap,
                             }}
                         />
                     </div>
@@ -165,7 +210,7 @@ const RightSidebar = ({
                                 setView,
                                 weatherForecasts,
                                 setWeatherForecasts,
-                                handleWeatherForecastClick,
+                                getForecastDetails,
                             }}
                         />
                     </div>

@@ -1,12 +1,22 @@
 import {FaCloudSun} from "react-icons/fa";
-import {TiMediaPlayOutline, TiMediaFastForwardOutline} from "react-icons/ti";
+import "../../styles/weatherInfo.css";
 
 const WeatherInfo = ({
     setView,
     weatherForecasts,
     setWeatherForecasts,
-    handleWeatherForecastClick,
+    getForecastDetails,
 }) => {
+    const handleWeatherForecastClick = (option) => {
+        setWeatherForecasts((prevForecasts) => {
+            return {
+                ...prevForecasts,
+                active: option,
+            };
+        });
+        getForecastDetails(option);
+    };
+
     return (
         <div className="weatherInfo">
             <div className="viewHeader">
@@ -19,27 +29,30 @@ const WeatherInfo = ({
                 </button>
             </div>
             <div id="weatherForecasts">
-                {weatherForecasts["options"].map((option) => (
-                    <input
-                        type="button"
-                        id={`${option}WeatherForecasts`}
-                        // className={
-                        //     selectedButton === option ? "selected" : ""
-                        // }
-                        value={option}
-                        onClick={() => handleWeatherForecastClick(option)}
-                    />
-                ))}
-                <TiMediaPlayOutline />
-                <TiMediaFastForwardOutline />
-                <p id="weatherForecastNotification">
-                    {weatherForecasts["active"] === ""
-                        ? "Please select 2 hour or 24 hour"
-                        : weatherForecasts["notification"]}
+                <div className="weatherButtons">
+                    {weatherForecasts["options"].map((option, i) => (
+                        <input
+                            type="button"
+                            id={`${option}WeatherForecasts`}
+                            className={
+                                weatherForecasts.active === option
+                                    ? "weatherSelected"
+                                    : ""
+                            }
+                            value={option}
+                            onClick={() => handleWeatherForecastClick(option)}
+                            key={i}
+                        />
+                    ))}
+                </div>
+
+                <p className="weatherForecastNotification">
+                    {weatherForecasts["notification"]}
                 </p>
                 <input
+                    className="clearWeatherButton"
                     type="button"
-                    value="Clear"
+                    value="Clear Weather View"
                     onClick={() => {
                         setWeatherForecasts((prevForecasts) => {
                             return {

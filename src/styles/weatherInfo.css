@@ -1,0 +1,59 @@
+
+
+.weatherButtons {
+    display: flex;
+    gap: 4px;
+}
+
+.weatherButtons input {
+    display: block;
+    width: 100%;
+    padding: 6px 0;
+    border: solid 2px var(--eggshell);
+    background: none;
+    border-radius: 4px;
+    font-weight: 500;
+    font-family: "Inter";
+    cursor: pointer;
+    color: var(--eggshell);
+}
+
+.weatherButtons input:hover {
+    background: var(--darkeggshell);
+    color: var(--gray);
+}
+
+.weatherButtons input.weatherSelected {
+    background-color: var(--eggshell);
+    color: var(--gray);
+
+}
+
+.clearWeatherButton {
+    background: none;
+    cursor: pointer;
+    text-decoration: underline;
+    color: var(--eggshell);
+    border: none;
+    padding: 0;
+    font-family: "Inter";
+    margin: 20px 0;
+}
+
+.clearWeatherButton:hover {
+    color: var(--green);
+}
+
+.weatherForecastNotification {
+    font-size: 14px;
+    background: var(--darkgray);
+    padding: 8px 12px;
+    border-radius: 4px;
+}
+
+.weatherDropdown {
+    padding: 4px 8px;
+    width: 100%;
+    cursor: pointer;
+}
+

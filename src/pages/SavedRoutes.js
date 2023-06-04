@@ -6,6 +6,7 @@ import { FaCar, FaMapPin, FaAngleLeft } from "react-icons/fa";
 import SavedRouteDetail from '../components/SavedRouteDetail';
 import { Store } from 'react-notifications-component';
 import { useNavigate } from 'react-router';
+import PublishRoute from '../components/PublishRoute';
 
 const SavedRoutes = ({
 
@@ -16,6 +17,7 @@ const SavedRoutes = ({
     const [numSavedRoutes, setNumSavedRoutes] = useState("Loading...");
 
     const [isDetailView, setIsDetailView] = useState(false); //toggle between all saved routes and saved route detail view
+    const [isPublishView, setIsPublishView] = useState(false); //toggle publish saved route view
     const [selectedID, setSelectedID] = useState(null);
 
     const retrieveSavedRoutes = () => {
@@ -65,28 +67,34 @@ const SavedRoutes = ({
             <div className="savedRoutesHeader">
                 <div className="savedRoutesHeaderLeft">
                     <h1>
-                        {(!isDetailView) ? `Saved Routes (${numSavedRoutes})` :
-                            (selectedID != null) ? savedRoutes[selectedID].name :
-                                "-"
+                        {(isDetailView || isPublishView) ? (selectedID != null) ? savedRoutes[selectedID].name :
+                            "-" :  `Saved Routes (${numSavedRoutes})`
+
                         }
                     </h1>
-                    {(isDetailView) ? <button className="backToSavedRoutesButton" onClick={() => setIsDetailView(false)}><FaAngleLeft className="backButtonIcon" /> Back</button> : <></>}
+                    {(isDetailView) ? <button className="backButton" onClick={() => setIsDetailView(false)}><FaAngleLeft className="backButtonIcon" /> Back</button> : <></>}
+                    {(isPublishView) ? <button className="backButton" onClick={() => { setIsPublishView(false); setIsDetailView(true); }}><FaAngleLeft className="backButtonIcon" /> Back</button> : <></>}
+
                 </div>
                 {(isDetailView) ? <button className="viewButton" onClick={() => fetchSavedRoute()}>View Route in Map</button> : <></>}
-               
+
             </div>
             {(isDetailView) ?
-                <SavedRouteDetail {...{ setIsDetailView, savedRoutes, selectedID }} />
-                : <div className="savedRoutesContainer">
-                    {(savedRoutes) ? (Object.keys(savedRoutes)).map((routeID, i) => (
-                        <div className="savedRoutesCard" key={i} onClick={() => handleSelectSavedRoute(routeID)}>
-                            <img src="/assets/MapThumbnailSG.png" alt="" />
-                            <h3>{savedRoutes[routeID].name}</h3>
-                            <p><span className="savedRouteCardInfoHeader"><FaCar /> Transport:</span> {savedRoutes[routeID].route.travelMode}</p>
-                            <p><span className="savedRouteCardInfoHeader"><FaMapPin /> From:</span> {savedRoutes[routeID].route.origin.name}</p>
-                        </div>
-                    )) : <></>}
-                </div>}
+                <SavedRouteDetail {...{ setIsDetailView, savedRoutes, selectedID, setIsPublishView }} />
+                :
+                (isPublishView) ?
+                    <PublishRoute {...{selectedID, savedRoutes}}/>
+                    :
+                    <div className="savedRoutesContainer">
+                        {(savedRoutes) ? (Object.keys(savedRoutes)).map((routeID, i) => (
+                            <div className="savedRoutesCard" key={i} onClick={() => handleSelectSavedRoute(routeID)}>
+                                <img src="/assets/MapThumbnailSG.png" alt="" />
+                                <h3>{savedRoutes[routeID].name}</h3>
+                                <p><span className="savedRouteCardInfoHeader"><FaCar /> Transport:</span> {savedRoutes[routeID].route.travelMode}</p>
+                                <p><span className="savedRouteCardInfoHeader"><FaMapPin /> From:</span> {savedRoutes[routeID].route.origin.name}</p>
+                            </div>
+                        )) : <></>}
+                    </div>}
         </div>
     );
 }

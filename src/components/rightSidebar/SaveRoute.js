@@ -2,6 +2,8 @@ import { push, ref, set } from "@firebase/database";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Store } from 'react-notifications-component';
+import { FaExclamationTriangle } from "react-icons/fa";
+
 
 const SaveRoute = ({
     user,
@@ -95,8 +97,8 @@ const SaveRoute = ({
     )
 
     if (Object.keys(currentRoute).length === 0) return (
-        <div>
-            <p>Please create a route first!</p>
+        <div className="saveNoticeBox">
+            <p><FaExclamationTriangle /> Please create a route first!</p>
         </div>
     )
 

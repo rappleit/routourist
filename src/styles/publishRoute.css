@@ -1,0 +1,81 @@
+.publishRouteView {
+    margin: 24px 48px;
+}
+
+
+.publishRouteView p {
+    font-size: 16px;
+    font-weight: 400;
+    margin: 8px 0;
+}
+
+.publishTop {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.publishRouteButton {
+    background: var(--green);
+    border: none;
+    padding: 8px 24px;
+    font-size: 16px;
+    border-radius: 4px;
+    font-family: "Inter";
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.publishRouteButton:hover {
+    background: var(--lightgreen);
+}
+
+.publishContainer {
+    background: none;
+    border: solid 2px var(--gray);
+    padding: 8px 16px;
+    border-radius: 4px;
+}
+
+.publishHeader {
+    font-weight: 700;
+    color: var(--darkgray);
+}
+
+.fixedPublishInfo {
+    border-bottom: solid 1.5px var(--gray);
+}
+
+.publishDescInput {
+    width: 80%;
+    height: 120px;
+    font-size: 14px;
+    background: none;
+    border: solid 2px var(--darkgray);
+    border-radius: 4px;
+    font-family: "Inter";
+}
+.publishCategoryContainer {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+.publishCategoryContainer button {
+    background: none;
+    color: var(--darkgray);
+    border: solid 2px var(--darkgray);
+    padding: 4px 8px;
+    font-weight: 500;
+    font-family: "Inter";
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.publishCategoryContainer button:hover {
+    background: var(--green);
+}
+
+.publishCategoryContainer button.selected {
+    background: var(--green);
+}

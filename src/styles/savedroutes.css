@@ -73,7 +73,7 @@
     height: 120px;
 }
 
-.backToSavedRoutesButton {
+.backButton {
     margin: 0 24px;
     background: none;
     border: solid 2px var(--eggshell);
@@ -88,7 +88,7 @@
 
 }
 
-.backToSavedRoutesButton:hover {
+.backButton:hover {
     background: var(--eggshell);
     color: var(--gray);
 }
