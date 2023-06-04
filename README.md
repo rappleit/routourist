@@ -1,7 +1,7 @@
 # Routourist
 Routourist is a route builder web application that aims to promote sustainable tourism. 
 
-##DISCLAIMER
+## DISCLAIMER
 As we do not wish to expose our API keys to the public, please be informed that they are sent in our submission forms and if they are not accesible, please email us under the email here Email: [routourist3dc@gmail.com](mailto:routourist3dc@gmail.com)
 
 [Try Routourist Now!] (TO BE LINKED)
