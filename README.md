@@ -1,6 +1,9 @@
 # Routourist
 Routourist is a route builder web application that aims to promote sustainable tourism. 
 
+##DISCLAIMER
+As we do not wish to expose our API keys to the public, please be informed that they are sent in our submission forms and if they are not accesible, please email us under the email here Email: [routourist3dc@gmail.com](mailto:routourist3dc@gmail.com)
+
 [Try Routourist Now!] (TO BE LINKED)
 
 (Please wait a while for it to load)
@@ -40,31 +43,13 @@ Step 1: Clone the repo
 ```
 git clone https://github.com/rappleit/routourist.git
 ```
-
-Step 2: Go to the `backend` folder
-
-Step 2.1: Install backend dependencies
+Step 2: Install dependencies
 ```
 npm install
 ```
 Step 2.2: Create a new `.env` file from `.env.example`
 ```
 copy .env.example .env
-```
-Step 2.3: Create a new MongoDB free cluster ([tutorial](https://www.mongodb.com/docs/atlas/getting-started/)) and copy the connection string under *Connect > Connect your application*. Paste this connection string in your `.env` file after `MONGO_URI=` (Remember to replace the password)
-
-Step 2.4: Add in your own JWT Secret in your `.env` file after `SECRET=` (This can be a string of random text and numbers. You can use any password generator to generate one)
-
-Step 2.5: Run the backend
-```
-npm start
-```
-
-Step 3: Go to the `frontend` folder
-
-Step 3.1: Install frontend dependencies
-```
-npm install
 ```
 
 Step 3.2: Create a new `.env.local` file from `.env.example`
@@ -82,7 +67,7 @@ Step 3.3: Obtain API key from Google Cloud Console
 
 Paste the copied API Key in your `.env.local` file next to `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=`
 
-Step 3.4: Run the frontend
+Step 3.4: Run on the root directory
 ```
-npm run dev
+npm start
 ```
