@@ -48,7 +48,7 @@ Step 3: Create a new `.env` file from `.env.example`
 ```
 copy .env.example .env
 ```
-Step 3.1: Copy paste API keys into the respective env variables
+Step 3.1: Copy and paste the relevant API keys into the respective env variables. (See disclaimer regarding API Keys above)
 
 Step 4: Run on the root directory
 ```
