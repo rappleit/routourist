@@ -1,70 +1,88 @@
-# Getting Started with Create React App
+# Routourist
+Routourist is a route builder web application that aims to promote sustainable tourism. 
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+[Try Routourist Now!] (TO BE LINKED)
 
-## Available Scripts
+(Please wait a while for it to load)
 
-In the project directory, you can run:
+## Features
+- 🌎 Enter Country of interest and preferred language.
+- 😎 Be informed of good sustainable tourism practices.
+- ⚖️ Be informed of valuable information regarding the country of interest (law, culture, weather and their sustainable events/businesses available)
+- 🔎 Browse through our Route Library, a list of routes made by us through Preset Library or other users through Community Library
+- 🗺️ Enter a starting location and destination(s), choose your preferred mode of transportation, and Routourist will generate a route through every location!
+- 📊 Statistics on the amount of carbon emissions generated from your route, with comparisons to the carbon emissions generated when other modes of transport are selected
+- 📍 An option to optimise your route, which generates the shortest route through all inputted destinations (in an optimised order)
+- 💡 Suggestions on nearby attractions and facilities along the created route, such as parks, sustainable hotels, water activities, bicycle rentals, electric vehicle charging spots etc.
+- 💾 Ability to save created routes when logged in
+- 📃 Ability to share saved routes through a link or community library
 
-### `npm start`
+## About this project
+Routourist is created for the [Google Solutions Challenge 2023](https://developers.google.com/community/gdsc-solution-challenge), targetting the UN Sustainable Development Goals 8.9: Promote Beneficial and Sustainable Tourism, and 12.B: Develop and Implement Tools to Monitor Sustainable Tourism. [View our demo video here] (TO BE LINKED).
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Project Members
+- Asyraf Omar (https://github.com/asycodes)
+- Rachel Lim (https://github.com/rappleit)
+- Andrew Yu (https://github.com/Gnoot01)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Contact
+Email: [routourist3dc@gmail.com](mailto:routourist3dc@gmail.com)
 
-### `npm test`
+---
+## Setup Guide
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Prerequisites
+- A Google Cloud Account
 
-### `npm run build`
+### Installation
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Step 1: Clone the repo
+```
+git clone https://github.com/rappleit/routourist.git
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Step 2: Go to the `backend` folder
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Step 2.1: Install backend dependencies
+```
+npm install
+```
+Step 2.2: Create a new `.env` file from `.env.example`
+```
+copy .env.example .env
+```
+Step 2.3: Create a new MongoDB free cluster ([tutorial](https://www.mongodb.com/docs/atlas/getting-started/)) and copy the connection string under *Connect > Connect your application*. Paste this connection string in your `.env` file after `MONGO_URI=` (Remember to replace the password)
 
-### `npm run eject`
+Step 2.4: Add in your own JWT Secret in your `.env` file after `SECRET=` (This can be a string of random text and numbers. You can use any password generator to generate one)
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Step 2.5: Run the backend
+```
+npm start
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Step 3: Go to the `frontend` folder
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Step 3.1: Install frontend dependencies
+```
+npm install
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Step 3.2: Create a new `.env.local` file from `.env.example`
+```
+copy .env.example .env.local
+```
 
-## Learn More
+Step 3.3: Obtain API key from Google Cloud Console
+1. Head to [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a new project
+3. At the top left, under "APIs & Services", click on "Credentials"
+4. Click "Create Credentials", then click "API Key"
+5. Copy this API Key for later
+6. Enable Places, Directions, Geocoding, Maps Javascript APIs from the API "Library"
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Paste the copied API Key in your `.env.local` file next to `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=`
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Step 3.4: Run the frontend
+```
+npm run dev
+```
