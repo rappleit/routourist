@@ -69,3 +69,7 @@ npm run start
 **Map:** Google Maps Platform
 
 **Backend:** Google Firebase
+
+## Known Issues
+![Known Issue](public/assets/knownIssue.png)
+This is a known issue, simply refresh the page again. We are working on a workaround for this :)
