@@ -317,6 +317,9 @@
     }
 }
 
+.feature_subtext{
+    margin-top: 50px;
+}
 
 .icon{
     font-size: var(--fs-title);
