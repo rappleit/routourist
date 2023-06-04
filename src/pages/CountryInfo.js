@@ -13,7 +13,7 @@ const CountryInfo = () => {
     const country= localStorage.getItem("Country");
     const language= localStorage.getItem("Language")
     const malaysiaInfo = {'Law':['Follows Islamic Law, meaning Muslims must follow Sharia Law', 'Strict Drug Laws','Restricted Religious Activities, prohibited to preselytizing Muslims'],'Culture':['Languages Spoken: Malay, English','Multicultural society, mainly made out of Malay, Chinese and Indian','Multireligious society, mainly Islam, Buddhism and Christianity','The monarchy is highly respected'],'Weather':['Tropical Climate', 'From 25°C to 35°C','Potential Tropical Storms']}
-    const singaporeInfo = {'Law':[''],'Culture':['Languages Spoken: English, Chinese, Malay and Tamil','Multicultural society, mainly made out of Chinese, Malay and Indian','Multireligious society, mainly Buddhism, Christianity and Islam','',''],'Weather':['']}
+    const singaporeInfo = {'Law':['Very strict Drug laws', 'Smoking is allowed at certain places','Very strict Litter laws','CCTV cameras are common'],'Culture':['Languages Spoken: English, Chinese, Malay and Tamil','Multicultural society, mainly made out of Chinese, Malay and Indian','Multireligious society, mainly Buddhism, Christianity and Islam'],'Weather':['Tropical Climate','From 25°C to 31°C']}
     const [LawPoints,setLawPoints] = useState('')
     const [CulturePoints,setCulturePoints] = useState('')
     const [WeatherPoints,setWeatherPoints] = useState('')
@@ -284,40 +284,40 @@ const CountryInfo = () => {
             <div className="sus_locations">
             <div className="event_box">
                 <div>
-                    <h3 className="event_header">The Green Collective SG</h3>
-                    <h4 className="event_sub">#02-18, Funan Mall, 107 North Bridge Rd, 179105</h4>
+                    <h3 className="event_header">The Dusun</h3>
+                    <h4 className="event_sub">3437, Jalan, Mukim, Kampung Baru Pantai, 71770 Seremban, Negeri Sembilan, Malaysia</h4>
                 </div>
                 <div>
-                    <a target="_blank" href="https://www.thegreencollective.sg/">Learn More</a>
+                    <a target="_blank" href="https://thedusun.com.my/">Learn More</a>
                 </div>
             </div>
 
             <div className="event_box">
                 <div>
-                    <h3 className="event_header">Bamboo Straw Girl</h3>
-                    <h4 className="event_sub">Online e-commerce</h4>
+                    <h3 className="event_header">Batik Boutique</h3>
+                    <h4 className="event_sub">3, Jalan 26/70a, Desa Sri Hartamas, 50300 Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur, Malaysia</h4>
                 </div>
     
                 <div>
-                    <a target="_blank" href="https://bamboostrawgirl.com/pages/about-us">Learn More</a>
+                    <a target="_blank" href="https://batikboutique.com/">Learn More</a>
                 </div>
             </div>
             <div className="event_box">
                 <div>
-                    <h3 className="event_header">The Sustainability Project</h3>
-                    <h4 className="event_sub">21 Bukit Batok Cres, #06-78 Wcega Tower, Singapore 658065</h4>
+                    <h3 className="event_header">The Habitat Penang Hill</h3>
+                    <h4 className="event_sub">Jalan Bukit Bendera, Bukit Bendera, 11500 Bukit Bendera, Pulau Pinang, Malaysia</h4>
                 </div>
                 <div>
-                    <a target="_blank" href="https://thesustainabilityproject.life/">Learn More</a>
+                    <a target="_blank" href="https://thehabitat.my/">Learn More</a>
                 </div>
             </div>
             <div className="event_box">
                 <div>
-                    <h3 className="event_header">Bollywood Farms</h3>
-                    <h4 className="event_sub">100 Neo Tiew Rd, Singapore 719026</h4>
+                    <h3 className="event_header">Tanoti</h3>
+                    <h4 className="event_sub">56 Jalan Tabuan,93100 Kuching,Sarawak</h4>
                 </div>
                 <div>
-                    <a target="_blank" href="https://bollywoodfarms.com/">Learn More</a>
+                    <a target="_blank" href="https://tanoticrafts.com/">Learn More</a>
                 </div>
             </div>
         </div>
