@@ -21,7 +21,7 @@ As we do not wish to expose our API keys to the public, please be informed that 
 - 📃 Ability to share saved routes through a link or community library
 
 ## About this project
-Routourist is created for the [Google Solutions Challenge 2023](https://developers.google.com/community/gdsc-solution-challenge), targetting the UN Sustainable Development Goals 8.9: Promote Beneficial and Sustainable Tourism, and 12.B: Develop and Implement Tools to Monitor Sustainable Tourism. [View our demo video here] (TO BE LINKED).
+Routourist is created for the [Google Solutions Challenge 2023](https://developers.google.com/community/gdsc-solution-challenge), targetting the UN Sustainable Development Goals 8.9: Promote Beneficial and Sustainable Tourism, and 12.B: Develop and Implement Tools to Monitor Sustainable Tourism. [View our demo video here](https://www.youtube.com/watch?v=CohbHAdULBE).
 
 ### Project Members
 - Asyraf Omar (https://github.com/asycodes)
