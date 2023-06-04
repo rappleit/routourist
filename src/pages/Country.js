@@ -14,14 +14,17 @@ const Country = () => {
 
     const handleOnChange = (e) => {
         e.preventDefault();
+        const {value} = e.target;
         const {textContent} = e.target.options[e.target.selectedIndex];
         if (e.target.classList.contains("country_selection")) {
+            localStorage.setItem("countryCode", value);
             setCountry(textContent);
-            localStorage.setItem("Country", textContent);
+            localStorage.setItem("countryName", textContent);
         }
         if (e.target.classList.contains("lang_selection")) {
+            localStorage.setItem("languageCode", value);
             setLang(textContent);
-            localStorage.setItem("Language", textContent);
+            localStorage.setItem("languageName", textContent);
         }
     };
 

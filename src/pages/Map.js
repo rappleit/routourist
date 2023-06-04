@@ -23,15 +23,14 @@ const Map = () => {
 
     const gApiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
     const google = (window.google = window.google ? window.google : {});
-    // const region = document.querySelector(#region) (region="SG")
-    // const language = ...
-    // const mapCenter = document.querySelector(#regionMapCenter) (hidden, center=mapCenter)
+    const gRegion = localStorage.getItem("countryCode");
+    const gLanguage = localStorage.getItem("languageCode");
+    // generate mapCenter from AllRegions.json, https://www.latlong.net/countries.html
     const gAutoCompleteOptions = {
-        componentRestrictions: {country: "SG"},
+        componentRestrictions: {country: gRegion},
         // "rating", "user_ratings_total" for data
         fields: ["name", "geometry", "place_id"],
     };
-
     //sidebars
     const [showLeftSidebar, setShowLeftSideBar] = useState(true);
     const [showRightSidebar, setShowRightSideBar] = useState(true);
@@ -167,10 +166,6 @@ const Map = () => {
                         waypointCount > 1
                             ? JSON.parse(fetchedRouteRequest).waypoints.slice(1)
                             : JSON.parse(fetchedRouteRequest).waypoints; // remove origin from waypoint list if waypointsCount > 1
-                    console.log(waypointList);
-                    const toPlaceNames = Array.from(
-                        document.querySelectorAll(".toPlaceName")
-                    );
 
                     const findPlace = (index) => {
                         setTimeout(() => {
@@ -790,7 +785,7 @@ const Map = () => {
         gGeocoder
             .geocode({
                 location: originLat_Lng.current,
-                region: "SG",
+                region: gRegion,
             })
             .then((response) => {
                 if (response["results"]) {
@@ -1191,7 +1186,7 @@ const Map = () => {
                             travelMode: "DRIVING",
                             optimizeWaypoints: optimizeRoute,
                             unitSystem: google.maps.UnitSystem.METRIC,
-                            region: "SG",
+                            region: gRegion,
                         };
                         gDirectionsService.route(
                             optimizeRequest,
@@ -1227,7 +1222,7 @@ const Map = () => {
                                 destination: waypoints[i + 1]["lat_lng"],
                                 travelMode: transportMode,
                                 unitSystem: google.maps.UnitSystem.METRIC,
-                                region: "SG",
+                                region: gRegion,
                             };
 
                             gDirectionsService.route(
@@ -1310,7 +1305,7 @@ const Map = () => {
                 polylineQuality: "HIGH_QUALITY",
                 polylineEncoding: "ENCODED_POLYLINE",
                 units: "METRIC",
-                regionCode: "SG",
+                regionCode: gRegion,
             };
 
             switch (optimizeRoute) {
@@ -1332,7 +1327,7 @@ const Map = () => {
                             travelMode: transportMode,
                             optimizeWaypoints: optimizeRoute,
                             unitSystem: google.maps.UnitSystem.METRIC,
-                            region: "SG",
+                            region: gRegion,
                         };
                         gDirectionsService.route(
                             optimizeRequest,
@@ -2021,7 +2016,7 @@ const Map = () => {
                 markerIcon = "tree-city";
                 break;
             case "green_mark":
-                markerIcon = "wreath";
+                markerIcon = "medal";
                 break;
             case "ev":
                 markerIcon = "car-side";
@@ -2204,7 +2199,7 @@ const Map = () => {
                                 travelMode: "DRIVING",
                                 optimizeWaypoints: optimizeRoute,
                                 unitSystem: google.maps.UnitSystem.METRIC,
-                                region: "SG",
+                                region: gRegion,
                             };
                             gDirectionsService.route(
                                 optimizeRequest,
@@ -2236,7 +2231,7 @@ const Map = () => {
                                     destination: waypoints[j + 1]["lat_lng"],
                                     travelMode: "TRANSIT",
                                     unitSystem: google.maps.UnitSystem.METRIC,
-                                    region: "SG",
+                                    region: gRegion,
                                 };
 
                                 gDirectionsService.route(
@@ -2297,7 +2292,7 @@ const Map = () => {
                     polylineQuality: "HIGH_QUALITY",
                     polylineEncoding: "ENCODED_POLYLINE",
                     units: "METRIC",
-                    regionCode: "SG",
+                    regionCode: gRegion,
                 };
 
                 switch (optimizeRoute) {
@@ -2318,7 +2313,7 @@ const Map = () => {
                                 travelMode: otherTravelModes[i],
                                 optimizeWaypoints: optimizeRoute,
                                 unitSystem: google.maps.UnitSystem.METRIC,
-                                region: "SG",
+                                region: gRegion,
                             };
                             gDirectionsService.route(
                                 optimizeRequest,
@@ -2777,7 +2772,7 @@ const Map = () => {
         <>
             <Helmet>
                 <script
-                    src={`https://maps.googleapis.com/maps/api/js?key=${gApiKey}&libraries=places,geometry,marker,visualization&v=beta&callback=initMap`}
+                    src={`https://maps.googleapis.com/maps/api/js?key=${gApiKey}&region=${gRegion}&language=${gLanguage}&libraries=places,geometry,marker,visualization&v=beta&callback=initMap`}
                     async
                     defer
                 ></script>

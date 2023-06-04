@@ -277,15 +277,15 @@
       /*
      * green_mark icon colors.
      */
-  .property.highlight:has(.fa-wreath) .icon {
+  .property.highlight:has(.fa-medal) .icon {
     color: var(--green_mark-color);
   }
   
-  .property:not(.highlight):has(.fa-wreath) {
+  .property:not(.highlight):has(.fa-medal) {
     background-color: var(--green_mark-color);
   }
   
-  .property:not(.highlight):has(.fa-wreath)::after {
+  .property:not(.highlight):has(.fa-medal)::after {
     border-top: 9px solid var(--green_mark-color);
   }
 

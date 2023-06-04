@@ -8,8 +8,8 @@ const CountryInfo = () => {
     const [lawinfo, setLawInfo] = useState(false);
     const [cultureinfo, setCultureInfo] = useState(false);
     const [weatherinfo, setWeatherInfo] = useState(false);
-    const country = localStorage.getItem("Country");
-    const language = localStorage.getItem("Language");
+    const country = localStorage.getItem("countryName");
+    const language = localStorage.getItem("languageName");
     const malaysiaInfo = {
         Law: [
             "Follows Islamic Law, meaning Muslims must follow Sharia Law",
@@ -47,31 +47,31 @@ const CountryInfo = () => {
     const [WeatherPoints, setWeatherPoints] = useState("");
 
     const setChange = (buttonswitch) => {
-        if (country == "Singapore") {
+        if (country === "Singapore") {
             localStorage.setItem("Countryinfo", JSON.stringify(singaporeInfo));
         } else
             localStorage.setItem("Countryinfo", JSON.stringify(malaysiaInfo));
 
-        if (buttonswitch == "country") {
+        if (buttonswitch === "country") {
             navigate("/country");
-        } else if (buttonswitch == "preset") {
+        } else if (buttonswitch === "preset") {
             navigate("/routelibrary");
         }
-        if (buttonswitch == "build") {
+        if (buttonswitch === "build") {
             navigate("/map");
         }
     };
 
     const setOpen = (information_cat) => {
-        if (information_cat == "law_info") {
-            if (lawinfo == false) {
+        if (information_cat === "law_info") {
+            if (lawinfo === false) {
                 setLawInfo(true);
-                if (country == "Singapore") {
+                if (country === "Singapore") {
                     setLawPoints(
                         singaporeInfo["Law"].map((point) => <li>{point}</li>)
                     );
                 }
-                if (country == "Malaysia") {
+                if (country === "Malaysia") {
                     setLawPoints(
                         malaysiaInfo["Law"].map((point) => <li>{point}</li>)
                     );
@@ -81,17 +81,17 @@ const CountryInfo = () => {
             }
         }
 
-        if (information_cat == "culture_info") {
-            if (cultureinfo == false) {
+        if (information_cat === "culture_info") {
+            if (cultureinfo === false) {
                 setCultureInfo(true);
-                if (country == "Singapore") {
+                if (country === "Singapore") {
                     setCulturePoints(
                         singaporeInfo["Culture"].map((point) => (
                             <li>{point}</li>
                         ))
                     );
                 }
-                if (country == "Malaysia") {
+                if (country === "Malaysia") {
                     setCulturePoints(
                         malaysiaInfo["Culture"].map((point) => <li>{point}</li>)
                     );
@@ -100,17 +100,17 @@ const CountryInfo = () => {
                 setCultureInfo(false);
             }
         }
-        if (information_cat == "weather_info") {
-            if (weatherinfo == false) {
+        if (information_cat === "weather_info") {
+            if (weatherinfo === false) {
                 setWeatherInfo(true);
-                if (country == "Singapore") {
+                if (country === "Singapore") {
                     setWeatherPoints(
                         singaporeInfo["Weather"].map((point) => (
                             <li>{point}</li>
                         ))
                     );
                 }
-                if (country == "Malaysia") {
+                if (country === "Malaysia") {
                     setWeatherPoints(
                         malaysiaInfo["Weather"].map((point) => <li>{point}</li>)
                     );
@@ -190,7 +190,7 @@ const CountryInfo = () => {
                 )}
             </div>
             <h1 className="sus_header">Sustainable Events</h1>
-            {country == "Singapore" ? (
+            {country === "Singapore" ? (
                 <div className="sus_events">
                     <div className="event_box">
                         <div>
@@ -342,7 +342,7 @@ const CountryInfo = () => {
 
             <h1 className="sus_header">Businesses & Locations</h1>
 
-            {country == "Singapore" ? (
+            {country === "Singapore" ? (
                 <div className="sus_locations">
                     <div className="event_box">
                         <div>
