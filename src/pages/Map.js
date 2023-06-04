@@ -21,7 +21,7 @@ const Map = () => {
     //firebase db
     const database = getDatabase();
 
-    const gApiKey = "AIzaSyBthJKxacm0pSrgo2yEEM_BUjmIryn8VOI";
+    const gApiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
     const google = (window.google = window.google ? window.google : {});
     // const region = document.querySelector(#region) (region="SG")
     // const language = ...
