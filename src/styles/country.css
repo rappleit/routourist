@@ -27,13 +27,12 @@
     justify-content: space-between;
 }
 
-
-
 *{
     margin: 0;
     padding:0;
     
 }
+
 .country_page{
     background-color: var(--primary-clr);
     min-height: 100vh;

@@ -1570,13 +1570,15 @@ const Map = () => {
                     );
 
                     routeDirections +=
-                        `${String.fromCharCode(65 + i)} (${
-                            routePathSplit[i]
-                        }) ➡️ ${String.fromCharCode(66 + i)} (${
-                            routePathSplit[i + 1]
-                        })<br>${
+                        `<p style="background-color: #333333; font-size: 13px;"> ${String.fromCharCode(
+                            65 + i
+                        )} (${routePathSplit[i]}) ➡️ ${String.fromCharCode(
+                            66 + i
+                        )} (${routePathSplit[i + 1]})<br>${
                             routeLegsArray[i][0]["distance"]["text"]
-                        }. <hr>` +
+                        }. About ${secondsToHms(
+                            routeLegsArray[i][0]["duration"]["value"]
+                        )} </p> <hr> <p style= 'font-size: 12px;'>` +
                         routeLegsArray[i][0]["steps"]
                             .map((step, index) => {
                                 if (step["transit"]) {
@@ -1626,7 +1628,6 @@ const Map = () => {
                                             }
                                         )
                                     );
-                                    // STEPS: index + 1
                                     return `${index + 1}. Take ${
                                         step["transit"]["line"]["name"].length <
                                             4 ||
@@ -1653,13 +1654,12 @@ const Map = () => {
                                     }
                                     (<i>${step["distance"]["text"]}</i>)`;
                                 }
-                                // STEPS: index + 1
                                 return `${index + 1}. 🚶${
                                     step["instructions"]
                                 } (<i>${step["distance"]["text"]}</i>)`;
                             })
                             .join("<br>") +
-                        "<br><br>";
+                        "</p><br><br>";
                 }
 
                 markersPolylines.push(
@@ -1747,19 +1747,19 @@ const Map = () => {
                         })
                     );
                     routeDirections +=
-                        `${String.fromCharCode(65 + i)} (${
-                            routePathSplit[i]
-                        }) ➡️ ${String.fromCharCode(66 + i)} (${
-                            routePathSplit[i + 1]
-                        })<br>${metersToKm(
+                        `<p style="background-color: #333333; font-size: 13px;"> ${String.fromCharCode(
+                            65 + i
+                        )} (${routePathSplit[i]}) ➡️ ${String.fromCharCode(
+                            66 + i
+                        )} (${routePathSplit[i + 1]})<br>${metersToKm(
                             result[i]["distanceMeters"]
                         )}. About ${secondsToHms(
                             result[i]["duration"].replace("s", "")
-                        )} <hr>` +
+                        )} </p> <hr>` +
+                        `<p style= 'font-size: 12px;'>` +
                         result[i]["steps"]
                             .map((step, index) => {
                                 if (step["navigationInstruction"]) {
-                                    // STEPS: index
                                     return `${index}. ${
                                         step["navigationInstruction"][
                                             "instructions"
@@ -1770,7 +1770,7 @@ const Map = () => {
                                 }
                             })
                             .join("");
-                    routeDirections += "<br>";
+                    routeDirections += "</p><br>";
                 }
 
                 const endLat_Lng =
@@ -1816,6 +1816,7 @@ const Map = () => {
                                 0.8
                             ) {
                                 createAttractionMarker({
+                                    theme: theme,
                                     position: place["address"],
                                     url: `https://www.google.com/search?q=${encodeURIComponent(
                                         place["name"] +
@@ -1868,13 +1869,20 @@ const Map = () => {
         for (const cat of allCategories) {
             if (!categoriesChecked.includes(cat)) {
                 for (const catToBeRemoved of attractionMarkers.filter(
-                    (item) => item.category == cat
-                ))
+                    (item) => {
+                        console.log(item, cat);
+                        return item.category == cat;
+                    }
+                )) {
+                    console.log(catToBeRemoved);
                     try {
+                        console.log("to be removed");
                         catToBeRemoved.marker.setMap(null);
                     } catch (TypeError) {
                         catToBeRemoved.marker.map = null;
                     }
+                }
+
                 setAttractionMarkers(
                     attractionMarkers.filter((item) => item.category !== cat)
                 );
@@ -1949,6 +1957,12 @@ const Map = () => {
             map: gmap,
         });
         markersPolylines.push(advancedMarkerView);
+
+        attractionMarkers.push({
+            category: details["theme"],
+            marker: advancedMarkerView,
+        });
+
         const element = advancedMarkerView.element;
 
         ["focus", "pointerenter"].forEach((event) => {
@@ -2026,7 +2040,7 @@ const Map = () => {
         }
 
         content.innerHTML = `
-        <div class="icon">
+        <div class="attractionIcon">
             <i aria-hidden="true" class="fa fa-icon fa-${markerIcon}"></i>
             <span class="fa-sr-only">${markerIcon}</span>
         </div>

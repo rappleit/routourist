@@ -107,7 +107,7 @@
     display: flex;
   }
   
-  .property.highlight .icon svg {
+  .property.highlight .attractionIcon svg {
     width: 50px;
     height: 50px;
   }
@@ -127,7 +127,7 @@
   /*
      * building icon colors.
      */
-  .property.highlight:has(.fa-building) .icon {
+  .property.highlight:has(.fa-building) .attractionIcon {
     color: var(--building-color);
   }
   
@@ -142,7 +142,7 @@
     /*
    * hotel icon colors.
    */
-   .property.highlight:has(.fa-hotel) .icon {
+   .property.highlight:has(.fa-hotel) .attractionIcon {
     color: var(--hotel-color);
   }
   
@@ -157,7 +157,7 @@
   /*
      * bicycle icon colors.
      */
-  .property.highlight:has(.fa-bicycle) .icon {
+  .property.highlight:has(.fa-bicycle) .attractionIcon {
     color: var(--bicycle-color);
   }
   
@@ -172,7 +172,7 @@
   /*
      * food icon colors.
      */
-  .property.highlight:has(.fa-utensils) .icon {
+  .property.highlight:has(.fa-utensils) .attractionIcon {
     color: var(--food-color);
   }
   
@@ -187,7 +187,7 @@
       /*
      * water icon colors.
      */
-     .property.highlight:has(.fa-droplet) .icon {
+     .property.highlight:has(.fa-droplet) .attractionIcon {
       color: var(--water-color);
     }
     
@@ -202,7 +202,7 @@
          /*
      * monument icon colors.
      */
-  .property.highlight:has(.fa-landmark-dome) .icon {
+  .property.highlight:has(.fa-landmark-dome) .attractionIcon {
     color: var(--monument-color);
   }
   
@@ -217,7 +217,7 @@
   /*
      * museum icon colors.
      */
-     .property.highlight:has(.fa-building-columns) .icon {
+     .property.highlight:has(.fa-building-columns) .attractionIcon {
         color: var(--museum-color);
       }
       
@@ -232,7 +232,7 @@
   /*
      * historic_site icon colors.
      */
-     .property.highlight:has(.fa-clock-rotate-left) .icon {
+     .property.highlight:has(.fa-clock-rotate-left) .attractionIcon {
         color: var(--historic_site-color);
       }
       
@@ -247,7 +247,7 @@
  /*
      * park icon colors.
      */
-     .property.highlight:has(.fa-tree) .icon {
+     .property.highlight:has(.fa-tree) .attractionIcon {
         color: var(--park-color);
       }
       
@@ -262,7 +262,7 @@
       /*
      * skyrise_greenery icon colors.
      */
-  .property.highlight:has(.fa-tree-city) .icon {
+  .property.highlight:has(.fa-tree-city) .attractionIcon {
     color: var(--skyrise_greenery-color);
   }
   
@@ -277,7 +277,7 @@
       /*
      * green_mark icon colors.
      */
-  .property.highlight:has(.fa-medal) .icon {
+  .property.highlight:has(.fa-medal) .attractionIcon {
     color: var(--green_mark-color);
   }
   
@@ -292,7 +292,7 @@
 /*
      * ev icon colors.
      */
-     .property.highlight:has(.fa-car-side) .icon {
+     .property.highlight:has(.fa-car-side) .attractionIcon {
         color: var(--ev-color);
       }
       
@@ -314,7 +314,7 @@
 #cesium {
     position: absolute;
     z-index: 1;
-    left: 54%;
+    left: 52%;
     transform: translate(-50%);
     padding: 5px 8px;
     border-radius: 5px;
@@ -336,7 +336,7 @@
   #trafficLayer {
     position: absolute;
     z-index: 1;
-    left: 47%;
+    left: 45%;
     transform: translate(-50%);
     padding: 5px 8px;
     border-radius: 5px;

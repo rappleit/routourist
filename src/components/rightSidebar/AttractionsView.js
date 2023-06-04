@@ -17,13 +17,10 @@ const AttractionsView = ({
     const handleCategoryChecked = (e) => {
         if (e.target.checked) {
             setCategoriesChecked((oldArr) => [...oldArr, e.target.name]);
-            console.log(categoriesChecked)
-
         } else {
             setCategoriesChecked(
                 categoriesChecked.filter((cat) => cat !== e.target.name)
             );
-            console.log(categoriesChecked)
         }
     };
 

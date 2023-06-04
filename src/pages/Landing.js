@@ -58,9 +58,9 @@ const Landing = () => {
                         <img src={logo} alt="routourist logo"></img>
                         <h2>Routourist</h2>
                     </div>
-                    
-                    <div className='headerbutton'>
-                        <a href='/country'>Try Now</a>
+
+                    <div className="headerbutton">
+                        <a href="/country">Try Now</a>
                     </div>
                 </div>
 
@@ -94,9 +94,9 @@ const Landing = () => {
                                 </p>
                             </div>
                         </div>
-                        </div>
-                    <div className='right_section'>
-                        <img src={travel} alt='travel'></img>
+                    </div>
+                    <div className="right_section">
+                        <img src={travel} alt="travel"></img>
                     </div>
                 </div>
             </div>
@@ -121,14 +121,19 @@ const Landing = () => {
             <div className="consumer_section">
                 <div className="sus_section">
                     <h1>We aspire Sustainable Travelling.</h1>
-                    <p>We made your travelling more sustainable to enhance your experience
-                        and the future of travelling.
+                    <p>
+                        We made your travelling more sustainable to enhance your
+                        experience and the future of travelling.
                     </p>
 
                     <div className="sus_sub">
                         <div className="sus_sub1">
                             <img src={environment}></img>
-                            <p>Environmental: Reduce your carbon footprint and enjoy partaking in environmentally friendly activities</p>
+                            <p>
+                                Environmental: Reduce your carbon footprint and
+                                enjoy partaking in environmentally friendly
+                                activities
+                            </p>
                         </div>
                         <div className="sus_sub1">
                             <img src={social}></img>
@@ -145,27 +150,40 @@ const Landing = () => {
                     </div>
                 </div>
 
-                <div className='feature_section'>
+                <div className="feature_section">
                     <h2>But why?</h2>
-                    <div className='feature_sub'>
-                        <div className='feature_sub_1'>
-                            <ImLocation className='icon'/>
+                    <div className="feature_sub">
+                        <div className="feature_sub_1">
+                            <ImLocation className="landingIcon" />
                             <h3>Unsatisfied Tourist</h3>
-                            <p>Tourists getting arrested and shamed for disrespecting culture and laws they werent very aware of</p>
+                            <p>
+                                Tourists getting arrested and shamed for
+                                disrespecting culture and laws they werent very
+                                aware of
+                            </p>
                         </div>
-                        <div className='feature_sub_1'>
-                            <BsFillPeopleFill className='icon'/>
+                        <div className="feature_sub_1">
+                            <BsFillPeopleFill className="landingIcon" />
                             <h3>Annoyed Locals</h3>
-                            <p>Disrespect towards local and resource competition makes prices rises, causes locals to be less accepting of tourists. </p>
+                            <p>
+                                Disrespect towards local and resource
+                                competition makes prices rises, causes locals to
+                                be less accepting of tourists.{" "}
+                            </p>
                         </div>
-                        <div className='feature_sub_1'>
-                            <ImEarth className='icon'/>
+                        <div className="feature_sub_1">
+                            <ImEarth className="landingIcon" />
                             <h3>Mother Earth suffering</h3>
-                            <p>Carbon emissions, irresponsible consumption, environmental deterioration </p>
+                            <p>
+                                Carbon emissions, irresponsible consumption,
+                                environmental deterioration{" "}
+                            </p>
                         </div>
-                        
                     </div>
-                    <h3 className="feature_subtext">We would like to avoid such things from happening which is a result from Unsustainable Tourism. </h3>
+                    <h3 className="feature_subtext">
+                        We would like to avoid such things from happening which
+                        is a result from Unsustainable Tourism.{" "}
+                    </h3>
                 </div>
 
                 <div className="comment_section">
@@ -189,34 +207,58 @@ const Landing = () => {
                 </div>
 
                 <div className="procedure_section">
-                    <div className='procedure_sub'>
-                        <div className='procedure_text'>
-                            <h1>Start off with a selection of country of interest</h1>
+                    <div className="procedure_sub">
+                        <div className="procedure_text">
+                            <h1>
+                                Start off with a selection of country of
+                                interest
+                            </h1>
                             <ul>
-                                <li>Information on the general ways to be a sustainable tourist is available as well</li>
-                                <li>Being a sustainable tourist can be applicable in every country!</li>
+                                <li>
+                                    Information on the general ways to be a
+                                    sustainable tourist is available as well
+                                </li>
+                                <li>
+                                    Being a sustainable tourist can be
+                                    applicable in every country!
+                                </li>
                             </ul>
                         </div>
                         <img src={selectroute}></img>
                     </div>
-                    <div className='procedure_sub'>
+                    <div className="procedure_sub">
                         <img src={selectroute}></img>
-                        <div className='procedure_text'>
+                        <div className="procedure_text">
                             <h1>Be informed</h1>
                             <ul>
-                                <li>Be updated on the country's laws, cultures and weather</li>
-                                <li>Learn about the country's local sustainable events/businesses</li>
+                                <li>
+                                    Be updated on the country's laws, cultures
+                                    and weather
+                                </li>
+                                <li>
+                                    Learn about the country's local sustainable
+                                    events/businesses
+                                </li>
                             </ul>
                         </div>
                     </div>
 
-                    <div className='procedure_sub'>
-                        <div className='procedure_text'>
+                    <div className="procedure_sub">
+                        <div className="procedure_text">
                             <h1>Select and Customise your route</h1>
                             <ul>
-                                <li>Explore the many routes recommended for you that will quench your every tourist needs</li>
-                                <li>Add and remove any locations without the route to make it your own</li>
-                                <li>Recommendations nearby are sent to you to make your journery more sustainable </li>
+                                <li>
+                                    Explore the many routes recommended for you
+                                    that will quench your every tourist needs
+                                </li>
+                                <li>
+                                    Add and remove any locations without the
+                                    route to make it your own
+                                </li>
+                                <li>
+                                    Recommendations nearby are sent to you to
+                                    make your journery more sustainable{" "}
+                                </li>
                             </ul>
                         </div>
                         <img src={modifyroute}></img>
@@ -224,20 +266,31 @@ const Landing = () => {
 
                     <div className="procedure_sub">
                         <img src={saveroute}></img>
-                        <div className='procedure_text'>
+                        <div className="procedure_text">
                             <h1>Save your route</h1>
                             <ul>
-                                <li>Smoothly save your ammended route to your saved route library for future uses</li>
-                                <li>However, take note that you must login to be able to enjoy the feature</li>
+                                <li>
+                                    Smoothly save your ammended route to your
+                                    saved route library for future uses
+                                </li>
+                                <li>
+                                    However, take note that you must login to be
+                                    able to enjoy the feature
+                                </li>
                             </ul>
                         </div>
                     </div>
 
-                    <div className='procedure_sub'>
-                        <div className='procedure_text'>
+                    <div className="procedure_sub">
+                        <div className="procedure_text">
                             <h1>Share your route to others</h1>
                             <ul>
-                                <li>Share it to others through community routes and receive sustainable ratings and <br/> badges to show that your route is truly sustainable</li>
+                                <li>
+                                    Share it to others through community routes
+                                    and receive sustainable ratings and <br />{" "}
+                                    badges to show that your route is truly
+                                    sustainable
+                                </li>
                                 <li>Share it with a direct link</li>
                             </ul>
                         </div>
