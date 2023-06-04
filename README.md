@@ -1,8 +1,8 @@
 # Routourist
 Routourist is a route builder web application that aims to promote sustainable tourism. 
 
-##DISCLAIMER
-As we do not wish to expose our API keys to the public, please be informed that they are sent in our submission forms and if they are not accesible, please email us under the email here Email: [routourist3dc@gmail.com](mailto:routourist3dc@gmail.com)
+## DISCLAIMER
+As we do not wish to expose our API keys to the public, please be informed that they are sent in our submission forms and if they are not accessible, please email us under the email here, [routourist3dc@gmail.com](mailto:routourist3dc@gmail.com)
 
 [Try Routourist Now!] (TO BE LINKED)
 
@@ -34,9 +34,6 @@ Email: [routourist3dc@gmail.com](mailto:routourist3dc@gmail.com)
 ---
 ## Setup Guide
 
-### Prerequisites
-- A Google Cloud Account
-
 ### Installation
 
 Step 1: Clone the repo
@@ -47,27 +44,13 @@ Step 2: Install dependencies
 ```
 npm install
 ```
-Step 2.2: Create a new `.env` file from `.env.example`
+Step 3: Create a new `.env` file from `.env.example`
 ```
 copy .env.example .env
 ```
+Step 3.1: Copy paste API keys into the respective env variables
 
-Step 3.2: Create a new `.env.local` file from `.env.example`
-```
-copy .env.example .env.local
-```
-
-Step 3.3: Obtain API key from Google Cloud Console
-1. Head to [Google Cloud Console](https://console.cloud.google.com/)
-2. Create a new project
-3. At the top left, under "APIs & Services", click on "Credentials"
-4. Click "Create Credentials", then click "API Key"
-5. Copy this API Key for later
-6. Enable Places, Directions, Geocoding, Maps Javascript APIs from the API "Library"
-
-Paste the copied API Key in your `.env.local` file next to `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=`
-
-Step 3.4: Run on the root directory
+Step 4: Run on the root directory
 ```
 npm start
 ```
