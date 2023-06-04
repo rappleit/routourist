@@ -15,8 +15,9 @@ import shareroute from "../images/shareroute.svg";
 import {BsCheckCircleFill} from "react-icons/bs";
 import {FaClipboardList} from "react-icons/fa";
 import {ImLocation} from "react-icons/im";
-import {FiThumbsUp} from "react-icons/fi";
+import {BsFillPeopleFill} from "react-icons/bs";
 import {useState, useEffect} from "react";
+import {ImEarth} from "react-icons/im";
 
 const Landing = () => {
     const businessContent = document.getElementsByClassName("business_section");
@@ -57,10 +58,9 @@ const Landing = () => {
                         <img src={logo} alt="routourist logo"></img>
                         <h2>Routourist</h2>
                     </div>
-
-                    <div className="headerbutton">
-                        <a className="faq_button">FAQ</a>
-                        <a href="/country">Try Now</a>
+                    
+                    <div className='headerbutton'>
+                        <a href='/country'>Try Now</a>
                     </div>
                 </div>
 
@@ -94,17 +94,9 @@ const Landing = () => {
                                 </p>
                             </div>
                         </div>
-
-                        <div className="business_collab">
-                            <button>Collab Now</button>
-                            <p>
-                                For Business collaboration, click this button to
-                                apply now!
-                            </p>
                         </div>
-                    </div>
-                    <div className="right_section">
-                        <img src={travel} alt="travel"></img>
+                    <div className='right_section'>
+                        <img src={travel} alt='travel'></img>
                     </div>
                 </div>
             </div>
@@ -129,20 +121,14 @@ const Landing = () => {
             <div className="consumer_section">
                 <div className="sus_section">
                     <h1>We aspire Sustainable Travelling.</h1>
-                    <p>
-                        We made your travelling more sustainable to enhance your
-                        experience and the future of travelling, while we're at
-                        it.
+                    <p>We made your travelling more sustainable to enhance your experience
+                        and the future of travelling.
                     </p>
 
                     <div className="sus_sub">
                         <div className="sus_sub1">
                             <img src={environment}></img>
-                            <p>
-                                Environmental: Minimize your carbon footprint
-                                and embrace sustainable practices wherever
-                                possible.
-                            </p>
+                            <p>Environmental: Reduce your carbon footprint and enjoy partaking in environmentally friendly activities</p>
                         </div>
                         <div className="sus_sub1">
                             <img src={social}></img>
@@ -154,47 +140,32 @@ const Landing = () => {
                         </div>
                         <div className="sus_sub1">
                             <img src={economic}></img>
-                            <p>
-                                Economic: Support local businesses and
-                                contribute to the growth and prosperity of the
-                                community.{" "}
-                            </p>
+                            <p>Economic: Support the local businesses</p>
                         </div>
                     </div>
                 </div>
 
-                <div className="feature_section">
-                    <h2>Features</h2>
-                    <div className="feature_sub">
-                        <div className="feature_sub_1">
-                            <ImLocation className="icon" />
-                            <h3>Routing System</h3>
-                            <p>
-                                Optimized multi-destination travelling with a
-                                curated selection of preset and community
-                                routes.
-                            </p>
+                <div className='feature_section'>
+                    <h2>But why?</h2>
+                    <div className='feature_sub'>
+                        <div className='feature_sub_1'>
+                            <ImLocation className='icon'/>
+                            <h3>Unsatisfied Tourist</h3>
+                            <p>Tourists getting arrested and shamed for disrespecting culture and laws they werent very aware of</p>
                         </div>
-                        <div className="feature_sub_1">
-                            <FaClipboardList className="icon" />
-                            <h3>Information Bar</h3>
-                            <p>
-                                Access valuable data that enhances your travel
-                                experience, including details on carbon
-                                footprint, weather conditions, local culture,
-                                and much more.
-                            </p>
+                        <div className='feature_sub_1'>
+                            <BsFillPeopleFill className='icon'/>
+                            <h3>Annoyed Locals</h3>
+                            <p>Disrespect towards local and resource competition makes prices rises, causes locals to be less accepting of tourists. </p>
                         </div>
-                        <div className="feature_sub_1">
-                            <FiThumbsUp className="icon" />
-                            <h3>Recommendation Service</h3>
-                            <p>
-                                Live a little! Our intelligent recommendation
-                                service guides you to unique experiences and
-                                hidden gems along your journey.
-                            </p>
+                        <div className='feature_sub_1'>
+                            <ImEarth className='icon'/>
+                            <h3>Mother Earth suffering</h3>
+                            <p>Carbon emissions, irresponsible consumption, environmental deterioration </p>
                         </div>
+                        
                     </div>
+                    <h3 className="feature_subtext">We would like to avoid such things from happening which is a result from Unsustainable Tourism. </h3>
                 </div>
 
                 <div className="comment_section">
@@ -218,51 +189,57 @@ const Landing = () => {
                 </div>
 
                 <div className="procedure_section">
-                    <div className="procedure_sub">
+                    <div className='procedure_sub'>
+                        <div className='procedure_text'>
+                            <h1>Start off with a selection of country of interest</h1>
+                            <ul>
+                                <li>Information on the general ways to be a sustainable tourist is available as well</li>
+                                <li>Being a sustainable tourist can be applicable in every country!</li>
+                            </ul>
+                        </div>
                         <img src={selectroute}></img>
-                        <div className="procedure_text">
-                            <h1>Begin. Build.</h1>
-                            <p>
-                                From a wide range of exciting preset or
-                                community routes across various categories to
-                                perfectly match your preferences and interests!
-                            </p>
+                    </div>
+                    <div className='procedure_sub'>
+                        <img src={selectroute}></img>
+                        <div className='procedure_text'>
+                            <h1>Be informed</h1>
+                            <ul>
+                                <li>Be updated on the country's laws, cultures and weather</li>
+                                <li>Learn about the country's local sustainable events/businesses</li>
+                            </ul>
                         </div>
                     </div>
 
-                    <div className="procedure_sub">
-                        <div className="procedure_text">
-                            <h1>Customize. Craft.</h1>
-                            <p>
-                                Seamlessly add or remove locations to
-                                personalize your selected route, ensuring a
-                                unique and memorable journey.
-                            </p>
+                    <div className='procedure_sub'>
+                        <div className='procedure_text'>
+                            <h1>Select and Customise your route</h1>
+                            <ul>
+                                <li>Explore the many routes recommended for you that will quench your every tourist needs</li>
+                                <li>Add and remove any locations without the route to make it your own</li>
+                                <li>Recommendations nearby are sent to you to make your journery more sustainable </li>
+                            </ul>
                         </div>
                         <img src={modifyroute}></img>
                     </div>
 
                     <div className="procedure_sub">
                         <img src={saveroute}></img>
-                        <div className="procedure_text">
-                            <h1>Preserve. Ponder.</h1>
-                            <p>
-                                Who knows? Your saved route might come in handy
-                                for your next thrilling escapade!
-                            </p>
+                        <div className='procedure_text'>
+                            <h1>Save your route</h1>
+                            <ul>
+                                <li>Smoothly save your ammended route to your saved route library for future uses</li>
+                                <li>However, take note that you must login to be able to enjoy the feature</li>
+                            </ul>
                         </div>
                     </div>
 
-                    <div className="procedure_sub">
-                        <div className="procedure_text">
-                            <h1>Share. Spark.</h1>
-                            <p>
-                                Spread the joy by sharing your route with
-                                others, providing them with the opportunity to
-                                embark on the same incredible adventure or
-                                inspiration. <br></br>It's also a great way to
-                                ensure everyone's safety!
-                            </p>
+                    <div className='procedure_sub'>
+                        <div className='procedure_text'>
+                            <h1>Share your route to others</h1>
+                            <ul>
+                                <li>Share it to others through community routes and receive sustainable ratings and <br/> badges to show that your route is truly sustainable</li>
+                                <li>Share it with a direct link</li>
+                            </ul>
                         </div>
                         <img src={shareroute}></img>
                     </div>

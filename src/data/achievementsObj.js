@@ -10,6 +10,10 @@ const obj = {
     sustainableAccomodation: {
         title: "Promotes Sustainable Accomodation",
         desc: "The route features one or more destinations that include certified sustainable accommodations."
+    },
+    promoteHeritage: {
+        title: "Promotes Local Cultural Heritage",
+        desc: "Celebrates and preserves the rich cultural heritage of local communities by highlighting historical sites, traditional arts, indigenous practices, and cultural events."
     }
 
 };

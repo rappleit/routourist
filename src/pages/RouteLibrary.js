@@ -130,7 +130,9 @@ const RouteLibrary = () => {
                                     (isPreset ? "Preset" : "Community")
                             )
                             .map((r, i) => (
-                                <div className="routeCard" key={i}>
+                                <div className="routeCard" key={i} onClick={() =>
+                                    navigate("/routelibrary/" + r.id)
+                                }>
                                     <img
                                         src="/assets/MapThumbnailSG.png"
                                         alt=""
