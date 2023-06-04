@@ -15,8 +15,9 @@ import shareroute from "../images/shareroute.svg";
 import {BsCheckCircleFill} from "react-icons/bs";
 import {FaClipboardList} from "react-icons/fa";
 import {ImLocation} from "react-icons/im";
-import {FiThumbsUp} from "react-icons/fi";
+import {BsFillPeopleFill} from "react-icons/bs";
 import {useState, useEffect} from "react";
+import {ImEarth} from "react-icons/im";
 
 const Landing = () => {
     const businessContent = document.getElementsByClassName("business_section");
@@ -150,21 +151,21 @@ const Landing = () => {
                         <div className='feature_sub_1'>
                             <ImLocation className='icon'/>
                             <h3>Unsatisfied Tourist</h3>
-                            <p>Optimised multi-Destination travelling with a list of preset routes and community routes</p>
+                            <p>Tourists getting arrested and shamed for disrespecting culture and laws they werent very aware of</p>
                         </div>
                         <div className='feature_sub_1'>
-                            <FaClipboardList className='icon'/>
+                            <BsFillPeopleFill className='icon'/>
                             <h3>Annoyed Locals</h3>
-                            <p>Access data that will affect your travel and others such as carbon footprint, weather, culture of the surrounding area and more</p>
+                            <p>Disrespect towards local and resource competition makes prices rises, causes locals to be less accepting of tourists. </p>
                         </div>
                         <div className='feature_sub_1'>
-                            <FiThumbsUp className='icon'/>
+                            <ImEarth className='icon'/>
                             <h3>Mother Earth suffering</h3>
-                            <p>Our system enables us to recommend you services and businesses that promotes sustainable tourism</p>
+                            <p>Carbon emissions, irresponsible consumption, environmental deterioration </p>
                         </div>
                         
                     </div>
-                    <h3>We would like to avoid such things from happening which is a result from Unsustainable Tourism. </h3>
+                    <h3 className="feature_subtext">We would like to avoid such things from happening which is a result from Unsustainable Tourism. </h3>
                 </div>
 
                 <div className="comment_section">
