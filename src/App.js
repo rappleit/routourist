@@ -12,6 +12,7 @@ import { AuthContextProvider } from './context/AuthContext';
 import { ReactNotifications } from 'react-notifications-component'
 import 'react-notifications-component/dist/theme.css'
 import SavedRoutes from './pages/SavedRoutes';
+import PublishedRouteDetail from './pages/PublishedRouteDetail';
 
 
 function App() {
@@ -19,6 +20,18 @@ function App() {
     localStorage.removeItem('routeName');
     localStorage.removeItem('routeRequest');
   }
+
+  //default country and language
+
+  if (localStorage.getItem("Country") === null || localStorage.getItem("Country") === "") {
+    localStorage.setItem("Country", "Singapore")
+  }
+
+  if (localStorage.getItem("Language") === null || localStorage.getItem("Country") === "") {
+    localStorage.setItem("Language", "English")
+  }
+
+
   return (
     <div className="App">
       <AuthContextProvider>
@@ -40,7 +53,13 @@ function App() {
           element={<CountryInfo/>}/>
         <Route
         path="/routelibrary"
-        element={<RouteLibrary/>}/>
+        element={<RouteLibrary/>}
+        exact/>
+        <Route 
+        path="/routeLibrary/:routeID"
+        element={<PublishedRouteDetail/>}
+        exact
+        />
         <Route 
         path="/savedroutes"
         element={<SavedRoutes/>}

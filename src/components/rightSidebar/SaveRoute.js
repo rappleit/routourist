@@ -27,6 +27,7 @@ const SaveRoute = ({
                     route: currentRoute,
                     carbonEmissions: getImpact(currentRoute["travelMode"]).carbonEmissions,
                     duration: getImpact(currentRoute["travelMode"]).duration,
+                    country: localStorage.getItem("Country")
                 });
                 setRouteName("");
                 Store.addNotification({

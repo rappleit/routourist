@@ -1,7 +1,9 @@
 .libraryroute{
-    margin-left: 60px;
     z-index: -1;
     text-align: left;
+    background:var(--lightgray);
+    overflow-x: hidden;
+    margin-left: 60px;
 }
 
 .header_section{
@@ -22,8 +24,9 @@
     color: var(--darkgray);
     font-family: var(--ff-secondary);
     height: min-content;
-    background:var(--green);
-    border: none;
+    background:none;
+    border: solid 2px var(--eggshell);
+    color: var(--eggshell);
     padding: 10px 23px 10px 23px;
     font-family: var(--ff-secondary);
     margin-top: auto;
@@ -33,6 +36,17 @@
     box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
     text-decoration: none;
     margin-left: 10px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.left_header button:hover {
+    background: var(--eggshell);
+}
+
+.left_header button.buttonSelected {
+    background: var(--eggshell);
+    color: var(--darkgray);
 }
 
 .left_header h1{
@@ -49,40 +63,32 @@
     display: flex;
 }
 
-.iconsearch{
-    margin-right: 50px;
-    height: min-content;
-    margin-top: auto;
-    margin-bottom: auto;
-}
-
-.iconsearch{
-    color: white;
-    cursor: pointer;
-}
 
 .body_section{
-    padding-top: 60px;
-    padding-bottom: 100px;
-    margin:0;
+    padding-top: 20px;
     display: flex;
     flex-direction: column;
-    gap: 60px;
-    background:var(--lightgray);
     min-height:100vh;
-    
+    overflow-x: hidden;
+    margin: 12px 48px;
 }
 
 
 .cards_section{
     display: flex;
-    gap: 50px;
+    gap: 30px;
+    overflow-x: auto !important;
 }
+
 .cards_section div{
-    width:300px;
-    height:250px;
+    margin: 12px 0;
+    width: 270px;
+    min-width: 270px;
+    height: 270px;
     background: var(--eggshell);
-    box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-radius: 8px;
+    cursor: pointer;
 
 }
 
@@ -90,23 +96,103 @@ h2{
     color: var(--darkgray);
 }
 
-.recommended_section,.first_section, .second_section,.third_section{
-    margin-left: 50px;
-    width:min-content;
+.cat_section {
+    
+    width: 100%;
+    margin-bottom: 36px;
+
+}
+
+.cat_section .infoNote {
+    margin: 4px 0;
+}
+
+.cat_section h3 {
+    font-size: 22px;
 }
 
 .genre_selection{
-    display: none;
     min-width: min-content;
     margin: 0;
-    width: 120px;
-    padding-left: 20px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    margin-left:50px;
     background:var(--darkgray);
     color: var(--eggshell);
     border: none;
-    border-radius: 20px;
+    border-radius: 8px;
+    padding: 8px 24px;
+    cursor: pointer;
+}
+
+.genre_selection:hover {
+    background: var(--gray);
+}
+
+.body_title {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.body_desc {
+    font-size: 16px;
+    margin: 24px 0;
+}
+
+.noRoutesCard {
+    cursor: default;
+    background: var(--gray) !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--eggshell);
+}
+
+.routeCard {
+    
+    box-sizing: border-box;
+    padding: 20px;
+    text-align: left;
+}
+.routeCard img {
+    width: 222px;
+    height: 120px;
+}
+
+.routeCard h3 {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin: 6px 0;
+    font-size: 16px;
+    width: 100%;
+}
+
+.routeCard p {
+    margin: 4px 0;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    font-size: 14px;
+}
+
+.routeCardLocations {
+    font-weight: 500;
+
+}
+
+.routeCardScore {
+    background: var(--green);
+    color: var(--darkgray);
+    width: fit-content;
+    padding: 2px 8px;
+    font-weight: 500;
+    border-radius: 4px;
+}
+
+.routeCardAuthor {
+    font-weight: 400;
+    font-style: italic;
 }
 

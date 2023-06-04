@@ -1,10 +1,14 @@
 import { useState } from 'react';
 import '../styles/publishRoute.css';
 import { Store } from 'react-notifications-component';
+import SGGreenHotelArr from "../data/SGGreenHotelsArr"
+import { getDatabase, push, ref, set } from '@firebase/database';
+import { useNavigate } from 'react-router';
 
 const PublishRoute = ({
     selectedID,
-    savedRoutes
+    savedRoutes,
+    user
 }) => {
 
     const [routeDesc, setRouteDesc] = useState("")
@@ -17,11 +21,39 @@ const PublishRoute = ({
         "Romantic",
         "Iconic Landmarks",
         "Shopping",
-        "Entertainment",
         "Others"
     ]
+    const navigate = useNavigate();
 
-    const handlePublish = () => {
+    const achievementCheck = (route) => {
+        let achievementArr = [];
+
+        //check for eco-friendly transport
+        if (route.travelMode != "DRIVING") {
+            achievementArr.push("ecoTransport")
+        } 
+
+        //check for optimisation
+        if (route.optimizeWaypoints === true) {
+            achievementArr.push("optimisedRoute")
+        }
+
+        //check for sustainable accomodation
+        if (SGGreenHotelArr.includes(route.origin.name)) {
+            achievementArr.push("sustainableAccomodation")
+        } else {
+            for (let i = 0; i < route.waypoints.length; i++) {
+                if (SGGreenHotelArr.includes(route.waypoints[i].name)) {
+                    achievementArr.push ("sustainableAccomodation")
+                }
+            }
+        }
+        return {achievements: achievementArr, achievementNum: achievementArr.length}
+
+
+    }
+
+    const handlePublish = async () => {
         if (routeDesc === "") {
             Store.addNotification({
                 title: "Error",
@@ -51,7 +83,57 @@ const PublishRoute = ({
                 }
             });
         } else {
-
+            
+            const db = getDatabase();
+            const publishedRoutesRef = ref(db, "publishedroutes/");
+            const newPublishedRouteRef = push(publishedRoutesRef);
+            try {
+                await set( newPublishedRouteRef, {
+                    name: savedRoutes[selectedID].name,
+                    route: savedRoutes[selectedID].route,
+                    country: savedRoutes[selectedID].country,
+                    carbonEmissions: savedRoutes[selectedID].carbonEmissions,
+                    duration: savedRoutes[selectedID].duration,
+                    category: selectedCat,
+                    author: user.displayName,
+                    authorID: user.uid,
+                    type: "Community",
+                    achievements: achievementCheck(savedRoutes[selectedID].route).achievements,
+                    score: achievementCheck(savedRoutes[selectedID].route).achievementNum,
+                    desc: routeDesc,
+                    id: newPublishedRouteRef.key
+                })
+                Store.addNotification({
+                    title: "Success!",
+                    message: "Your route has been successfully published to the Route Library.",
+                    type: "success",
+                    insert: "top",
+                    container: "bottom-right",
+                    animationIn: ["animate__animated", "animate__fadeIn"],
+                    animationOut: ["animate__animated", "animate__fadeOut"],
+                    dismiss: {
+                        duration: 5000,
+                        onScreen: true
+                    }
+                });
+                navigate('/routelibrary');
+                
+            } catch (e) {
+                console.log(e.message);
+                Store.addNotification({
+                    title: "Error",
+                    message: e.message,
+                    type: "danger",
+                    insert: "top",
+                    container: "bottom-right",
+                    animationIn: ["animate__animated", "animate__fadeIn"],
+                    animationOut: ["animate__animated", "animate__fadeOut"],
+                    dismiss: {
+                        duration: 5000,
+                        onScreen: true,
+                    },
+                });
+            }
         }
     }
 

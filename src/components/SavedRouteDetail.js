@@ -66,7 +66,7 @@ const SavedRouteDetail = ({
 
                 <div className="infoDiv subSection">
                     <h2>Info</h2>
-                    <p><span className="infoDivHighlight"><FaGlobe /> Country:</span> Singapore</p>
+                    <p><span className="infoDivHighlight"><FaGlobe /> Country:</span> {savedRoutes[selectedID].country}</p>
                     <p><span className="infoDivHighlight"><FaCar /> Mode of Travel:</span> {savedRoutes[selectedID].route.travelMode}</p>
                 
                 </div>

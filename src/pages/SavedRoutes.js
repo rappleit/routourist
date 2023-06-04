@@ -24,7 +24,6 @@ const SavedRoutes = ({
         const db = getDatabase();
         const savedRoutesRef = ref(db, "savedroutes/" + user.uid);
         onValue(savedRoutesRef, (snapshot) => {
-            console.log(snapshot.val());
             setSavedRoutes(snapshot.val());
             setNumSavedRoutes(snapshot.size);
         });
@@ -83,7 +82,7 @@ const SavedRoutes = ({
                 <SavedRouteDetail {...{ setIsDetailView, savedRoutes, selectedID, setIsPublishView }} />
                 :
                 (isPublishView) ?
-                    <PublishRoute {...{selectedID, savedRoutes}}/>
+                    <PublishRoute {...{selectedID, savedRoutes, user}}/>
                     :
                     <div className="savedRoutesContainer">
                         {(savedRoutes) ? (Object.keys(savedRoutes)).map((routeID, i) => (

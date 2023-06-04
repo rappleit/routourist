@@ -1,0 +1,228 @@
+.publishedRouteDetailPage {
+    margin-left: 60px;
+    z-index: -1;
+    text-align: left;
+    background:var(--lightgray);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+.publishedRouteDetailPage .pageHeader {
+    background: var(--gray);
+    color: var(--eggshell);
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--eggshell);
+}
+
+.publishedRouteDetailPage .pageHeaderLeft {
+    display: flex;
+    align-items: center;
+}
+
+.publishedRouteDetailPage .pageHeaderRight {
+    display: flex;
+    align-items: center;
+}
+
+.publishedRouteDetailPage h1 {
+    margin: 0;
+    margin-left: 50px;
+    font-family: var(--ff-primary);
+    font-weight: var(--fw-black);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    font-size: 18px;
+}
+
+.publishedRouteDetailPage .pageContent {
+    margin: 48px;
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    width: 90%;
+    justify-content: space-between;
+    flex-direction: row !important;
+}
+
+.publishedRouteDetailPage .leftSubPageContent {
+    width: 60%;
+    
+}
+
+.publishedRouteDetailPage .rightSubPageContent {
+    width: 30%;
+    
+}
+
+
+.publishedRouteDetailPage .routeTagsContainer {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    
+}
+
+.publishedRouteDetailPage .routeTag {
+    background: var(--darkgray);
+    height: 42px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 18px;
+    border-radius: 4px;
+    color: var(--eggshell);
+}
+
+.publishedRouteDetailPage .routeInfoContainer {
+    margin: 24px 0;
+}
+
+.publishedRouteDetailPage .routeSubInfoContainer {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin: 16px 0;
+}
+
+.publishedRouteDetailPage .routeSubInfo span {
+    font-weight: 700;
+}
+
+.publishedRouteDetailPage .routeWaypointsContainer {
+    display: flex !important;
+    flex-direction: row;
+    align-items: center;
+    gap: 24px;
+    margin: 16px 0;
+    flex-wrap: wrap;
+
+}
+
+.publishedRouteDetailPage .routeWaypointCard {
+    background: var(--eggshell);
+    color: var(--darkgray);
+    width: 200px;
+    height: 120px;
+    box-sizing: border-box;
+    padding: 18px;
+    border-radius: 4px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+
+}
+
+.scoreContainer {
+    background: var(--green);
+    padding: 16px 36px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 4px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+
+}
+
+.scoreContainer p {
+    font-weight: 700;
+}
+
+.scoreContainer h4 {
+    font-size: 28px;
+}
+
+.routeImpactContainer {
+    border: solid 2px var(--darkgray);
+    border-radius: 4px;
+    padding: 16px 24px;
+    margin: 24px 0;
+}
+
+.routeImpactContainer .routeEmissionsNum {
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.routeBadgesContainer {
+    margin: 24px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.routeBadgeItem {
+    background: var(--gray);
+    color: var(--eggshell);
+    padding: 8px 12px;
+    border-radius: 4px;
+}
+
+.routeBadgeItem p {
+    font-size: 14px;
+}
+
+.shareLinkContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 12px
+}
+
+.shareLinkContainer input {
+    padding: 6px;
+    border: solid 1.5px var(--gray);
+    border-radius: 2px;
+    margin: 6px 0;
+}
+
+.shareLinkContainer button {
+    padding: 8px;
+    background: var(--green);
+    border: none;
+    font-weight: 600;
+    font-family: "Inter";
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.shareLinkContainer button:hover {
+    background: var(--lightgreen);
+}
+
+.backButton {
+    margin: 0 24px;
+    background: none;
+    border: solid 2px var(--eggshell);
+    padding: 8px 24px; 
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: var(--eggshell);
+
+}
+
+.backButton:hover {
+    background: var(--eggshell);
+    color: var(--gray);
+}
+
+.viewButton {
+    background: var(--green);
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    margin: 12px 32px;
+}
+
+.viewButton:hover {
+    background: var(--lightgreen);
+}

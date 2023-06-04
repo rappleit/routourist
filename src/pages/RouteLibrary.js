@@ -1,120 +1,256 @@
 import { useEffect, useState } from 'react';
 import '../styles/libraryroute.css';
-import { BiSearch } from 'react-icons/bi'
+import {
+    IoInformationCircle,
+    IoLeafSharp
+} from "react-icons/io5";
+import { equalTo, getDatabase, limitToLast, onValue, orderByChild, query, ref } from '@firebase/database';
+import { useNavigate } from 'react-router';
 
 
-const RouteLibrary = () => { 
-    const [isPreset,setIsPreset] = useState(false)
-    const [isCommunity,setIsCommunity] = useState(false)
+const RouteLibrary = () => {
+    const [isPreset, setIsPreset] = useState(true)
+    const [isCommunity, setIsCommunity] = useState(false)
 
-    const [headername,setHeaderName] = useState('Route Library')
-    const [subfirst,setSubFirst] = useState('Best of Preset')
-    const [subsecond, setSubSecond] = useState('Best of Community')
-    const [subthird,setSubThird] = useState('Discover')
+    const [communityRoutes, setCommunityRoutes] = useState({});
+    const [communityRoutesNum, setCommunityRoutesNum] = useState(0);
 
-    const presetButton = document.getElementsByClassName("preset");
-    const communityButton = document.getElementsByClassName("community");
-    const genreselector = document.getElementsByClassName("genre_selection");
+    const [presetRoutes, setPresetRoutes] = useState({});
+    const [presetRoutesNum, setPresetRoutesNum] = useState(0);
 
-    const setLibrary = () => {
-        setIsCommunity(false)
-        setIsPreset(false)
-        setHeaderName('Route Library')
-        setSubFirst('Best of Preset')
-        setSubSecond('Best of Community')
-        setSubThird('Discover')
-        genreselector[0].style.display='none'
+    const [topRoutes, setTopRoutes] = useState({});
+    const [topRoutesNum, setTopRoutesNum] = useState(0);
+    
 
+    const navigate = useNavigate();
+
+    const db = getDatabase();
+    const publishedRoutesRef = ref(db, "publishedroutes/");
+
+    const retrieveCommunityRoutes = () => {
+        const communityQuery = query(publishedRoutesRef, orderByChild('type'), equalTo('Community'))
+        onValue(communityQuery, (snapshot) => {
+            setCommunityRoutes(snapshot.val());
+            setCommunityRoutesNum(snapshot.size);
+        });
     }
-    useEffect(() =>{
-        if (isPreset || isCommunity){
-            setSubFirst('Nature')
-            setSubSecond('Romance')
-            setSubThird('Tourist')
-            genreselector[0].style.display = 'block'
-        }
-        if (isPreset){
-            setIsCommunity(false)
-            setHeaderName('Preset')
 
-        }
+    const retrievePresetRoutes = () => {
+        const presetQuery = query(publishedRoutesRef, orderByChild('type'), equalTo('Preset'))
+        onValue(presetQuery, (snapshot) => {
+            setPresetRoutes(snapshot.val());
+            setPresetRoutesNum(snapshot.size);
+        });
+    }
 
-        if (isCommunity){
-            setIsPreset(false)
-            setHeaderName('Community')
-        }
 
-    });
-    return(
+
+    const retrieveTopRoutes = () => {
+        const topQuery = query(publishedRoutesRef, orderByChild('score'))
+        onValue(topQuery, (snapshot) => {
+            setTopRoutes(snapshot.val());
+            setTopRoutesNum(snapshot.size);
+        });
+    }
+
+
+    useEffect(() => {
+        retrieveCommunityRoutes();
+    }, [communityRoutesNum])
+
+    useEffect(() => {
+        retrievePresetRoutes();
+    }, [presetRoutesNum])
+
+    useEffect(() => {
+        retrieveTopRoutes();
+    }, [topRoutesNum])
+
+
+    return (
         <div className='libraryroute'>
             <div className='header_section'>
                 <div className='left_header'>
-                    <h1>{headername}</h1>
-                    <button className='library' onClick={()=> setLibrary()}>Library</button>
-                    <button className='preset' onClick={() => setIsPreset(!isPreset)}>Preset</button>
-                    <button className='community' onClick={() => setIsCommunity(!isCommunity)}>Community</button>
-                    
+                    <h1>Route Library</h1>
+                    <button className={(isPreset) ? "buttonSelected" : ""} onClick={() => {setIsPreset(true); setIsCommunity(false)}}>Preset</button>
+                    <button className={(isCommunity) ? "buttonSelected" : ""} onClick={() => {setIsCommunity(true); setIsPreset(false)}}>Community</button>
                 </div>
 
-                <div className='right_header'>
-                    <div className='iconsearch'>
-                        <BiSearch/>
-                    </div>
-                    
-                </div>
-                
             </div>
             <div className='body_section'>
-                <div>
-                    <form >
-                        <select className='genre_selection'>
-                            <option value="" disabled selected hidden>Genre</option>
-                            <option value='Nature'> Nature</option>
-                            <option value='Romance'>Romance</option>
-                            <option value='Tourist'>Tourist</option>
-                        </select>
-                    </form>
+                <div className="body_title">
+                    <h2>{(isPreset) ? "Preset Routes" : "Community Routes"}</h2>
                 </div>
-                <div className='recommended_section'>
-                    <h2>Recommended</h2>
+                <p className="body_desc">{(isPreset) ? "Discover the handpicked routes curated by the Routourist Team!" : "Discover and explore the routes created by fellow users!"}</p>
+                <div className='recommended_section cat_section'>
+                    <h3>Recommended</h3>
+                    <p className="infoNote"><IoInformationCircle /> These routes are recommended due to their top Sustainability Scores. Sustainability Scores are evaluated based on how well the route promotes sustainable tourism, such as encouraging the use of eco-friendly modes of transport and support local businesses.</p>
                     <div className='cards_section'>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
+                        {Object.values(topRoutes).reverse().filter(route => route.type === ((isPreset) ? "Preset" : "Community")).map((r, i) => (
+                            <div className="routeCard" key={i}>
+                                <img src="/assets/MapThumbnailSG.png" alt="" />
+                              <h3>{r.name}</h3>
+                              <p className="routeCardLocations">{(r.route.waypoints.length === 1) ? 2 : r.route.waypoints.length} locations</p>
+                              <p className="routeCardScore"><IoLeafSharp/> Score: {r.score}</p> 
+                              <p className="routeCardCat">Category: {r.category}</p>
+                            </div>
+                        ))}
                     </div>
-                    
+
                 </div>
-                <div className='first_section'>
-                    <h2>{subfirst}</h2>
+                <div className='cat_section'>
+                    <h3>Nature & Wildlife</h3>
                     <div className='cards_section'>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
+                    {(Object.values((isPreset) ? presetRoutes : communityRoutes).filter(route => route.category === "Nature & Wildlife").length != 0) ? Object.values((isPreset) ? presetRoutes : communityRoutes).filter(route => route.category === "Nature & Wildlife").map((r, i) => (
+                            <div key={i} className='routeCard' onClick={() => navigate("/routelibrary/" + r.id)}>
+                            <img src="/assets/MapThumbnailSG.png" alt="" />
+                              <h3>{r.name}</h3>
+                              <p className="routeCardLocations">{(r.route.waypoints.length === 1) ? 2 : r.route.waypoints.length} locations</p>
+                              <p className="routeCardScore"><IoLeafSharp/> Score: {r.score}</p> 
+                              <p className="routeCardAuthor">Author: {r.author}</p>
+
+                          </div>
+                        )) : 
+                        <div className="noRoutesCard">
+                            <p>No Routes</p>
+                            </div>}
                     </div>
                 </div>
-                <div className='second_section'>
-                    <h2>{subsecond}</h2>
+                <div className='cat_section'>
+                    <h3>Cultural Heritage</h3>
                     <div className='cards_section'>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
+                    {(Object.values((isPreset) ? presetRoutes : communityRoutes).filter(route => route.category === "Cultural Heritage").length != 0) ? Object.values((isPreset) ? presetRoutes : communityRoutes).filter(route => route.category === "Cultural Heritage").map((r, i) => (
+                            <div key={i} className='routeCard' onClick={() => navigate("/routelibrary/" + r.id)}>
+                            <img src="/assets/MapThumbnailSG.png" alt="" />
+                              <h3>{r.name}</h3>
+                              <p className="routeCardLocations">{(r.route.waypoints.length === 1) ? 2 : r.route.waypoints.length} locations</p>
+                              <p className="routeCardScore"><IoLeafSharp/> Score: {r.score}</p> 
+                              <p className="routeCardAuthor">Author: {r.author}</p>
+
+                          </div>
+                        )) : 
+                        <div className="noRoutesCard">
+                            <p>No Routes</p>
+                            </div>}
                     </div>
                 </div>
 
-                <div className='second_section'>
-                    <h2>{subthird}</h2>
+                <div className='cat_section'>
+                    <h3>Sustainable Education & Awareness</h3>
                     <div className='cards_section'>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
+                        {(Object.values((isPreset) ? presetRoutes : communityRoutes).filter(route => route.category === "Sustainable Education & Awareness").length != 0) ? Object.values((isPreset) ? presetRoutes : communityRoutes).filter(route => route.category === "Sustainable Education & Awareness").map((r, i) => (
+                            <div key={i} className='routeCard' onClick={() => navigate("/routelibrary/" + r.id)}>
+                              <img src="/assets/MapThumbnailSG.png" alt="" />
+                                <h3>{r.name}</h3>
+                                <p className="routeCardLocations">{(r.route.waypoints.length === 1) ? 2 : r.route.waypoints.length} locations</p>
+                                <p className="routeCardScore"><IoLeafSharp/> Score: {r.score}</p> 
+                                <p className="routeCardAuthor">Author: {r.author}</p>
+ 
+                            </div>
+                        )) : 
+                        <div className="noRoutesCard">
+                            <p>No Routes</p>
+                            </div>}
                     </div>
                 </div>
+
+                <div className='cat_section'>
+                    <h3>Culinary Delights</h3>
+                    <div className='cards_section'>
+                    {(Object.values((isPreset) ? presetRoutes : communityRoutes).filter(route => route.category === "Culinary Delights").length != 0) ? Object.values((isPreset) ? presetRoutes : communityRoutes).filter(route => route.category === "Culinary Delights").map((r, i) => (
+                            <div key={i} className='routeCard' onClick={() => navigate("/routelibrary/" + r.id)}>
+                            <img src="/assets/MapThumbnailSG.png" alt="" />
+                              <h3>{r.name}</h3>
+                              <p className="routeCardLocations">{(r.route.waypoints.length === 1) ? 2 : r.route.waypoints.length} locations</p>
+                              <p className="routeCardScore"><IoLeafSharp/> Score: {r.score}</p> 
+                              <p className="routeCardAuthor">Author: {r.author}</p>
+
+                          </div>
+                        )) : 
+                        <div className="noRoutesCard">
+                            <p>No Routes</p>
+                            </div>}
+                    </div>
+                </div>
+
+                <div className='cat_section'>
+                    <h3>Romantic</h3>
+                    <div className='cards_section'>
+                    {(Object.values((isPreset) ? presetRoutes : communityRoutes).filter(route => route.category === "Romantic").length != 0) ? Object.values((isPreset) ? presetRoutes : communityRoutes).filter(route => route.category === "Romantic").map((r, i) => (
+                            <div key={i} className='routeCard' onClick={() => navigate("/routelibrary/" + r.id)}>
+                            <img src="/assets/MapThumbnailSG.png" alt="" />
+                              <h3>{r.name}</h3>
+                              <p className="routeCardLocations">{(r.route.waypoints.length === 1) ? 2 : r.route.waypoints.length} locations</p>
+                              <p className="routeCardScore"><IoLeafSharp/> Score: {r.score}</p> 
+                              <p className="routeCardAuthor">Author: {r.author}</p>
+
+                          </div>
+                        )) : 
+                        <div className="noRoutesCard">
+                            <p>No Routes</p>
+                            </div>}
+                    </div>
+                </div>
+
+                <div className='cat_section'>
+                    <h3>Iconic Landmarks</h3>
+                    <div className='cards_section'>
+                    {(Object.values((isPreset) ? presetRoutes : communityRoutes).filter(route => route.category === "Iconic Landmarks").length != 0) ? Object.values((isPreset) ? presetRoutes : communityRoutes).filter(route => route.category === "Iconic Landmarks").map((r, i) => (
+                            <div key={i} className='routeCard' onClick={() => navigate("/routelibrary/" + r.id)}>
+                            <img src="/assets/MapThumbnailSG.png" alt="" />
+                              <h3>{r.name}</h3>
+                              <p className="routeCardLocations">{(r.route.waypoints.length === 1) ? 2 : r.route.waypoints.length} locations</p>
+                              <p className="routeCardScore"><IoLeafSharp/> Score: {r.score}</p> 
+                              <p className="routeCardAuthor">Author: {r.author}</p>
+
+                          </div>
+                        )) : 
+                        <div className="noRoutesCard">
+                            <p>No Routes</p>
+                            </div>}
+                    </div>
+                </div>
+
+                <div className='cat_section'>
+                    <h3>Shopping</h3>
+                    <div className='cards_section'>
+                    {(Object.values((isPreset) ? presetRoutes : communityRoutes).filter(route => route.category === "Shopping").length != 0) ? Object.values((isPreset) ? presetRoutes : communityRoutes).filter(route => route.category === "Shopping").map((r, i) => (
+                            <div key={i} className='routeCard' onClick={() => navigate("/routelibrary/" + r.id)}>
+                            <img src="/assets/MapThumbnailSG.png" alt="" />
+                              <h3>{r.name}</h3>
+                              <p className="routeCardLocations">{(r.route.waypoints.length === 1) ? 2 : r.route.waypoints.length} locations</p>
+                              <p className="routeCardScore"><IoLeafSharp/> Score: {r.score}</p> 
+                              <p className="routeCardAuthor">Author: {r.author}</p>
+
+                          </div>
+                        )) : 
+                        <div className="noRoutesCard">
+                            <p>No Routes</p>
+                            </div>}
+                    </div>
+                </div>
+
+                <div className='cat_section'>
+                    <h3>Others</h3>
+                    <div className='cards_section'>
+                    {(Object.values((isPreset) ? presetRoutes : communityRoutes).filter(route => route.category === "Others").length != 0) ? Object.values((isPreset) ? presetRoutes : communityRoutes).filter(route => route.category === "Others").map((r, i) => (
+                            <div key={i} className='routeCard' onClick={() => navigate("/routelibrary/" + r.id)}>
+                            <img src="/assets/MapThumbnailSG.png" alt="" />
+                              <h3>{r.name}</h3>
+                              <p className="routeCardLocations">{(r.route.waypoints.length === 1) ? 2 : r.route.waypoints.length} locations</p>
+                              <p className="routeCardScore"><IoLeafSharp/> Score: {r.score}</p> 
+                              <p className="routeCardAuthor">Author: {r.author}</p>
+
+                          </div>
+                        )) : 
+                        <div className="noRoutesCard">
+                            <p>No Routes</p>
+                            </div>}
+                    </div>
+                </div>
+
             </div>
-            
+
         </div>
     )
 
