@@ -1,3 +1,5 @@
+![Routourist Banner](public/assets/githubBanner.png)
+
 # Routourist
 Routourist is a route builder web application that aims to promote sustainable tourism. 
 
@@ -27,6 +29,8 @@ Routourist is created for the [Google Solutions Challenge 2023](https://develope
 - Asyraf Omar (https://github.com/asycodes)
 - Rachel Lim (https://github.com/rappleit)
 - Andrew Yu (https://github.com/Gnoot01)
+
+We are members of the Singapore University of Technology and Design (SUTD) Google Developer Student Club.
 
 ### Contact
 Email: [routourist3dc@gmail.com](mailto:routourist3dc@gmail.com)
