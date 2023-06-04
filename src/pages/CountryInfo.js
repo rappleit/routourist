@@ -19,6 +19,13 @@ const CountryInfo = () => {
     const [WeatherPoints,setWeatherPoints] = useState('')
 
     const setChange = (buttonswitch) =>{
+        if (country=='Singapore'){
+            localStorage.setItem("Countryinfo", JSON.stringify(singaporeInfo))
+        }
+        else(
+            localStorage.setItem("Countryinfo", JSON.stringify(malaysiaInfo))
+        )
+
         if (buttonswitch == 'country'){
             navigate('/country')
         }

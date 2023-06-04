@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
 import '../styles/libraryroute.css';
 import { BiSearch } from 'react-icons/bi'
+import { useLocation } from "react-router-dom";
 
 
 const RouteLibrary = () => { 
+    const countryinfo= localStorage.getItem("Countryinfo");
+    console.log(localStorage)
     const [isPreset,setIsPreset] = useState(false)
     const [isCommunity,setIsCommunity] = useState(false)
 
