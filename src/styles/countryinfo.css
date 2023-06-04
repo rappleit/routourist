@@ -55,7 +55,16 @@
     padding-top: 25px;
     padding-bottom: 25px;
 }
+.button_description{
+    background-color: var(--primary-darker-clr);
+    color: var(--secondary-clr);
+    padding:10px 20px;
+    border-radius: 5px;
+}
 
+.button_description li{
+    color: var(--secondary-clr);
+}
 .buttons_section button{
     padding: 10px 30px 10px 30px;
     min-width: 150px;
@@ -92,7 +101,8 @@ li{
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1px;
-    padding: 10px 30px 10px 30px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     color: var(--primary-clr);
     cursor: pointer;
     box-shadow: 0 3px 10px rgb(0 0 0 / 0.8);
@@ -100,11 +110,67 @@ li{
     width: 100%;
     background-color: var(--contrast-clr);
 }
-.law_section h2{
+.law_section h3, .culture_section h3, .weather_section h3{
     color: var(--primary-clr);
+    margin-left: 30px;
+}
+
+.arrowdown{
+    margin-right: 30px;
 }
 
 .law_info, .culture_info, .weather_info{
     margin-top: 20px;
     margin-bottom: 20px;
+}
+
+.sus_events, .sus_locations{
+    width: 85%;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    justify-content: space-evenly;
+    gap: 50px;
+}
+
+.sus_locations{
+    padding-bottom: 50px;
+}
+
+.sus_events .event_box, .sus_locations .event_box{
+    min-width: 100px;
+    width: 20%;
+    padding: 20px 20px 20px 20px;
+    background-color: var(--primary-darker-clr);
+    border-radius: 2px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: start;
+}
+
+.sus_header{
+    text-align: start;
+    width: 85%;
+    margin-left: auto;
+    margin-right: auto;
+    font-family: var(--ff-primary);
+    color: var(--primary-clr);
+}
+h4{
+    font-family: var(--ff-secondary);
+    font-weight: var(--fw-light);
+}
+
+.event_header{
+    text-align: start;
+    font-size: var(--fs-sub);
+    font-family: var(--ff-primary);
+
+}
+
+.event_sub{
+    text-align: start;
+    font-size: var(--fs-text);
+    font-family: var(--ff-secondary);
 }

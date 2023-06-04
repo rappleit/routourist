@@ -101,7 +101,7 @@ const CountryInfo = () => {
             <div className="information_section">
                 <div className="law_section" onClick={()=> setOpen('law_info')}>
                     <h3>Law</h3>
-                    <BsChevronDown/>
+                    <BsChevronDown className="arrowdown"/>
                 </div>
                 {lawinfo && <ul className="law_info">
                 {LawPoints}
@@ -109,7 +109,7 @@ const CountryInfo = () => {
                 
                 <div className="culture_section" onClick={()=> setOpen('culture_info')}>
                     <h3>Culture</h3>
-                    <BsChevronDown/>
+                    <BsChevronDown className="arrowdown"/>
                 </div>
                 {cultureinfo && <ul className="culture_info">
                 {CulturePoints}
@@ -117,20 +117,204 @@ const CountryInfo = () => {
 
                 <div className="weather_section" onClick={()=> setOpen('weather_info')}>
                     <h3>Weather</h3>
-                    <BsChevronDown/>
+                    <BsChevronDown className="arrowdown"/>
                 </div>
                 {weatherinfo &&<ul className="weather_info">
                 {WeatherPoints}
                 </ul> }
             </div>
-
+            <h1 className="sus_header">Sustainable Events</h1>
+            {(country=='Singapore')?
             <div className="sus_events">
-
+                
+            <div className="event_box">
+                <div>
+                    <h3 className="event_header">iLight</h3>
+                    <h4 className="event_sub">01-25 June 2023</h4>
+                    <h4 className="event_sub">Marina Bay</h4>
+                </div>
+                <div>
+                    <a target="_blank" href="https://www.ilightsingapore.gov.sg/about/the-festival/">Learn More</a>
+                </div>
+                
             </div>
+            <div className="event_box">
+                <div>
+                    <h3 className="event_header">Nature and Sustainability Tour: Biodiversity and Ecosystems</h3>
+                    <h4 className="event_sub">10-25 June 2023</h4>
+                    <h4 className="event_sub">Gardens by the Bay, Singapore, 018953</h4>
+                </div>
+                
+                <div>
+                    <a target="_blank" href="https://www.eventbrite.sg/e/nature-and-sustainability-tour-biodiversity-and-ecosystems-jun-tickets-616912300297?aff=ebdssbdestsearch&keep_tld=1">Learn More</a>
+                </div>
+            </div>
+            <div className="event_box">
+                <div>
+                    <h3 className="event_header">Yummy Food Expo</h3>
+                    <h4 className="event_sub">22-25 June 2023</h4>
+                    <h4 className="event_sub">Singapore Expo Hall 5</h4>
+                </div>
+                <div>
+                    <a target="_blank" href="https://www.eventbrite.sg/e/farm-visit-to-hay-dairies-bollywood-farm-tickets-635282175087?aff=ebdssbdestsearch">Learn More</a>
+                </div>
+            </div>
+            
+            <div className="event_box">
+                <div>
+                    <h3 className="event_header">Farm Visit to Hay Dairies & Bollywood Farm</h3>
+                    <h4 className="event_sub">10 June 2023</h4>
+                    <h4 className="event_sub">Hay Dairies Pte Ltd 3 Lim Chu Kang Lane 4 Singapore, 718859</h4>
+                </div>
+                <div>
+                    <a target="_blank" href="https://www.singaporeexpo.com.sg/sg/what-s-on/events-expo/Yummy-Food-Expo-2023-">Learn More</a>
+                </div>
+            </div>
+        </div>
+        :
+
+        <div className="sus_events">
+                
+        <div className="event_box">
+            <div>
+                <h3 className="event_header">Rainforest World Music Festival</h3>
+                <h4 className="event_sub">23-25 June 2023</h4>
+                <h4 className="event_sub">Sarawak Cultural Village, Kuching, Sarawak</h4>
+            </div>
+            <div>
+                <a target="_blank" href="https://rwmf.net/">Learn More</a>
+            </div>
+            
+        </div>
+        <div className="event_box">
+            <div>
+                <h3 className="event_header">Georgetown Festival</h3>
+                <h4 className="event_sub">15-30 July 2023</h4>
+                <h4 className="event_sub">Georgetown, Penang</h4>
+            </div>
+            
+            <div>
+                <a target="_blank" href="https://georgetownfestival.com/2023/">Learn More</a>
+            </div>
+        </div>
+        <div className="event_box">
+            <div>
+                <h3 className="event_header">Malaysia International Dive Expo</h3>
+                <h4 className="event_sub">26-28 May 2023</h4>
+                <h4 className="event_sub">MITEC, Kuala Lumpur</h4>
+            </div>
+            <div>
+                <a target="_blank" href="https://www.mide.com.my/">Learn More</a>
+            </div>
+        </div>
+        
+        <div className="event_box">
+            <div>
+                <h3 className="event_header">Langkawi International Maritime and Aerospace Exhibition</h3>
+                <h4 className="event_sub">23-27 May 2023</h4>
+                <h4 className="event_sub">Mahsuri International Exhibition Centre, MIEC
+                and Resort World Langkawi, RWL</h4>
+            </div>
+            <div>
+                <a target="_blank" href="https://limamalaysia.com.my/">Learn More</a>
+            </div>
+        </div>
+    </div>
+            
+        }
+            
+            
+
+
+
+
+            <h1 className="sus_header">Businesses & Locations</h1>
+
+            {(country=='Singapore')?
+            <div className="sus_locations">
+                <div className="event_box">
+                    <div>
+                        <h3 className="event_header">The Green Collective SG</h3>
+                        <h4 className="event_sub">#02-18, Funan Mall, 107 North Bridge Rd, 179105</h4>
+                    </div>
+                    <div>
+                        <a target="_blank" href="https://www.thegreencollective.sg/">Learn More</a>
+                    </div>
+                </div>
+
+                <div className="event_box">
+                    <div>
+                        <h3 className="event_header">Bamboo Straw Girl</h3>
+                        <h4 className="event_sub">Online e-commerce</h4>
+                    </div>
+        
+                    <div>
+                        <a target="_blank" href="https://bamboostrawgirl.com/pages/about-us">Learn More</a>
+                    </div>
+                </div>
+                <div className="event_box">
+                    <div>
+                        <h3 className="event_header">The Sustainability Project</h3>
+                        <h4 className="event_sub">21 Bukit Batok Cres, #06-78 Wcega Tower, Singapore 658065</h4>
+                    </div>
+                    <div>
+                        <a target="_blank" href="https://thesustainabilityproject.life/">Learn More</a>
+                    </div>
+                </div>
+                <div className="event_box">
+                    <div>
+                        <h3 className="event_header">Bollywood Farms</h3>
+                        <h4 className="event_sub">100 Neo Tiew Rd, Singapore 719026</h4>
+                    </div>
+                    <div>
+                        <a target="_blank" href="https://bollywoodfarms.com/">Learn More</a>
+                    </div>
+                </div>
+            </div>
+            
+            :
 
             <div className="sus_locations">
-
+            <div className="event_box">
+                <div>
+                    <h3 className="event_header">The Green Collective SG</h3>
+                    <h4 className="event_sub">#02-18, Funan Mall, 107 North Bridge Rd, 179105</h4>
+                </div>
+                <div>
+                    <a target="_blank" href="https://www.thegreencollective.sg/">Learn More</a>
+                </div>
             </div>
+
+            <div className="event_box">
+                <div>
+                    <h3 className="event_header">Bamboo Straw Girl</h3>
+                    <h4 className="event_sub">Online e-commerce</h4>
+                </div>
+    
+                <div>
+                    <a target="_blank" href="https://bamboostrawgirl.com/pages/about-us">Learn More</a>
+                </div>
+            </div>
+            <div className="event_box">
+                <div>
+                    <h3 className="event_header">The Sustainability Project</h3>
+                    <h4 className="event_sub">21 Bukit Batok Cres, #06-78 Wcega Tower, Singapore 658065</h4>
+                </div>
+                <div>
+                    <a target="_blank" href="https://thesustainabilityproject.life/">Learn More</a>
+                </div>
+            </div>
+            <div className="event_box">
+                <div>
+                    <h3 className="event_header">Bollywood Farms</h3>
+                    <h4 className="event_sub">100 Neo Tiew Rd, Singapore 719026</h4>
+                </div>
+                <div>
+                    <a target="_blank" href="https://bollywoodfarms.com/">Learn More</a>
+                </div>
+            </div>
+        </div>
+        }
         </div>
     )
 }
