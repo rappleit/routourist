@@ -6,11 +6,15 @@ import {
 } from "react-icons/io5";
 import { equalTo, getDatabase, limitToLast, onValue, orderByChild, query, ref } from '@firebase/database';
 import { useNavigate } from 'react-router';
+import { useLocation } from "react-router-dom";
 
 
-const RouteLibrary = () => {
-    const [isPreset, setIsPreset] = useState(true)
-    const [isCommunity, setIsCommunity] = useState(false)
+
+const RouteLibrary = () => { 
+    const countryinfo= localStorage.getItem("Countryinfo");
+
+    const [isPreset,setIsPreset] = useState(true)
+    const [isCommunity,setIsCommunity] = useState(false)
 
     const [communityRoutes, setCommunityRoutes] = useState({});
     const [communityRoutesNum, setCommunityRoutesNum] = useState(0);
