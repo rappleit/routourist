@@ -1,4 +1,4 @@
-![Routourist Banner](public/assets/githubBanner.png)
+[![Routourist Banner](public/assets/githubBanner.png)](https://routourists.et.r.appspot.com/)
 
 # Routourist
 Routourist is a route builder web application that aims to promote sustainable tourism. 
@@ -6,7 +6,7 @@ Routourist is a route builder web application that aims to promote sustainable t
 ## DISCLAIMER!
 As we do not wish to expose our API keys to the public, please be informed that they have been sent directly via email to the Google Solutions Challenge Team. If you would like to request for the .en file, please email us at [routourist3dc@gmail.com](mailto:routourist3dc@gmail.com). 
 
-[Try Routourist Now!] 
+## [Try Routourist Now!](https://routourists.et.r.appspot.com/)
 
 ## Features
 - 🌎 Valuable, bite-sized information regarding the country of interest (law, culture, any sustainable events/businesses available)
