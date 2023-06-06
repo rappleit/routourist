@@ -560,6 +560,7 @@ const Map = () => {
                 "https://www.nea.gov.sg/assets/images/icons/weather/sh.png",
             Thundery:
                 "https://www.nea.gov.sg/assets/images/icons/weather/tl.png",
+            Warm: "https://www.nea.gov.sg/assets/images/icons/weather/fw.png",
         };
         const date = new Date();
         date.setHours(date.getHours() + 8);
