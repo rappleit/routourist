@@ -29,6 +29,7 @@ const LeftSidebar = ({
                     <IoClose />
                 </button>
             </div>
+            <p className="countryLabel"><span>Current Country:</span> {localStorage.getItem("Country")}</p>
 
             <div
                 style={

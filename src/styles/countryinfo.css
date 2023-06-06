@@ -55,6 +55,11 @@
     padding-top: 25px;
     padding-bottom: 25px;
 }
+
+.buttons_section button:hover {
+    background: var(--primary-clr);
+    color: var(--secondary-clr);
+}
 .button_description{
     background-color: var(--primary-darker-clr);
     color: var(--secondary-clr);
@@ -79,6 +84,7 @@
     cursor: pointer;
     box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
     text-decoration: none;
+    font-weight: 500;
 
 }
 

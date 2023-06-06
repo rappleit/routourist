@@ -133,10 +133,10 @@ const CountryInfo = () => {
                         Select Country
                     </button>
                     <button onClick={() => setChange("preset")}>
-                        Preset Route
+                        Route <br/> Library
                     </button>
                     <button onClick={() => setChange("build")}>
-                        Build Route
+                        Build Your Own Route
                     </button>
                     <div className="button_description">
                         <ul>

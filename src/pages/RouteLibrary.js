@@ -123,7 +123,6 @@ const RouteLibrary = () => {
                     </p>
                     <div className="cards_section">
                         {Object.values(topRoutes)
-                            .reverse()
                             .filter(
                                 (route) =>
                                     route.type ===
