@@ -42,6 +42,7 @@
     width: 85%;
     margin-left: auto;
     margin-right: auto;
+    margin-top: 32px;
     
 }
 
@@ -68,6 +69,11 @@
     width: 40%;
     align-items: start;
     justify-content: end;
+}
+
+.headerbutton a:hover {
+    background: var(--primary-clr);
+    color: var(--secondary-clr);
 }
 
 .headerbutton a{

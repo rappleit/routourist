@@ -13,6 +13,7 @@ import { ReactNotifications } from 'react-notifications-component'
 import 'react-notifications-component/dist/theme.css'
 import SavedRoutes from './pages/SavedRoutes';
 import PublishedRouteDetail from './pages/PublishedRouteDetail';
+import ProtectedRoute from './components/ProtectedRoute';
 
 
 function App() {
@@ -62,7 +63,11 @@ function App() {
         />
         <Route 
         path="/savedroutes"
-        element={<SavedRoutes/>}
+        element={
+          <ProtectedRoute>
+            <SavedRoutes/>
+          </ProtectedRoute>
+        }
         exact
         />
         <Route

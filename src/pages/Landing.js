@@ -59,8 +59,8 @@ const Landing = () => {
                     </div>
 
                     <div className="headerbutton">
-                        <a className="faq_button">FAQ</a>
                         <a href="/country">Try Now</a>
+                        <a href="/login">Login</a>
                     </div>
                 </div>
 
@@ -95,13 +95,6 @@ const Landing = () => {
                             </div>
                         </div>
 
-                        <div className="business_collab">
-                            <button>Collab Now</button>
-                            <p>
-                                For Business collaboration, click this button to
-                                apply now!
-                            </p>
-                        </div>
                     </div>
                     <div className="right_section">
                         <img src={travel} alt="travel"></img>
